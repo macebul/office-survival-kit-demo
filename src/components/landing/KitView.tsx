@@ -46,7 +46,7 @@ export function KitView() {
 
   return (
     <div className="h-screen pt-24 overflow-y-auto">
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero: Gallery + Pitch side by side */}
         <div className="flex flex-col lg:flex-row gap-12 mb-8">
           {/* Gallery */}
@@ -65,7 +65,7 @@ export function KitView() {
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}
-                  className={`w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
+                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-colors ${
                     i === activeIndex
                       ? "border-[#E87A2A]"
                       : "border-white/10 hover:border-white/30"
@@ -84,7 +84,7 @@ export function KitView() {
 
           {/* Product info */}
           <div className="lg:w-2/5">
-            <h1 className="text-4xl font-bold text-white mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
               Office Survival Kit
             </h1>
             <p className="text-[#E87A2A] text-lg mb-6">
@@ -115,7 +115,7 @@ export function KitView() {
         {/* Inside Lid + Specs side by side */}
         <div className="flex flex-col lg:flex-row gap-6 mb-8">
           {/* Inside Lid Copy */}
-          <div className="border border-white/10 rounded-lg p-8 bg-white/[0.02] lg:w-3/5 shrink-0">
+          <div className="border border-white/10 rounded-lg p-4 sm:p-6 lg:p-8 bg-white/[0.02] lg:w-3/5 shrink-0">
             <h3 className="text-lg font-bold text-[#E87A2A] tracking-widest uppercase mb-4">
               {SITE_COPY.insideLid.header}
             </h3>
@@ -133,7 +133,7 @@ export function KitView() {
           </div>
 
           {/* Product Specs */}
-          <div className="border border-white/10 rounded-lg p-6 bg-white/[0.02] lg:flex-1">
+          <div className="border border-white/10 rounded-lg p-4 sm:p-6 bg-white/[0.02] lg:flex-1">
             <h3 className="text-sm font-bold text-[#E87A2A] uppercase tracking-widest mb-4">
               Product Specifications
             </h3>

@@ -1,5 +1,6 @@
 import { SITE_COPY } from "@/data/content";
 import type { ViewMode } from "@/App";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 import { useState } from "react";
 
@@ -40,7 +41,12 @@ export function InfoPanel({
 }: InfoPanelProps) {
   const isVisible = viewMode === "interior" && selectedTray !== null;
   const tray = selectedTray ? SITE_COPY.trays[selectedTray] : null;
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
+  // Mobile/tablet: no panel — tray tabs are enough, 3D model stays fully visible
+  if (!isDesktop) return null;
+
+  // Desktop: full side panel
   return (
     <div
       className={`fixed top-0 right-0 h-full w-[400px] bg-background/95 backdrop-blur-md border-l border-border z-40 transform transition-all duration-300 ease-in-out ${
