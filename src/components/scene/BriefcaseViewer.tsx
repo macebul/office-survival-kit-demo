@@ -1,45 +1,123 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Environment, ContactShadows } from "@react-three/drei";
 import { Vector3, PerspectiveCamera } from "three";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { KitModel } from "./KitModel";
-import type { ViewMode } from "@/App";
+import type { ExplorerState } from "@/App";
+import { CAMERA_PRESETS } from "@/data/cameraPresets";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
-// Default exterior camera position (matches Canvas camera prop)
-const EXTERIOR_CAM_POS = new Vector3(4, 3, 4);
-const EXTERIOR_LOOK_AT = new Vector3(0, 0, 0);
+const LERP_ALPHA = 0.06;
+const MODEL_SCALE = 0.12;
 
-// Interior camera: above and toward the handle side, looking down into the case
-const INTERIOR_CAM_POS = new Vector3(0, 3.8, -0.6);
-const INTERIOR_LOOK_AT = new Vector3(0, -0.1, 0.2);
-
-function CameraRig({ viewMode }: { viewMode: ViewMode }) {
+function CameraSystem({ explorer }: { explorer: ExplorerState }) {
   const { camera } = useThree();
-  const prevMode = useRef(viewMode);
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const targetPos = useRef(new Vector3(2.2, 1.5, -1.7));
+  const targetLookAt = useRef(new Vector3(0, 0, 0));
+  const isTransitioning = useRef(false);
+
+  // When activeCamera changes, compute the target position
+  useEffect(() => {
+    const preset = explorer.activeCamera
+      ? CAMERA_PRESETS[explorer.activeCamera]
+      : null;
+
+    if (preset) {
+      const s = MODEL_SCALE;
+      targetPos.current.set(
+        preset.position[0] * s,
+        preset.position[1] * s,
+        preset.position[2] * s,
+      );
+      targetLookAt.current.set(
+        preset.lookAt[0] * s,
+        preset.lookAt[1] * s,
+        preset.lookAt[2] * s,
+      );
+
+      // For ortho views, push camera farther back to approximate framing
+      if (
+        preset.isOrtho &&
+        preset.orthoScale &&
+        camera instanceof PerspectiveCamera
+      ) {
+        const direction = new Vector3()
+          .subVectors(targetPos.current, targetLookAt.current)
+          .normalize();
+        const distance =
+          (preset.orthoScale * s) /
+          (2 * Math.tan((camera.fov / 2) * (Math.PI / 180)));
+        targetPos.current
+          .copy(targetLookAt.current)
+          .addScaledVector(direction, distance);
+      }
+
+      // Apply custom up vector for pole cameras (fixes gimbal lock)
+      if (preset.up) {
+        camera.up.set(preset.up[0], preset.up[1], preset.up[2]);
+      } else {
+        camera.up.set(0, 1, 0);
+      }
+
+      isTransitioning.current = true;
+    } else {
+      // Returning to free orbit — reset to default position orbiting model center
+      camera.up.set(0, 1, 0);
+      targetPos.current.set(3.5, 2.5, -3.0);
+      targetLookAt.current.set(0, 0.2, 0);
+      if (controlsRef.current) {
+        controlsRef.current.target.set(0, 0.3, 0);
+        controlsRef.current.update();
+      }
+      isTransitioning.current = true;
+    }
+  }, [explorer.activeCamera, camera]);
+
+  // Stop transition when user starts interacting (zoom, rotate, pan)
+  const handleControlStart = useCallback(() => {
+    isTransitioning.current = false;
+  }, []);
 
   useFrame(() => {
-    if (viewMode === "interior") {
-      camera.position.lerp(INTERIOR_CAM_POS, 0.05);
-      camera.lookAt(INTERIOR_LOOK_AT.x, INTERIOR_LOOK_AT.y, INTERIOR_LOOK_AT.z);
-    } else if (prevMode.current === "interior") {
-      // Transitioning back to exterior — lerp to default position
-      camera.position.lerp(EXTERIOR_CAM_POS, 0.05);
-      camera.lookAt(EXTERIOR_LOOK_AT.x, EXTERIOR_LOOK_AT.y, EXTERIOR_LOOK_AT.z);
+    if (!isTransitioning.current || !controlsRef.current) return;
 
-      // Stop lerping once close enough
-      if (camera.position.distanceTo(EXTERIOR_CAM_POS) < 0.05) {
-        camera.position.copy(EXTERIOR_CAM_POS);
-        prevMode.current = "exterior";
-      }
-    }
+    // Lerp camera position
+    camera.position.lerp(targetPos.current, LERP_ALPHA);
 
-    if (viewMode === "interior" && prevMode.current !== "interior") {
-      prevMode.current = "interior";
+    // Lerp OrbitControls target (the point the camera orbits around / looks at)
+    controlsRef.current.target.lerp(targetLookAt.current, LERP_ALPHA);
+    controlsRef.current.update();
+
+    // Stop when close enough
+    if (camera.position.distanceTo(targetPos.current) < 0.01) {
+      camera.position.copy(targetPos.current);
+      controlsRef.current.target.copy(targetLookAt.current);
+      controlsRef.current.update();
+      isTransitioning.current = false;
     }
   });
 
-  return null;
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      enablePan={true}
+      enableZoom={true}
+      enableRotate={true}
+      minDistance={0.5}
+      maxDistance={10}
+      minPolarAngle={0}
+      maxPolarAngle={Math.PI}
+      autoRotate={false}
+      zoomSpeed={0.8}
+      panSpeed={0.8}
+      rotateSpeed={0.8}
+      enableDamping={true}
+      dampingFactor={0.1}
+      onStart={handleControlStart}
+    />
+  );
 }
 
 function FovUpdater({ fov }: { fov: number }) {
@@ -54,47 +132,35 @@ function FovUpdater({ fov }: { fov: number }) {
 }
 
 interface BriefcaseViewerProps {
-  viewMode: ViewMode;
-  selectedTray: string | null;
+  explorer: ExplorerState;
 }
 
-export function BriefcaseViewer({ viewMode, selectedTray }: BriefcaseViewerProps) {
+export function BriefcaseViewer({ explorer }: BriefcaseViewerProps) {
   const isSmall = useMediaQuery("(max-width: 639px)");
   const isPortrait = useMediaQuery("(orientation: portrait)");
-  // Portrait phones need much wider FOV to see the full model
   const fov = isSmall && isPortrait ? 65 : isSmall ? 55 : 40;
 
   return (
     <Canvas
-      camera={{ position: [4, 3, 4], fov: 40 }}
+      camera={{ position: [3.5, 2.5, -3.0], fov: 40 }}
       style={{ width: "100%", height: "100%" }}
     >
       <FovUpdater fov={fov} />
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
-      <directionalLight position={[-3, 3, -3]} intensity={0.3} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[3, 5, 4]} intensity={0.6} castShadow />
+      <directionalLight position={[-4, 3, -2]} intensity={0.3} />
 
-      <KitModel viewMode={viewMode} selectedTray={selectedTray} />
-      <CameraRig viewMode={viewMode} />
+      <KitModel explorer={explorer} />
+      <CameraSystem explorer={explorer} />
 
       <ContactShadows
-        position={[0, -0.8, 0]}
-        opacity={0.4}
-        scale={8}
-        blur={2}
+        position={[0, -0.1, 0]}
+        opacity={0.3}
+        scale={12}
+        blur={2.5}
       />
 
-      <Environment preset="studio" />
-
-      <OrbitControls
-        enablePan={false}
-        enabled={viewMode === "exterior"}
-        minDistance={2.5}
-        maxDistance={8}
-        minPolarAngle={Math.PI / 6}
-        maxPolarAngle={Math.PI / 2.2}
-        autoRotate={false}
-      />
+      <Environment preset="studio" environmentIntensity={0.3} />
     </Canvas>
   );
 }

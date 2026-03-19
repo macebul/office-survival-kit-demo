@@ -1,33 +1,44 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Header } from "@/components/layout/Header";
 import { KitView } from "@/components/landing/KitView";
 import { ItemsView } from "@/components/landing/ItemsView";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { FeatureNav } from "@/components/landing/FeatureNav";
-import { InfoPanel } from "@/components/layout/InfoPanel";
+import { ViewerControls } from "@/components/scene/ViewerControls";
 
-export type ViewMode = "exterior" | "interior";
 export type ActiveView = "kit" | "items" | "explorer";
 
+export interface ExplorerState {
+  activeCamera: string | null;
+  briefcaseLidOpen: boolean;
+  amazonLidOpen: boolean;
+  amazonVisible: boolean;
+  tray1Filled: boolean;
+  tray2Filled: boolean;
+}
+
+const DEFAULT_EXPLORER_STATE: ExplorerState = {
+  activeCamera: "Camera_Main",
+  briefcaseLidOpen: false,
+  amazonLidOpen: false,
+  amazonVisible: false,
+  tray1Filled: true,
+  tray2Filled: true,
+};
+
 function App() {
-  const [viewMode, setViewMode] = useState<ViewMode>("exterior");
-  const [selectedTray, setSelectedTray] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<ActiveView>("kit");
-
-  const handleOpenInterior = () => setViewMode("interior");
-
-  const handleClose = () => {
-    setViewMode("exterior");
-    setSelectedTray(null);
-  };
+  const [activeView, setActiveView] = useState<ActiveView>("explorer");
+  const [explorer, setExplorer] = useState<ExplorerState>(DEFAULT_EXPLORER_STATE);
 
   const handleViewChange = (view: ActiveView) => {
     setActiveView(view);
-    if (view !== "explorer") {
-      setViewMode("exterior");
-      setSelectedTray(null);
-    }
   };
+
+  const updateExplorer = useCallback(
+    (partial: Partial<ExplorerState>) => {
+      setExplorer((prev) => ({ ...prev, ...partial }));
+    },
+    [],
+  );
 
   return (
     <div className="relative h-screen overflow-hidden bg-background dark">
@@ -39,19 +50,8 @@ function App() {
 
       {activeView === "explorer" && (
         <>
-          <HeroSection viewMode={viewMode} selectedTray={selectedTray} />
-          <FeatureNav
-            viewMode={viewMode}
-            selectedTray={selectedTray}
-            onOpenInterior={handleOpenInterior}
-            onSelectTray={setSelectedTray}
-            onClose={handleClose}
-          />
-          <InfoPanel
-            viewMode={viewMode}
-            selectedTray={selectedTray}
-            onClose={() => setSelectedTray(null)}
-          />
+          <HeroSection explorer={explorer} />
+          <ViewerControls explorer={explorer} onUpdate={updateExplorer} />
         </>
       )}
     </div>
