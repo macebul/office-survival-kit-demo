@@ -4,8 +4,9 @@ import { KitView } from "@/components/landing/KitView";
 import { ItemsView } from "@/components/landing/ItemsView";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ViewerControls } from "@/components/scene/ViewerControls";
+import { BookletView } from "@/components/landing/BookletView";
 
-export type ActiveView = "kit" | "items" | "explorer";
+export type ActiveView = "kit" | "items" | "explorer" | "booklet";
 
 export interface ExplorerState {
   activeCamera: string | null;
@@ -14,6 +15,9 @@ export interface ExplorerState {
   amazonVisible: boolean;
   tray1Filled: boolean;
   tray2Filled: boolean;
+  activeItemViewer: string | null;
+  itemCamera: string | null;
+  sleeveOpen: boolean;
 }
 
 const DEFAULT_EXPLORER_STATE: ExplorerState = {
@@ -23,6 +27,9 @@ const DEFAULT_EXPLORER_STATE: ExplorerState = {
   amazonVisible: false,
   tray1Filled: true,
   tray2Filled: true,
+  activeItemViewer: null,
+  itemCamera: null,
+  sleeveOpen: false,
 };
 
 function App() {
@@ -47,6 +54,8 @@ function App() {
       {activeView === "kit" && <KitView />}
 
       {activeView === "items" && <ItemsView />}
+
+      {activeView === "booklet" && <BookletView />}
 
       {activeView === "explorer" && (
         <>
