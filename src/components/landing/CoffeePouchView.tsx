@@ -37,19 +37,28 @@ function LoadingFallback() {
 }
 
 /**
- * Animated orbit hint ring with arrow indicators at the base of the model.
- * Slowly rotates and pulses to signal interactivity, then fades out
- * once the user starts dragging.
+ * Animated orbit hint ring at the base of the model.
+ * - Starts prominent (full opacity, active pulse)
+ * - After first interaction: dims to a subtle ghost (low opacity, slower pulse)
+ * - After 8s idle: gently brightens back up as a reminder
+ * - Never fully disappears
  */
-function OrbitHintRing({ visible }: { visible: boolean }) {
+function OrbitHintRing({ interacting }: { interacting: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const fadeRef = useRef(1);
+  const currentOpacity = useRef(1);
+  const hasEverInteracted = useRef(false);
+  const idleTimer = useRef(0);
+
+  const PROMINENT = 0.7;
+  const SUBTLE = 0.18;
+  const REMINDER = 0.4;
+  const IDLE_THRESHOLD = 8;
 
   const shaderData = useMemo(() => ({
     uniforms: {
       uTime: { value: 0 },
-      uOpacity: { value: 0.6 },
+      uOpacity: { value: PROMINENT },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -64,24 +73,22 @@ function OrbitHintRing({ visible }: { visible: boolean }) {
       varying vec2 vUv;
 
       void main() {
-        // Convert UV to angle around the ring
         float angle = atan(vUv.y - 0.5, vUv.x - 0.5);
 
-        // Create 3 arrow-like chevron shapes evenly spaced around the ring
+        // 3 rotating arrow chevrons
         float segAngle = mod(angle + uTime * 0.8, 6.28318) / 2.09439;
         float arrow = smoothstep(0.0, 0.15, segAngle) * smoothstep(0.6, 0.45, segAngle);
 
         // Dashed ring base
         float dash = smoothstep(0.3, 0.35, fract(angle * 4.77 + uTime * 0.5));
 
-        // Combine: base ring + arrows
         float alpha = max(dash * 0.3, arrow * 0.8);
 
-        // Pulse
-        alpha *= 0.7 + 0.3 * sin(uTime * 2.0);
+        // Pulse intensity scales with opacity (subtle when dimmed)
+        float pulseStrength = 0.15 + 0.15 * uOpacity;
+        alpha *= (1.0 - pulseStrength) + pulseStrength * sin(uTime * 2.0);
         alpha *= uOpacity;
 
-        // Orange accent color matching the app
         vec3 color = vec3(0.91, 0.478, 0.165);
         gl_FragColor = vec4(color, alpha);
       }
@@ -91,18 +98,27 @@ function OrbitHintRing({ visible }: { visible: boolean }) {
   useFrame((_, delta) => {
     if (!groupRef.current || !materialRef.current) return;
 
-    // Slow rotation
     groupRef.current.rotation.y += delta * 0.3;
-
-    // Update shader time
     materialRef.current.uniforms.uTime.value += delta;
 
-    // Fade in/out
-    const target = visible ? 1 : 0;
-    fadeRef.current += (target - fadeRef.current) * delta * 3;
-    materialRef.current.uniforms.uOpacity.value = fadeRef.current * 0.6;
+    // Determine target opacity based on state
+    let target: number;
 
-    groupRef.current.visible = fadeRef.current > 0.01;
+    if (interacting) {
+      hasEverInteracted.current = true;
+      idleTimer.current = 0;
+      target = SUBTLE;
+    } else if (!hasEverInteracted.current) {
+      target = PROMINENT;
+    } else {
+      idleTimer.current += delta;
+      target = idleTimer.current > IDLE_THRESHOLD ? REMINDER : SUBTLE;
+    }
+
+    // Smooth lerp toward target
+    const speed = interacting ? 4 : 1.5;
+    currentOpacity.current += (target - currentOpacity.current) * delta * speed;
+    materialRef.current.uniforms.uOpacity.value = currentOpacity.current;
   });
 
   return (
@@ -123,11 +139,7 @@ function OrbitHintRing({ visible }: { visible: boolean }) {
 
 export function CoffeePouchView() {
   const controlsRef = useRef<OrbitControlsImpl>(null);
-  const [hasInteracted, setHasInteracted] = useState(false);
-
-  const handleInteractionStart = useCallback(() => {
-    if (!hasInteracted) setHasInteracted(true);
-  }, [hasInteracted]);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   const animateToPreset = useCallback((preset: typeof CAMERA_PRESETS[number]) => {
     const controls = controlsRef.current;
@@ -189,7 +201,7 @@ export function CoffeePouchView() {
           <Environment preset="studio" environmentIntensity={0.3} />
         </Suspense>
 
-        <OrbitHintRing visible={!hasInteracted} />
+        <OrbitHintRing interacting={isInteracting} />
 
         <OrbitControls
           ref={controlsRef}
@@ -200,7 +212,8 @@ export function CoffeePouchView() {
           minDistance={0.15}
           maxDistance={1.2}
           maxPolarAngle={Math.PI * 0.85}
-          onStart={handleInteractionStart}
+          onStart={() => setIsInteracting(true)}
+          onEnd={() => setIsInteracting(false)}
         />
       </Canvas>
 
