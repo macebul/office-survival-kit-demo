@@ -98,7 +98,7 @@ function OrbitHintRing({ interacting }: { interacting: boolean }) {
   useFrame((_, delta) => {
     if (!groupRef.current || !materialRef.current) return;
 
-    groupRef.current.rotation.y += delta * 0.3;
+    groupRef.current.rotation.z += delta * 0.3;
     materialRef.current.uniforms.uTime.value += delta;
 
     // Determine target opacity based on state
