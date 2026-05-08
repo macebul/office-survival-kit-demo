@@ -1,30 +1,17 @@
-import { Suspense, useRef, useCallback, useState, useMemo } from "react";
+import { Suspense, useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import * as THREE from "three";
 
-const CAMERA_PRESETS: { label: string; position: [number, number, number]; target?: [number, number, number] }[] = [
-  { label: "Front", position: [0, 0.1, 0.5] },
-  { label: "Back", position: [0, 0.1, -0.5] },
-  { label: "Left", position: [-0.5, 0.1, 0] },
-  { label: "Right", position: [0.5, 0.1, 0] },
-  { label: "Hero", position: [0.35, 0.2, 0.35] },
-  { label: "Top", position: [0, 0.55, 0.01] },
-];
-
 const MODEL_CENTER: [number, number, number] = [0, 0.1, 0];
+const FRONT_VIEW: [number, number, number] = [0, 0.1, 0.5];
+const IDLE_RECENTER_SECONDS = 15;
+const RECENTER_DURATION_MS = 1800;
 
 function CoffeePouchModel() {
   const { scene } = useGLTF("/models/coffee-pouch.glb");
-
-  return (
-    <primitive
-      object={scene}
-      position={[0, 0, 0]}
-      rotation={[0, 0, 0]}
-    />
-  );
+  return <primitive object={scene} position={[0, 0, 0]} rotation={[0, 0, 0]} />;
 }
 
 function LoadingFallback() {
@@ -39,8 +26,8 @@ function LoadingFallback() {
 /**
  * Animated orbit hint ring at the base of the model.
  * - Starts prominent (full opacity, active pulse)
- * - After first interaction: dims to a subtle ghost (low opacity, slower pulse)
- * - After 8s idle: gently brightens back up as a reminder
+ * - After first interaction: dims to a subtle ghost
+ * - After 8s idle: gently brightens as a reminder
  * - Never fully disappears
  */
 function OrbitHintRing({ interacting }: { interacting: boolean }) {
@@ -101,9 +88,7 @@ function OrbitHintRing({ interacting }: { interacting: boolean }) {
     groupRef.current.rotation.z += delta * 0.3;
     materialRef.current.uniforms.uTime.value += delta;
 
-    // Determine target opacity based on state
     let target: number;
-
     if (interacting) {
       hasEverInteracted.current = true;
       idleTimer.current = 0;
@@ -115,7 +100,6 @@ function OrbitHintRing({ interacting }: { interacting: boolean }) {
       target = idleTimer.current > IDLE_THRESHOLD ? REMINDER : SUBTLE;
     }
 
-    // Smooth lerp toward target
     const speed = interacting ? 4 : 1.5;
     currentOpacity.current += (target - currentOpacity.current) * delta * speed;
     materialRef.current.uniforms.uOpacity.value = currentOpacity.current;
@@ -137,39 +121,83 @@ function OrbitHintRing({ interacting }: { interacting: boolean }) {
   );
 }
 
-export function CoffeePouchView() {
-  const controlsRef = useRef<OrbitControlsImpl>(null);
-  const [isInteracting, setIsInteracting] = useState(false);
+/**
+ * Watches for idle state and gently animates the camera back to the
+ * front view after IDLE_RECENTER_SECONDS of no interaction.
+ */
+function AutoRecenter({
+  controlsRef,
+  interacting,
+}: {
+  controlsRef: React.RefObject<OrbitControlsImpl | null>;
+  interacting: boolean;
+}) {
+  const idleTimer = useRef(0);
+  const isRecentering = useRef(false);
+  const recenterStart = useRef(0);
+  const startPos = useRef(new THREE.Vector3());
+  const startTarget = useRef(new THREE.Vector3());
+  const endPos = new THREE.Vector3(...FRONT_VIEW);
+  const endTarget = new THREE.Vector3(...MODEL_CENTER);
 
-  const animateToPreset = useCallback((preset: typeof CAMERA_PRESETS[number]) => {
+  useFrame((_, delta) => {
     const controls = controlsRef.current;
     if (!controls) return;
 
-    const camera = controls.object as THREE.PerspectiveCamera;
-    const startPos = camera.position.clone();
-    const endPos = new THREE.Vector3(...preset.position);
-    const target = new THREE.Vector3(...(preset.target ?? MODEL_CENTER));
-    const startTarget = controls.target.clone();
-
-    const duration = 600;
-    const startTime = performance.now();
-
-    function animate() {
-      const elapsed = performance.now() - startTime;
-      const t = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-
-      camera.position.lerpVectors(startPos, endPos, ease);
-      controls!.target.lerpVectors(startTarget, target, ease);
-      controls!.update();
-
-      if (t < 1) {
-        requestAnimationFrame(animate);
+    if (interacting) {
+      idleTimer.current = 0;
+      if (isRecentering.current) {
+        isRecentering.current = false;
       }
+      return;
     }
 
-    animate();
-  }, []);
+    // If currently animating back to front
+    if (isRecentering.current) {
+      const elapsed = performance.now() - recenterStart.current;
+      const t = Math.min(elapsed / RECENTER_DURATION_MS, 1);
+      // Smooth ease-in-out
+      const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      const camera = controls.object as THREE.PerspectiveCamera;
+      camera.position.lerpVectors(startPos.current, endPos, ease);
+      controls.target.lerpVectors(startTarget.current, endTarget, ease);
+      controls.update();
+
+      if (t >= 1) {
+        isRecentering.current = false;
+      }
+      return;
+    }
+
+    // Count idle time
+    idleTimer.current += delta;
+
+    if (idleTimer.current >= IDLE_RECENTER_SECONDS) {
+      // Check if already at front (within tolerance)
+      const camera = controls.object as THREE.PerspectiveCamera;
+      const dist = camera.position.distanceTo(endPos);
+      if (dist < 0.01) {
+        // Already at front, just reset timer
+        idleTimer.current = 0;
+        return;
+      }
+
+      // Start recentering
+      isRecentering.current = true;
+      recenterStart.current = performance.now();
+      startPos.current.copy(camera.position);
+      startTarget.current.copy(controls.target);
+      idleTimer.current = 0;
+    }
+  });
+
+  return null;
+}
+
+export function CoffeePouchView() {
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   return (
     <div className="h-screen w-full pt-12 sm:pt-14 lg:pt-16 relative">
@@ -202,6 +230,7 @@ export function CoffeePouchView() {
         </Suspense>
 
         <OrbitHintRing interacting={isInteracting} />
+        <AutoRecenter controlsRef={controlsRef} interacting={isInteracting} />
 
         <OrbitControls
           ref={controlsRef}
@@ -216,19 +245,6 @@ export function CoffeePouchView() {
           onEnd={() => setIsInteracting(false)}
         />
       </Canvas>
-
-      {/* Camera preset buttons */}
-      <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 flex flex-col gap-2">
-        {CAMERA_PRESETS.map((preset) => (
-          <button
-            key={preset.label}
-            onClick={() => animateToPreset(preset)}
-            className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium bg-white/10 text-white/70 hover:bg-[#E87A2A] hover:text-white backdrop-blur-sm border border-white/10 hover:border-[#E87A2A] transition-all duration-200"
-          >
-            {preset.label}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
