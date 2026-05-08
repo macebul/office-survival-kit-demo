@@ -5,8 +5,9 @@ import { ItemsView } from "@/components/landing/ItemsView";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ViewerControls } from "@/components/scene/ViewerControls";
 import { BookletView } from "@/components/landing/BookletView";
+import { CoffeePouchView } from "@/components/landing/CoffeePouchView";
 
-export type ActiveView = "kit" | "items" | "explorer" | "booklet";
+export type ActiveView = "kit" | "items" | "explorer" | "booklet" | "coffee";
 
 export interface ExplorerState {
   activeCamera: string | null;
@@ -63,6 +64,8 @@ function App() {
           <ViewerControls explorer={explorer} onUpdate={updateExplorer} />
         </>
       )}
+
+      {activeView === "coffee" && <CoffeePouchView />}
     </div>
   );
 }

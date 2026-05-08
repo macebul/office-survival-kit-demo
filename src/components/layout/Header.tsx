@@ -5,6 +5,7 @@ const TABS: { id: ActiveView; label: string }[] = [
   { id: "items", label: "The Items" },
   { id: "explorer", label: "3D Explorer" },
   { id: "booklet", label: "The Booklet" },
+  { id: "coffee", label: "Paul Coffee" },
 ];
 
 interface HeaderProps {
