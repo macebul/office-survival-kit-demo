@@ -78,14 +78,14 @@ export function CoffeePouchView() {
           near: 0.01,
           far: 100,
         }}
-        gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.0 }}
+        gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 0.8 }}
         className="touch-none"
       >
         <color attach="background" args={["#0a0a0a"]} />
 
-        <ambientLight intensity={0.3} />
-        <directionalLight position={[2, 3, 1]} intensity={1.2} castShadow />
-        <directionalLight position={[-1, 2, -1]} intensity={0.4} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[2, 3, 1]} intensity={0.6} />
+        <directionalLight position={[-1, 2, -1]} intensity={0.3} />
 
         <Suspense fallback={<LoadingFallback />}>
           <CoffeePouchModel />
@@ -96,7 +96,7 @@ export function CoffeePouchView() {
             blur={2}
             far={0.5}
           />
-          <Environment preset="studio" environmentIntensity={0.5} />
+          <Environment preset="studio" environmentIntensity={0.3} />
         </Suspense>
 
         <OrbitControls
