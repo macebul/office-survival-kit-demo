@@ -10,7 +10,7 @@
 | | |
 |---|---|
 | **The only active work** | **Cubicle Shank copy.** Follow the [Cubicle Shank copy plan](product/items/cubicle-shank/cubicle-shank-copy-plan.md), 8 steps (approved 2026-10-26). |
-| **Next step** | **Plan Step 2:** study Johnny's published Witty Yeti products. Johnny sees nothing until one internal round is done (owner, 2026-10-26). [Batch 01](boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md) is the starting pool, not a send. |
+| **Next step** | **Owner decisions, then Plan Step 4** (the internal writing round). Step 2 is done: Johnny's own packaging breaks 4 of our comedy rules (see the [taste profile](boss-review/johnny-taste-profile.md) revision). Johnny sees nothing until one internal round is done (owner, 2026-10-26). [Batch 01](boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md) is the starting pool, not a send. |
 | **Explicitly paused** | Layout, visuals, packaging format (blister vs fold-over flap), and the other 7 items. Nothing gets worked on until the Shank copy is locked. |
 | **Creative judge** | Johnny Lasater. Only his approval counts. **Silence = no.** |
 | **Last real work before this** | July 22, 2026 |

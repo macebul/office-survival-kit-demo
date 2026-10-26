@@ -23,7 +23,7 @@
 | # | Step | Output | Status |
 |---|---|---|---|
 | 1 | Lock the ground rules | This file | **Done 2026-10-26** |
-| 2 | Study Johnny's published Witty Yeti products (Shart Kit, Dehydrated Water, Child Chucker): line count, line length, slot types | Findings added to [johnny-taste-profile.md](../../../boss-review/johnny-taste-profile.md) | Next |
+| 2 | Study Johnny's published Witty Yeti products (Shart Kit, Dehydrated Water, Child Chucker): line count, line length, slot types | Findings added to [johnny-taste-profile.md](../../../boss-review/johnny-taste-profile.md) | **Done 2026-10-26.** His packaging is louder than our rules allow (puns, exclamation points, the absurd act said out loud, fake retail sections). 4 rules-file conflicts need the owner's call before Step 4. Dehydrated Water wasn't in the photos. |
 | 3 | Fix the card skeleton at about 12 slots (table below) | Slot table in this file | Drafted |
 | 4 | Internal round for each open slot: draft 20–30 lines → filter with the 5 tests and the rules checklist → cold-read check ("would a stranger laugh within 3 seconds?") → owner picks the top 3–4 | New batch file in [boss-review/outbox/](../../../boss-review/outbox/) | Not started |
 | 5 | Johnny round: at most 6 questions with letter picks, about 3 minutes to answer. Log his reply word for word. One short nudge after 3 days of silence; a skipped line counts as no. | [johnny-feedback-log.md](../../../boss-review/johnny-feedback-log.md) | Not started |
@@ -55,6 +55,8 @@
 | Hidden under the pen | Reward for opening | "Does it come in red?" / "Eventually." | **Locked ("excellent")** |
 | Comparison chart | Back-panel centerpiece | Keep the concept or not? | One yes/no question for Johnny |
 
+**Candidate slots from Step 2 (owner to decide):** Johnny's packaging leans on two formats this card lacks. **"How to Use" in 4 numbered steps** (plausible, plausible, edge, absurd) and **"Perfect for:"**, a gift-recipient list. Either could replace the guarantee slot or the comparison chart.
+
 **The count:** 6 open slots, plus 1 to confirm (the badge) and 1 yes/no (the chart). Brand and name aren't jokes, so they don't count toward the 12.
 
 **Starting pool for Step 4:** [batch 01](../../../boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md), the bench lines in [the copy review](cubicle-shank-copy-review-2026-10-26.md), and [the working doc](cubicle-shank-working-doc.md).
@@ -66,3 +68,4 @@
 | Date | Change |
 |---|---|
 | 2026-10-26 | Plan created and approved; Step 1 done |
+| 2026-10-26 | Step 2 done: taste profile revised from Witty Yeti packaging photos; 2 candidate slots added |
