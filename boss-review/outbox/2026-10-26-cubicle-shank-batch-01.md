@@ -1,7 +1,7 @@
 # Cubicle Shank — Batch 01 for Johnny
 
 **Drafted:** October 26, 2026
-**Status:** NOT SENT. Log the send date in [johnny-feedback-log.md](../johnny-feedback-log.md) when it goes out.
+**Status:** NOT SENT. **ON HOLD: owner said do not send Johnny anything yet (2026-10-26).** Log the send date in [johnny-feedback-log.md](../johnny-feedback-log.md) when it goes out.
 **Built from:** [johnny-taste-profile.md](../johnny-taste-profile.md) and [cubicle-shank-copy-review-2026-10-26.md](../../product/items/cubicle-shank/cubicle-shank-copy-review-2026-10-26.md)
 **Brand:** Witty Yeti. No Brad Sterling or Elevate Co. on this card.
 

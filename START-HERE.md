@@ -10,7 +10,7 @@
 | | |
 |---|---|
 | **The only active work** | **Cubicle Shank copy.** Get Johnny's reaction to batch 01 and lock the card. |
-| **Next step** | Send [batch 01](boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md) to Johnny. Paste his reply word for word into [johnny-feedback-log.md](boss-review/johnny-feedback-log.md). |
+| **Next step** | [Batch 01](boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md) is drafted but **ON HOLD: do not send Johnny anything yet** (owner, 2026-10-26). When it does go out, paste his reply word for word into [johnny-feedback-log.md](boss-review/johnny-feedback-log.md). |
 | **Explicitly paused** | Layout, visuals, packaging format (blister vs fold-over flap), and the other 7 items. Nothing gets worked on until the Shank copy is locked. |
 | **Creative judge** | Johnny Lasater. Only his approval counts. **Silence = no.** |
 | **Last real work before this** | July 22, 2026 |
