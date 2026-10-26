@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mug Shot - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Mug Shot <span>Product Profile</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#a1"><span class="num">01.</span> Basic Product Profile</a>
+    <a href="#a8"><span class="num">08.</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a2"><span class="num">02.</span> Strategic Overview</a>
+    <a href="#a9"><span class="num">09.</span> Buyer Questions Map</a>
+    <a href="#a3"><span class="num">03.</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10.</span> Competitive Differentiation</a>
+    <a href="#a4"><span class="num">04.</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11.</span> Non-Obvious Angles</a>
+    <a href="#a5"><span class="num">05.</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12.</span> The Big Idea</a>
+    <a href="#a6"><span class="num">06.</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13.</span> Assumptions &amp; Gaps</a>
+    <a href="#a7"><span class="num">07.</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14.</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a1">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Product Identity</h3>
+    <ul>
+      <li><strong>Product Name:</strong> Mug Shot</li>
+      <li><strong>Brad Sterling's Corporate Rebrand:</strong> [CLASSIFIED] - Brad refuses to name it. The refusal is the joke.</li>
+      <li><strong>Parent Product:</strong> Office Survival Kit (Item 7 of 7 + 1 empty recess)</li>
+      <li><strong>Brand:</strong> Witty Yeti (Amazon brand)</li>
+      <li><strong>In-Universe Brand:</strong> Elevate Co. (fictional company, appears in product copy)</li>
+      <li><strong>Product Type:</strong> 11oz enamel-coated steel camp mug with mugshot/booking photo design</li>
+    </ul>
+
+    <h3>Role in Kit</h3>
+    <ul>
+      <li>Finale item - the last thing discovered, hidden behind the compartment cover</li>
+      <li>Highest perceived standalone value of any item in the kit</li>
+      <li>The punchline of the entire unboxing experience - no setup needed, the name IS the joke</li>
+      <li>The item Brad Sterling cannot rebrand because "Mug Shot" is already perfect</li>
+    </ul>
+
+    <h3>Physical Specs</h3>
+    <ul>
+      <li><strong>Type:</strong> Camp mug (enamel-coated steel preferred; stainless steel alternative if COGS require)</li>
+      <li><strong>Capacity:</strong> 11oz (8oz alternative if cost-prohibitive)</li>
+      <li><strong>Dimensions:</strong> ~3.5" diameter x 3.5" tall (~4.0" with handle) - working estimate</li>
+      <li><strong>Interior:</strong> White enamel coating</li>
+      <li><strong>Exterior:</strong> White enamel with colored rim (black rim preferred)</li>
+      <li><strong>Handle:</strong> Standard camp mug wire handle (functional, non-removable)</li>
+      <li><strong>Weight:</strong> Should feel solid and premium</li>
+      <li><strong>Print:</strong> Custom mugshot-style design on one face (wrap print if cost-effective)</li>
+    </ul>
+
+    <h3>Design Direction</h3>
+    <ul>
+      <li>Mugshot booking photo aesthetic: prisoner number, height measurement lines, booking photo framing</li>
+      <li>Institutional typography and styling</li>
+      <li>Specific art direction and copy TBD</li>
+    </ul>
+
+    <h3>Packaging</h3>
+    <ul>
+      <li>No individual retail box - the mug IS the finale reveal, discovered unwrapped</li>
+      <li>Nested in shredded "CLASSIFIED" documents (dark-printed, charcoal/black tones)</li>
+      <li>Shredded paper features classified stamps, redacted text, incident report fragments</li>
+      <li>Triple duty: protects mug, extends institutional aesthetic, fills compartment for dramatic reveal</li>
+      <li>Thin foam sheet (~0.25") at bottom as backup protection</li>
+    </ul>
+
+    <h3>Easter Egg</h3>
+    <ul>
+      <li>Small printed card placed inside the mug</li>
+      <li>Copy: "You looked inside. Smart. That instinct will keep you alive in here."</li>
+      <li>Discovered only by curious unboxers, near-zero COGS</li>
+    </ul>
+
+    <h3>Discovery Context</h3>
+    <ul>
+      <li>Hidden mug compartment behind compartment cover in briefcase back zone</li>
+      <li>Revealed LAST after all other items, trays, and documents have been discovered</li>
+      <li>Compartment cover must be removed to access (J-shaped cover, locked under tray weight)</li>
+      <li>Cover has teaser copy on top ("RELEASE AUTHORIZED - OPEN" or similar) and payoff copy on underside</li>
+      <li>Recipient lifts cover to find mug lying on its side, surrounded by shredded classified documents</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a2">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <ul>
+      <li>A camp mug whose name is its own punchline - "Mug Shot" requires zero explanation</li>
+      <li>The double meaning (booking photo + coffee mug) is so clean that any additional comedy layers are bonus, not requirement</li>
+      <li>The highest perceived standalone value item ($8-15 mental price for a camp mug) positioned as the kit's grand finale</li>
+    </ul>
+
+    <h3>Strategic Position Within the Kit</h3>
+    <ul>
+      <li>The Mug Shot is the closing act of the unboxing experience</li>
+      <li>It's intentionally hidden - the last item discovered after 8+ reveal steps</li>
+      <li>By the time the recipient finds it, they've already absorbed the kit's world (prison/office parallel, Brad Sterling, Elevate Co.)</li>
+      <li>The mug doesn't need to explain itself because the preceding items have built the context</li>
+    </ul>
+
+    <h3>Why This Item Matters</h3>
+    <ul>
+      <li>It anchors the kit's perceived value at the end of the experience (peak-end rule)</li>
+      <li>A camp mug is universally understood as a "real" item worth real money - it validates the kit price retroactively</li>
+      <li>It's the most keepable item alongside the pen - it goes into daily rotation in the kitchen or on the desk</li>
+      <li>"Mug Shot" is the most shareable name in the kit - it's the one recipients remember and tell people about</li>
+    </ul>
+
+    <h3>Key Strategic Tension</h3>
+    <ul>
+      <li>The mug must be genuinely usable and feel premium, not like a novelty item that gets regifted</li>
+      <li>The mugshot design must be funny without being so dense that it competes with the name's simplicity</li>
+      <li>The hidden reveal placement creates anticipation but also means many recipients may discover it last (or miss it initially)</li>
+      <li>The mug is the most expensive single component in the kit - cost management is critical without sacrificing the quality signal</li>
+    </ul>
+
+    <h3>Hidden Compartment as Comedy Architecture</h3>
+    <ul>
+      <li>The reveal sequence is designed: compartment cover teases, underside delivers a narrative beat, shredded documents extend the world, and THEN the mug appears</li>
+      <li>The shredded "CLASSIFIED" documents aren't just packing material - they're content that extends the institutional fiction</li>
+      <li>The act of digging through shredded documents to find a mug is itself a physical comedy bit</li>
+      <li>The mug lying on its side in shredded paper evokes "evidence found at a scene" energy</li>
+    </ul>
+
+    <h3>Revenue Contribution</h3>
+    <ul>
+      <li>Highest perceived standalone value among all kit items ($8-15 for a camp mug)</li>
+      <li>Strongest "this alone is worth something" signal - validates the entire kit purchase retroactively</li>
+      <li>The most functional daily-use item alongside the pen - goes to the office kitchen or desk</li>
+      <li>Brad's refusal to name it on the outer box ("[CLASSIFIED]") creates curiosity that drives unboxing momentum</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a3">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Mug-Level Analysis</h3>
+
+    <h4>"Mug Shot" Name</h4>
+    <ul>
+      <li><strong>Feature:</strong> A camp mug called "Mug Shot" - the name is a double meaning (booking photo + coffee mug)</li>
+      <li><strong>Functional benefit:</strong> Instantly communicable - anyone can explain what it is in two words</li>
+      <li><strong>Emotional benefit:</strong> The "oh, that's clever" reaction when the name clicks. It's the purest punchline in the kit</li>
+      <li><strong>Strategic role:</strong> The only item in the kit where the name alone does 100% of the comedy work</li>
+    </ul>
+
+    <h4>Enamel Camp Mug Construction</h4>
+    <ul>
+      <li><strong>Feature:</strong> Steel body with enamel coating, wire handle, colored rim</li>
+      <li><strong>Functional benefit:</strong> Genuinely usable for hot and cold drinks, dishwasher safe, durable</li>
+      <li><strong>Emotional benefit:</strong> Camp mugs feel nostalgic, rugged, and substantial - the opposite of cheap novelty</li>
+      <li><strong>Strategic role:</strong> The material quality signals "this is a real mug you'll actually use" which validates the entire kit's value</li>
+    </ul>
+
+    <h4>Mugshot Booking Photo Design</h4>
+    <ul>
+      <li><strong>Feature:</strong> Prisoner number, height measurement lines, booking photo framing on the mug surface</li>
+      <li><strong>Functional benefit:</strong> Extends the prison theme visually on a daily-use object</li>
+      <li><strong>Emotional benefit:</strong> The design makes the mug recognizable and conversation-starting in a kitchen full of generic mugs</li>
+      <li><strong>Strategic role:</strong> Every time the mug is used, the design reinforces the kit's world without requiring explanation</li>
+    </ul>
+
+    <h4>11oz Capacity</h4>
+    <ul>
+      <li><strong>Feature:</strong> Full-size mug (not a tiny novelty espresso cup)</li>
+      <li><strong>Functional benefit:</strong> Holds a real cup of coffee - functional enough to replace a daily-use mug</li>
+      <li><strong>Emotional benefit:</strong> "This is a real mug, not a joke prop" - the size communicates that the kit includes genuinely useful items</li>
+      <li><strong>Strategic role:</strong> Perceived value scales with size. An 11oz camp mug reads as $8-15. An 8oz reads as $5-8</li>
+    </ul>
+
+    <h4>Easter Egg Card Inside Mug</h4>
+    <ul>
+      <li><strong>Feature:</strong> Small card placed inside the mug with hidden copy ("You looked inside. Smart. That instinct will keep you alive in here.")</li>
+      <li><strong>Functional benefit:</strong> None (pure delight)</li>
+      <li><strong>Emotional benefit:</strong> A surprise discovery that rewards curiosity and creates a private moment for the recipient</li>
+      <li><strong>Strategic role:</strong> Easter eggs are the content that shows up in reviews and social posts. They signal design depth</li>
+    </ul>
+
+    <hr>
+
+    <h3>Compartment-Level Analysis</h3>
+
+    <h4>Hidden Compartment Placement</h4>
+    <ul>
+      <li><strong>Feature:</strong> Mug is concealed behind a J-shaped compartment cover in the briefcase back zone, revealed last</li>
+      <li><strong>Functional benefit:</strong> Creates a structured finale to the unboxing experience</li>
+      <li><strong>Emotional benefit:</strong> "Wait, there's MORE?" - discovery of a hidden compartment after thinking you've found everything</li>
+      <li><strong>Strategic role:</strong> The hidden placement turns the mug from "another item" into "the secret" - dramatically increasing its emotional impact</li>
+    </ul>
+
+    <h4>Shredded "CLASSIFIED" Document Packing</h4>
+    <ul>
+      <li><strong>Feature:</strong> Mug is nestled in dark-printed shredded paper with classified stamps, redacted text, and incident report fragments</li>
+      <li><strong>Functional benefit:</strong> Protects the mug during shipping</li>
+      <li><strong>Emotional benefit:</strong> The packing material IS content - it extends the institutional fiction right up to the final reveal</li>
+      <li><strong>Strategic role:</strong> Triple-duty design: protection, visual filler, and world-building. No wasted surface in the entire kit</li>
+    </ul>
+
+    <h4>Compartment Cover Teaser/Payoff Copy</h4>
+    <ul>
+      <li><strong>Feature:</strong> Top surface has teaser text ("RELEASE AUTHORIZED - OPEN"), underside has payoff text (final narrative beat)</li>
+      <li><strong>Functional benefit:</strong> Guides the recipient through the reveal sequence</li>
+      <li><strong>Emotional benefit:</strong> The cover creates a mini-suspense moment - the recipient knows something is behind it</li>
+      <li><strong>Strategic role:</strong> The two-sided copy turns a structural component into a narrative device. Even the divider between zones is entertainment</li>
+    </ul>
+
+    <h4>Brad's [CLASSIFIED] Treatment on Outer Box</h4>
+    <ul>
+      <li><strong>Feature:</strong> On the outer Amazon box product grid, the mug is listed as item #7 but named only "[CLASSIFIED]" with a blacked-out image</li>
+      <li><strong>Functional benefit:</strong> Creates curiosity before the kit is even opened</li>
+      <li><strong>Emotional benefit:</strong> "What's the classified item?" becomes a question that drives the unboxing forward</li>
+      <li><strong>Strategic role:</strong> Brad's refusal to name the mug is character comedy (he can't improve on the name) AND a marketing device (mystery drives engagement)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a4">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Psychological Role</h3>
+    <ul>
+      <li>The Mug Shot is the value anchor at the END of the experience (peak-end rule)</li>
+      <li>While the pen anchors quality at the beginning, the mug anchors value at the conclusion</li>
+      <li>Together, they create a psychological frame: the first item you pick up is great, and the last thing you discover is the biggest prize</li>
+      <li>This is the item that makes recipients say "this was totally worth it" retroactively</li>
+    </ul>
+
+    <h3>Emotional Triggers (Buyer - Seeing It in the Listing)</h3>
+    <ul>
+      <li><strong>Value justification</strong> - "There's a real camp mug in there" - the mug represents $8-15 of perceived value, anchoring the kit price as reasonable</li>
+      <li><strong>Gift confidence</strong> - A mug is universally useful. Even if the humor misses, the recipient gets a functional daily-use item</li>
+      <li><strong>Mystery</strong> - If the listing hints at or shows the [CLASSIFIED] treatment, it creates curiosity about the hidden finale</li>
+      <li><strong>Completeness</strong> - The mug signals that the kit is comprehensive, not just a bag of gag items. It has a real product inside</li>
+    </ul>
+
+    <h3>Emotional Triggers (Recipient - During Reveal)</h3>
+    <ul>
+      <li><strong>Surprise</strong> - "Wait, there's something hidden back here?" - discovering the compartment after thinking the unboxing is over</li>
+      <li><strong>Escalation</strong> - The shredded documents, the compartment cover copy, and the reveal sequence build anticipation</li>
+      <li><strong>Payoff</strong> - The mug is the punchline the entire kit has been building toward. The name "Mug Shot" lands with full context</li>
+      <li><strong>Satisfaction</strong> - "This kit keeps giving" - the hidden compartment makes the experience feel longer and more valuable than expected</li>
+    </ul>
+
+    <h3>Decision-Making Role in Purchase</h3>
+    <ul>
+      <li>The mug is likely the single biggest value-perception driver in the kit</li>
+      <li>In the mental math of "$27 for a gag gift," the mug represents $8-15 of real, standalone value</li>
+      <li>Combined with the pen ($10-15 perceived value), the buyer can justify the kit price on these two items alone</li>
+      <li>Everything else (cards, stickers, tattoos, booklets) becomes "bonus" once the pen and mug establish baseline value</li>
+    </ul>
+
+    <h3>Risk Mitigation Role</h3>
+    <ul>
+      <li>Ultimate safety net - even if every joke falls flat, the recipient has a quality camp mug and a quality pen</li>
+      <li>Nobody throws away a camp mug. Worst case, it becomes their office coffee mug</li>
+      <li>The mug is the "practical justification" item for risk-averse buyers: "it's a gag gift but it comes with a really nice mug"</li>
+      <li>Combined with the pen, the mug ensures the kit always has a floor of perceived value below which it cannot fall</li>
+    </ul>
+
+    <h3>Cognitive Biases in Play</h3>
+    <ul>
+      <li><strong>Peak-end rule</strong> - The mug is the last item discovered. Combined with the pen as the first, the unboxing has strong peak-end framing: great start, great finish, everything in between benefits</li>
+      <li><strong>Recency bias</strong> - The mug is the most recent memory when the unboxing ends. It colors the overall assessment of the experience</li>
+      <li><strong>Anchoring</strong> - The mug anchors the "this was worth $27" conversation. Without it, the kit is funny items in a briefcase. With it, it's funny items in a briefcase PLUS a real camp mug</li>
+      <li><strong>Endowment effect</strong> - The act of discovering a hidden item creates stronger ownership attachment than finding something in plain sight. "I found this" feels different from "I was given this"</li>
+      <li><strong>IKEA effect (light)</strong> - The multi-step reveal sequence (lift cover, dig through documents, find mug) creates mild effort that increases the mug's perceived value</li>
+    </ul>
+
+    <h3>Awareness Context</h3>
+    <ul>
+      <li>In listing images, the mug should be visible but its hidden placement should be hinted at, not fully revealed</li>
+      <li>The [CLASSIFIED] treatment on the outer box creates a marketing hook that works in bullet points and image captions</li>
+      <li>The camp mug aesthetic (enamel, wire handle, outdoor ruggedness) stands out against generic office humor products</li>
+      <li>Review photos of the mug will consistently show it as the "hero shot" of the unboxing experience</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a5">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: The Mug Shot is not sold individually. These personas describe how each buyer type interacts with this specific item as part of the kit evaluation and unboxing experience.</p>
+
+    <div class="persona">
+      <h4>Persona 1 - "The Value Calculator"</h4>
+      <ul>
+        <li>30-55, any gender</li>
+        <li>Mentally prices every component in a bundle to see if the total exceeds the asking price</li>
+        <li>Will scrutinize listing images to inventory what's included</li>
+      </ul>
+      <p><strong>Relationship to the Mug Shot</strong></p>
+      <ul>
+        <li>The mug is the item that tips their mental math from "maybe" to "worth it"</li>
+        <li>They'll look for the mug in listing images and estimate its standalone value ($8-15)</li>
+        <li>Combined with the pen, the mug gives them two "real" items that anchor the kit price as fair</li>
+        <li>If the mug looks cheap or small, the math doesn't work and they move on</li>
+      </ul>
+      <div class="trigger">Key trigger: "Okay, a real camp mug AND a decent pen plus all this other stuff? That's actually a good deal"</div>
+      <div class="fear">Biggest fear: The mug is tiny, flimsy, or obviously cheap in person despite looking decent in photos</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - "The Unboxing Completionist"</h4>
+      <ul>
+        <li>22-40, any gender</li>
+        <li>Will explore every corner of the kit, check every pocket, lift every tray</li>
+        <li>Won't stop until they've found everything</li>
+      </ul>
+      <p><strong>Relationship to the Mug Shot</strong></p>
+      <ul>
+        <li>This is the person the hidden compartment is designed for</li>
+        <li>They'll find the compartment cover, read both sides, dig through the shredded documents, and discover the mug</li>
+        <li>The easter egg card inside the mug ("You looked inside. Smart.") rewards their thoroughness</li>
+        <li>The multi-step reveal is their favorite part of the entire kit</li>
+      </ul>
+      <div class="trigger">Key trigger: "Wait. There's something behind here..." (discovering the hidden compartment)</div>
+      <div class="fear">Biggest fear: The hidden compartment is obvious or the reveal doesn't feel intentional</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - "The Kitchen Curator"</h4>
+      <ul>
+        <li>25-45, any gender</li>
+        <li>Has opinions about their mug collection</li>
+        <li>Curates their kitchen/desk items to reflect personality</li>
+      </ul>
+      <p><strong>Relationship to the Mug Shot</strong></p>
+      <ul>
+        <li>This mug goes directly into their daily rotation</li>
+        <li>The camp mug aesthetic (enamel, wire handle) fits a curated kitchen</li>
+        <li>The mugshot design is a conversation piece that stands out against plain mugs</li>
+        <li>They'll keep it visible because it says something about them</li>
+      </ul>
+      <div class="trigger">Key trigger: "This is my new work mug" (immediate adoption into daily use)</div>
+      <div class="fear">Biggest fear: The mug design is too busy, crude, or cheaply printed to use proudly</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - "The Punchline Repeater"</h4>
+      <ul>
+        <li>25-50, any gender</li>
+        <li>Will tell everyone about the funniest part of a gift</li>
+        <li>Retells jokes and story moments to people who weren't there</li>
+      </ul>
+      <p><strong>Relationship to the Mug Shot</strong></p>
+      <ul>
+        <li>"Mug Shot" is the item name they'll repeat to everyone</li>
+        <li>The double meaning is the single most retellable joke in the kit</li>
+        <li>"It's called a MUG SHOT - get it?" becomes their go-to description of the kit</li>
+        <li>The [CLASSIFIED] hidden compartment reveal is the story they tell about the unboxing</li>
+      </ul>
+      <div class="trigger">Key trigger: "Oh my god, MUG SHOT" (the name clicks and they say it aloud)</div>
+      <div class="fear">Biggest fear: The design on the mug doesn't match the clever name - the physical object needs to live up to the punchline</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a6">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I discover the hidden compartment and find the Mug Shot camp mug</p>
+      <p><strong>I want to</strong> feel that this kit saved its best for last</p>
+      <p><strong>So that</strong> the entire unboxing experience feels like a complete, well-designed comedy show with a satisfying finale</p>
+    </div>
+
+    <h3>Supporting JTBD</h3>
+
+    <h4>Job 2 - Validate the Kit's Price</h4>
+    <ul>
+      <li>When I've seen all the items and I'm forming my opinion of the kit, I want the mug to feel like a genuinely valuable item ($8-15 worth), so that the total perceived value clearly exceeds what was paid</li>
+    </ul>
+
+    <h4>Job 3 - Give Me Something I'll Use Every Day</h4>
+    <ul>
+      <li>When the unboxing is over and the excitement settles, I want a camp mug that's good enough to become my daily coffee mug, so that the kit gives me lasting utility alongside the comedy</li>
+    </ul>
+
+    <h4>Job 4 - Surprise Me After I Think I've Found Everything</h4>
+    <ul>
+      <li>When I think the unboxing is over after Tray 2, I want the hidden compartment to reveal one more item, so that the kit exceeds my expectations for how much content is inside</li>
+    </ul>
+
+    <h4>Job 5 - Give Me the Easiest Joke to Retell</h4>
+    <ul>
+      <li>When I tell people about the kit, I want one item name that instantly communicates the humor, so that I can sell the concept in two words. "It has a camp mug called Mug Shot." Done.</li>
+    </ul>
+
+    <h4>Job 6 - Close the Experience With a Physical Punchline</h4>
+    <ul>
+      <li>When I pull the mug out of shredded classified documents, I want the visual moment to feel like a culmination of the entire prison/office theme, so that the finale feels intentional, not random</li>
+    </ul>
+
+    <h3>Underserved Jobs (How Competitor Gift Kit Mugs Fail)</h3>
+    <ul>
+      <li>The "genuine quality" job - most gag gift mugs are thin ceramic with crude prints that chip and fade. Camp mug enamel feels premium and functional</li>
+      <li>The "hidden reveal" job - no competitor hides their highest-value item behind a multi-step reveal sequence. Mugs are just sitting in the box, visible from the start</li>
+      <li>The "punchline that explains itself" job - most funny mugs have text that's either too long, too crude, or too obscure. "Mug Shot" is a two-word punchline that needs no setup</li>
+      <li>The "daily use without embarrassment" job - most gag gift mugs are too crude or too obviously novelty for professional settings. A camp mug with a booking photo design is conversation-starting without being offensive</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a7">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p>Ranked by impact on the buyer's purchase decision and the recipient's finale experience.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <p><em>Drives purchase confidence and finale impact</em></p>
+    <ol>
+      <li>It's a genuinely functional 11oz enamel camp mug, not a tiny novelty prop</li>
+      <li>The "Mug Shot" name is the single cleanest punchline in the kit - two words, zero explanation needed</li>
+      <li>It's hidden in a secret compartment, discovered last, creating a surprise finale to the unboxing</li>
+      <li>The mug represents $8-15 of standalone perceived value, anchoring the entire kit's price as fair</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <p><em>Builds engagement and extends value</em></p>
+    <ol start="5">
+      <li>The mugshot booking photo design extends the prison theme onto a daily-use object</li>
+      <li>The hidden compartment reveal includes shredded "CLASSIFIED" documents that extend the world</li>
+      <li>Brad Sterling refuses to name it - listed as [CLASSIFIED] on the outer box, adding mystery</li>
+      <li>The camp mug aesthetic (enamel, wire handle) feels rugged, nostalgic, and premium</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <p><em>Differentiates for engaged recipients</em></p>
+    <ol start="9">
+      <li>The compartment cover has teaser copy on top and payoff copy on the underside</li>
+      <li>An easter egg card inside the mug rewards curious unboxers</li>
+      <li>The mug is the most retellable item - "it had a camp mug called Mug Shot" is the story recipients tell</li>
+      <li>It's designed for daily use - replaces a standard office mug with a conversation piece</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a8">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: Most purchase objections apply to the kit as a whole. These objections are specific to how the Mug Shot item influences or creates hesitation.</p>
+
+    <div class="objection">
+      <h4>Objection 1 - "Is the mug actually decent quality or a tiny novelty cup?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Gag gift mugs are overwhelmingly cheap ceramic with thin walls, crude prints, and disposable feel</li>
+        <li><strong>Evidence needed:</strong> Close-up images showing enamel coating, steel construction, wire handle, and colored rim</li>
+        <li><strong>Mitigation:</strong> The camp mug aesthetic inherently reads as premium (outdoor gear, not novelty shop). Listing images must show size context so the buyer can see it's a real 11oz mug, not a miniature espresso prop</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2 - "I can't see the mug clearly in the listing images"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> The mug is hidden in a compartment, so it might not get prominent listing photo treatment</li>
+        <li><strong>Evidence needed:</strong> Dedicated product images showing the mug at multiple angles, including the design face</li>
+        <li><strong>Mitigation:</strong> At least one hero-style product image of the mug alone, plus one image showing the hidden compartment reveal in context. The mug must be photographable in isolation, not just as part of a reveal sequence</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3 - "The mugshot design might be too crude or offensive for an office"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> "Mugshot" triggers associations with crude humor, actual booking photos, or potentially offensive content</li>
+        <li><strong>Evidence needed:</strong> The design itself must demonstrate taste - booking photo framing and institutional typography, not shock humor</li>
+        <li><strong>Mitigation:</strong> The mug design should be clever enough to display at work without requiring an explanation or apology. Camp mug aesthetic provides natural cover - it reads as "rustic and funny" not "crude and inappropriate"</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4 - "The print will wear off after a few washes"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Printed mugs (especially sublimation on cheap ceramics) commonly fade, chip, or peel</li>
+        <li><strong>Evidence needed:</strong> Enamel printing durability data or customer-facing "dishwasher safe" claim</li>
+        <li><strong>Mitigation:</strong> Enamel mugs are inherently more durable than ceramic sublimation. If using a stainless steel alternative, confirm print method durability separately. The print needs to survive daily use for the mug to remain a conversation piece</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5 - "I can buy a camp mug for $5 on Amazon - why is it special here?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Camp mugs are a commodity product. The mug itself isn't rare or unique</li>
+        <li><strong>Evidence needed:</strong> Context that the mug's value comes from its placement, timing, name, and design - not just its material specs</li>
+        <li><strong>Mitigation:</strong> The Mug Shot is not selling on mug quality alone. It's selling on being the hidden finale of a comedy experience, discovered after a multi-step reveal. No $5 Amazon camp mug comes wrapped in shredded classified documents behind a secret compartment. The delivery mechanism IS the value differentiator</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a9">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: These questions are specific to the Mug Shot item as it appears within the kit listing and unboxing experience.</p>
+
+    <h4>Questions the buyer asks when evaluating the listing</h4>
+    <ul>
+      <li>Is there really a camp mug in there?</li>
+      <li>What does the mug look like? (looking for design shots)</li>
+      <li>What does the "classified" item turn out to be?</li>
+      <li>Is the mug a real size or one of those tiny novelty cups?</li>
+    </ul>
+
+    <h4>Questions the recipient asks during unboxing</h4>
+    <ul>
+      <li>Wait, is there something behind this panel? (discovering the compartment cover)</li>
+      <li>What does this say? (reading the compartment cover teaser text)</li>
+      <li>Is that shredded paper? What is all this? (digging through classified documents)</li>
+      <li>Oh my god, is that a MUG? (finding the mug in the compartment)</li>
+      <li>What's inside the mug? (discovering the easter egg card)</li>
+    </ul>
+
+    <h4>Questions the group asks while watching</h4>
+    <ul>
+      <li>What's behind there? (seeing the recipient discover the compartment)</li>
+      <li>Read that thing! (pointing at the compartment cover)</li>
+      <li>What is it?! (anticipation while recipient digs through documents)</li>
+      <li>Wait, there's a MUG SHOT? (the name lands and the group reacts)</li>
+      <li>Is there anything else? (checking if the kit has more surprises)</li>
+    </ul>
+
+    <h4>Questions asked after unboxing</h4>
+    <ul>
+      <li>Where'd you get that mug? (visitors noticing the mug on desk or in kitchen)</li>
+      <li>What's "Mug Shot"? (the name prompts the question, which prompts the story)</li>
+      <li>Was that really hidden in the kit? (the reveal story is the retelling hook)</li>
+    </ul>
+
+    <h4>Questions the buyer asks post-purchase</h4>
+    <ul>
+      <li>Did they find the hidden mug? (first thing gift-givers want to know)</li>
+      <li>Did the [CLASSIFIED] thing land? (buyers who noticed the outer box treatment)</li>
+      <li>Do they actually use the mug? (long-term satisfaction signal for gift-givers)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>The Funny Mug Landscape</h3>
+    <ul>
+      <li>Amazon has thousands of "funny mug" listings ranging from $8-25</li>
+      <li>The vast majority are ceramic mugs with printed text (crude jokes, puns, "World's Best [X]" variations)</li>
+      <li>A smaller segment uses camp/enamel mugs for outdoor, vintage, or novelty aesthetics</li>
+      <li>Almost none embed their mug inside a larger experience with a reveal sequence and narrative context</li>
+    </ul>
+
+    <h3>Where Printed Joke Mugs Fall Short (for Our Context)</h3>
+    <ul>
+      <li>One-dimensional - the joke is a line of text. You read it once and it's done</li>
+      <li>Zero discovery - the mug is visible from the moment you open the shipping box</li>
+      <li>No narrative world - the mug exists in isolation with no character, no institution, no story</li>
+      <li>Disposable humor - the joke wears thin after the first week on your desk</li>
+      <li>Generic packaging - poly bag or plain white box with no entertainment value</li>
+    </ul>
+
+    <h3>Where Premium Funny Mugs Fall Short</h3>
+    <ul>
+      <li>Higher quality construction but still just a vessel for a printed joke</li>
+      <li>No reveal or discovery mechanic - the humor is front-loaded and fully consumed in seconds</li>
+      <li>No connection to a larger product experience or brand world</li>
+      <li>Premium price ($15-25) for a single joke, not for a layered experience</li>
+      <li>Nobody tells a story about receiving one. "I got a funny mug" is the entire anecdote</li>
+    </ul>
+
+    <h3>Mug Shot's Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Printed Joke Mug</th>
+          <th>Premium Funny Mug</th>
+          <th>Gag Gift Kit Mug</th>
+          <th>Mug Shot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Build quality</td><td>Low ceramic</td><td>Good ceramic/enamel</td><td>Usually low</td><td>Enamel camp mug</td></tr>
+        <tr><td>Discovery experience</td><td>None (visible immediately)</td><td>None</td><td>None</td><td>Multi-step hidden reveal</td></tr>
+        <tr><td>Name as joke</td><td>Text on mug IS the joke</td><td>Text on mug IS the joke</td><td>Usually no mug</td><td>Name itself is the punchline</td></tr>
+        <tr><td>Narrative context</td><td>None</td><td>None</td><td>Minimal</td><td>Full institutional world</td></tr>
+        <tr><td>Reveal anticipation</td><td>Zero</td><td>Zero</td><td>Zero</td><td>Compartment cover, shredded docs</td></tr>
+        <tr><td>Daily use value</td><td>Maybe</td><td>Yes</td><td>Rarely</td><td>Yes</td></tr>
+        <tr><td>Story retellability</td><td>"I got a funny mug"</td><td>"I got a nice funny mug"</td><td>N/A</td><td>"It was HIDDEN. It's called MUG SHOT"</td></tr>
+        <tr><td>Perceived value in kit</td><td>N/A</td><td>N/A</td><td>Feels cheap</td><td>Anchors kit price as fair</td></tr>
+        <tr><td>Post-unboxing presence</td><td>Desk/kitchen</td><td>Desk/kitchen</td><td>Usually discarded</td><td>Desk/kitchen + conversation piece</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+    <ul>
+      <li>The hidden compartment reveal creates a discovery story that no standalone mug product can replicate</li>
+      <li>"Mug Shot" as a name does 100% of the comedy work in two words - competitors need printed paragraphs to get a single laugh</li>
+      <li>The [CLASSIFIED] treatment on the outer box creates pre-unboxing mystery that builds anticipation before the mug is ever seen</li>
+      <li>The shredded classified document packing is triple-duty design (protection, content, atmosphere) that transforms commodity packaging material into entertainment</li>
+      <li>The mug's peak-end position means it colors the recipient's memory of the entire kit experience, not just the mug itself</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1 - The Name Is the Entire Product</h4>
+      <p>Most kit items need packaging, copy, design, and reveal mechanics to deliver their comedy. The Mug Shot needs two words. "Mug Shot" is a complete joke with no setup, no explanation, and no cultural barrier. The name alone would be funny printed on a napkin. Everything else - the enamel mug, the hidden compartment, the booking photo design - is production value for a punchline that was already landing. The name IS the product. The physical mug is just the delivery system.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2 - The Hidden Compartment Sells Retroactively</h4>
+      <p>The mug's hidden placement doesn't just create a surprise - it retroactively upgrades every preceding item. "Wait, there's MORE?" reframes the entire kit from "I've seen everything" to "this thing keeps giving." The mug doesn't just add value through its own price point - it makes the recipient reassess every OTHER item more favorably because the kit proved it was holding back its best.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3 - Brad's Refusal to Name It Is Character Comedy</h4>
+      <p>Every other item in the kit gets a Brad Sterling corporate rebrand. The mug doesn't. Brad lists it as [CLASSIFIED] on the outer box because he can't improve on "Mug Shot." This is the one time Brad's institutional language fails him, and that failure IS the joke. His silence communicates more than any rebrand could. It's the comedic equivalent of a professional admitting they can't do better.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4 - The Mug Is the Kit's Insurance Policy</h4>
+      <p>If every joke misses, if the cards don't land, if the tattoos feel weird, if the stickers seem childish - the recipient still has a genuinely nice camp mug and a genuinely nice pen. These two items create a value floor below which the kit cannot fall. The mug isn't just comedy. It's risk mitigation for the buyer and the gift-giver. "Even if the humor doesn't work, they get a really nice mug and pen" is the safety net that converts hesitant buyers.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5 - Shredded Documents Are the Best Packing Material in the Kit</h4>
+      <p>Every other item's packing material (foam inserts, tissue paper, filler) is functional waste. The mug's shredded classified documents are content. They extend the institutional world right up to the final reveal. They transform the act of unpacking from "remove filler" to "dig through evidence." And they cost the same as standard shredded paper filler. This is the single best COGS-to-entertainment-value ratio in the entire kit.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6 - The Peak-End Position Is Structural, Not Accidental</h4>
+      <p>The mug sits in the peak-end position because it earns it: highest perceived value, cleanest punchline, most keepable item, most retellable name. But the position is also strategic. The peak-end rule means the last experience colors the memory of the entire experience. The mug doesn't just need to be good. It needs to be the BEST MEMORY the recipient has of the kit. If the mug disappoints, the entire kit's memory suffers, regardless of how good the preceding items were.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7 - The Easter Egg Card Tests the Recipient</h4>
+      <p>The card inside the mug ("You looked inside. Smart. That instinct will keep you alive in here.") isn't just a bonus discovery. It's a personality test. Curious, thorough recipients find it and feel rewarded. Casual unboxers miss it entirely. Both outcomes are fine. But the recipients who find it become the kit's strongest advocates because they feel like they've unlocked a secret level. Easter eggs create superfans disproportionate to their COGS.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">The Mug Shot isn't a camp mug. It's the standing ovation.</p>
+
+    <p>Every great show ends with a moment that makes the audience feel like staying was worth it. The Mug Shot is that moment for the Office Survival Kit. It's hidden behind a secret panel, buried in shredded classified documents, and discovered only after the recipient thinks the experience is over. The name is the cleanest two-word punchline in the entire kit. The mug itself is the highest-value item the recipient takes home.</p>
+
+    <p>The Mug Shot doesn't need to be explained. It doesn't need setup. It doesn't need packaging copy to land. "Mug Shot" does all the work in two words. The hidden compartment, the shredded documents, the booking photo design - these are production values for a punchline that was already perfect.</p>
+
+    <p>If the mug feels cheap, the standing ovation becomes a polite clap. If the mug feels premium, every preceding item in the kit benefits from the finale's quality. The closing act defines the memory.</p>
+
+    <h3>Implication for all content creation</h3>
+    <ul>
+      <li>Never position the Mug Shot as "also included." It's the finale. It's the reason the hidden compartment exists</li>
+      <li>The mug's quality must be visible in listing images - enamel, wire handle, colored rim, real size</li>
+      <li>The [CLASSIFIED] treatment on the outer box should create curiosity, not confusion. The buyer should WANT to know what the secret item is</li>
+      <li>The hidden reveal is a story recipients will tell. Content should enable that retelling, not try to replace it</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. The enamel camp mug will be the final material choice</strong> - This profile assumes an enamel-coated steel camp mug. If COGS force a stainless steel mug without enamel, the visual aesthetic changes significantly and the "camp mug" positioning weakens.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. 11oz capacity is achievable within budget</strong> - Capacity directly affects perceived value. An 8oz mug reads as smaller and cheaper. This profile assumes 11oz is the target and that sourcing can deliver it within the kit's COGS target.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. The mugshot design will be single-face, not wrap</strong> - Assuming the booking photo design appears on one face of the mug. A wrap print would increase cost but also increase visual impact. Design direction is not finalized.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. The hidden compartment reveal works as designed</strong> - The entire Mug Shot strategy depends on the compartment cover being discoverable but not obvious. If recipients consistently miss the compartment, the finale doesn't happen. If it's too obvious, the surprise is lost.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. The shredded document packing material is feasible at scale</strong> - Assuming custom-printed shredded paper (classified stamps, redacted text, incident reports) can be produced economically. If not, generic dark-colored shredded paper is a fallback but loses the content value.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. The easter egg card adds value without adding meaningful COGS</strong> - Assuming a simple printed card can be placed inside the mug at minimal cost. If the card shifts during shipping, it needs to be visible upon first look inside the mug.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Brad's [CLASSIFIED] treatment will appear on the outer box</strong> - This profile assumes the outer Amazon box product grid lists item #7 as "[CLASSIFIED]" with a blacked-out image. If the outer box design changes, the pre-unboxing mystery element is lost.</p>
+    </div>
+
+    <hr>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Mug sourcing not started</strong> - No samples requested. Cost difference between enamel and stainless steel unknown. Print durability untested.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Mugshot design not created</strong> - The booking photo design direction is conceptual only. No art direction, no typography choices, no specific prisoner number or height line treatment decided.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. Compartment cover copy not written</strong> - Teaser copy (top surface) and payoff copy (underside) are described conceptually but no actual writing exists.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Easter egg card copy not finalized</strong> - Working copy exists ("You looked inside. Smart. That instinct will keep you alive in here.") but this hasn't been vetted against the overall kit voice.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. No physical reveal testing done</strong> - The hidden compartment reveal sequence has not been tested with real people. Timing, discoverability, and emotional impact are theoretical.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Shredded document content not designed</strong> - The classified stamps, redacted text, and incident report fragments on the shredded paper need actual content creation. This is technically copy work but affects production design.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Mug dimensions vs. compartment fit not confirmed</strong> - Working estimate of ~3.5" diameter x 3.5" tall. The compartment must accommodate the mug lying on its side with room for shredded document packing.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>8. COGS impact on kit margin unknown</strong> - The mug is likely the highest-COGS single item ($4-6 enamel, $2-3 stainless). Its impact on the overall kit margin needs modeling against the total COGS budget.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1 - Protect the Enamel Camp Mug Spec If At All Possible</h4>
+      <ul>
+        <li>The camp mug aesthetic (enamel coating, wire handle, colored rim) is doing heavy psychological work</li>
+        <li>Camp mugs read as "outdoor gear" and "genuine article" in a way that plain stainless steel does not</li>
+        <li>If enamel pushes COGS too high, explore a smaller enamel mug (9oz) before downgrading to stainless steel</li>
+        <li>The material communicates quality before the recipient even sees the design</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2 - Keep the Mugshot Design Simple</h4>
+      <ul>
+        <li>The name "Mug Shot" does 100% of the comedy work. The design should support the name, not compete with it</li>
+        <li>A clean booking photo frame, a prisoner number, and height measurement lines are likely enough</li>
+        <li>Resist the urge to add dense copy or elaborate illustrations. The mug's humor is in its restraint</li>
+        <li>Test the design by covering the name and asking: "Does this look like a mugshot?" If yes, it's working</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3 - Test the Compartment Reveal With 3-5 People</h4>
+      <ul>
+        <li>The entire Mug Shot strategy depends on the hidden compartment being discovered naturally</li>
+        <li>Build a physical mockup with the compartment cover and test: do people find it? How long does it take?</li>
+        <li>If more than 30% of testers miss the compartment entirely, the cover's teaser copy needs to be more obvious</li>
+        <li>The reveal should feel like discovery, not like a puzzle that requires instructions</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4 - Invest in Custom Shredded Document Content</h4>
+      <ul>
+        <li>The shredded documents are triple-duty design: protection, content, atmosphere. They deserve creative investment</li>
+        <li>Write 5-8 short document fragments (classified stamps, incident reports, redacted memos) that are funny when read</li>
+        <li>Ensure fragments are large enough that some text is readable in the shredded strips</li>
+        <li>This packing material is the last content the recipient encounters before the mug - make it memorable</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5 - Confirm the [CLASSIFIED] Outer Box Treatment Early</h4>
+      <ul>
+        <li>Brad's refusal to name the mug is one of the strongest pre-unboxing comedy devices in the kit</li>
+        <li>The outer box product grid needs to be designed with this treatment in mind from the start, not retrofitted</li>
+        <li>The blacked-out image and [CLASSIFIED] text should be curiosity-generating, not confusing</li>
+        <li>Test with buyers: "What do you think the classified item is?" If they're curious, it's working. If they're confused, adjust</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6 - Source 2-3 Mug Samples Before Committing</h4>
+      <ul>
+        <li>Request samples across the COGS range: full enamel ($4-6), stainless with enamel rim ($3-4), plain stainless ($2-3)</li>
+        <li>Evaluate each for weight, feel, print area, and "first impression" quality</li>
+        <li>The mug should pass the "hand it to someone without context and they'd call it a nice camp mug" test</li>
+        <li>Print quality matters as much as mug quality - the mugshot design needs to survive daily use and dishwashing</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7 - Position the Easter Egg Card for Maximum Discovery</h4>
+      <ul>
+        <li>The card inside the mug should be face-up and immediately visible when someone looks inside</li>
+        <li>If it shifts during shipping and lands face-down, the discovery rate drops significantly</li>
+        <li>Consider a light adhesive dot or a card shape that naturally rests against the interior curve</li>
+        <li>This near-zero-COGS detail generates disproportionate delight and shows up in reviews and social posts</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+// Extract markdown-formatted plain text (bold preserved as **bold**)
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 560" width="560mm" height="560mm">
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+    <marker id="fold-arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1,1 L 7,4 L 1,7 Z" fill="#0055CC"/>
+    </marker>
+  </defs>
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .bleed-zone { fill: none; stroke: #00AA44; stroke-width: 0.4; stroke-dasharray: 1.5,1; }
+    .safety-zone { fill: none; stroke: #CC0066; stroke-width: 0.3; stroke-dasharray: 1,1; }
+
+    .fill-glue { fill: #E0D8D0; stroke: none; opacity: 0.4; }
+    .fill-front { fill: #B8E6B8; stroke: none; opacity: 0.6; }
+    .fill-back { fill: #B3D4F0; stroke: none; opacity: 0.6; }
+    .fill-side { fill: #F5D0A0; stroke: none; opacity: 0.6; }
+    .fill-top { fill: #D0E8D0; stroke: none; opacity: 0.5; }
+    .fill-bottom { fill: #E0D0E0; stroke: none; opacity: 0.5; }
+    .fill-flap { fill: #F0E8E0; stroke: none; opacity: 0.3; }
+    .fill-base { fill: #E8E8E8; stroke: none; }
+    .fill-wall { fill: #F5D0A0; stroke: none; opacity: 0.5; }
+    .fill-tab { fill: #F0E0E0; stroke: none; opacity: 0.4; }
+    .fill-tray-base { fill: #F5F5F5; stroke: none; }
+    .fill-tray-wall { fill: #E2ECF4; stroke: none; opacity: 0.4; }
+    .fill-sleeve { fill: #FEF3E2; stroke: none; opacity: 0.3; }
+    .recess { fill: none; stroke: #00AA00; stroke-width: 0.4; stroke-dasharray: 2,1.5; }
+    .recess-fill { fill: #e8f4e8; stroke: none; opacity: 0.4; }
+    .fill-top-surface { fill: #B3D4F0; stroke: none; opacity: 0.5; }
+    .fill-vert-wall { fill: #B8E6B8; stroke: none; opacity: 0.5; }
+    .fill-floor-flap { fill: #F5D0A0; stroke: none; opacity: 0.5; }
+    .fill-lid { fill: #B3D4F0; stroke: none; opacity: 0.4; }
+    .fill-panel { fill: #FEF3E2; stroke: none; opacity: 0.4; }
+
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 8px; fill: #555; text-anchor: middle; }
+    .panel-id { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .panel-detail { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #666; text-anchor: middle; dominant-baseline: central; }
+    .fold-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #0055CC; font-weight: bold; }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; text-anchor: middle; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #888; text-anchor: middle; }
+    .spec-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; }
+    .spec-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #444; }
+    .assembly-num { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; fill: white; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .assembly-circle { fill: #0055CC; stroke: none; }
+    .ref-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .ref-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #444; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+</style>
+
+  <text x="155" y="14" class="title">CUBICLE SHANK — TRAY &amp; SLEEVE TEMPLATE</text>
+  <text x="155" y="24" class="subtitle">165.1 x 44.45 x 25.4 mm (6.5" x 1.75" x 1.0") | Pen | Tray 1 | Two-piece matchbox style</text>
+
+  <line x1="30" y1="36" x2="45" y2="36" stroke="#E60000" stroke-width="0.5" fill="none"/>
+  <text x="48" y="37" class="legend-text" text-anchor="start">Cut / Die</text>
+  <line x1="100" y1="36" x2="115" y2="36" stroke="#0055CC" stroke-width="0.35" stroke-dasharray="3,1.5" fill="none"/>
+  <text x="118" y="37" class="legend-text" text-anchor="start">Fold / Score</text>
+  <line x1="185" y1="36" x2="200" y2="36" stroke="#00AA44" stroke-width="0.4" stroke-dasharray="1.5,1" fill="none"/>
+  <text x="203" y="37" class="legend-text" text-anchor="start">Bleed (3mm)</text>
+  <line x1="280" y1="36" x2="295" y2="36" stroke="#CC0066" stroke-width="0.3" stroke-dasharray="1,1" fill="none"/>
+  <text x="298" y="37" class="legend-text" text-anchor="start">Safety (5mm)</text>
+
+  <!-- ===== COMPONENT 1: SLEEVE ===== -->
+  <text x="40" y="55" class="spec-title">COMPONENT 1: SLEEVE (outer cover)</text>
+
+  <!-- Panel fills -->
+  <rect x="40" y="65" width="12" height="165.1" class="fill-glue"/>
+  <rect x="52" y="65" width="25.4" height="165.1" class="fill-side"/>
+  <rect x="77.4" y="65" width="44.45" height="165.1" class="fill-top"/>
+  <rect x="121.85" y="65" width="25.4" height="165.1" class="fill-side"/>
+  <rect x="147.25" y="65" width="44.45" height="165.1" class="fill-bottom"/>
+
+  <!-- Cut line -->
+  <path class="cut" d="M 52,65 L 40,68 L 40,227.1 L 52,230.1 L 191.7,230.1 L 191.7,65 Z"/>
+
+  <!-- Fold lines -->
+  <line x1="52" y1="65" x2="52" y2="230.1" class="fold"/>
+  <line x1="77.4" y1="65" x2="77.4" y2="230.1" class="fold"/>
+  <line x1="121.85" y1="65" x2="121.85" y2="230.1" class="fold"/>
+  <line x1="147.25" y1="65" x2="147.25" y2="230.1" class="fold"/>
+
+  <!-- Bleed / Safety -->
+  <rect x="37" y="62" width="157.7" height="171.1" class="bleed-zone"/>
+  <rect x="45" y="70" width="141.7" height="155.1" class="safety-zone"/>
+
+  <!-- Labels -->
+  <text x="46" y="148" class="panel-id" transform="rotate(-90, 46, 148)" style="font-size: 7px;">GLUE</text>
+  <text x="64.7" y="145" class="panel-id" transform="rotate(-90, 64.7, 145)">B: SIDE</text>
+  <text x="99.6" y="135" class="panel-id" transform="rotate(-90, 99.6, 135)">C: TOP FACE</text>
+  <text x="99.6" y="165" class="panel-detail" transform="rotate(-90, 99.6, 165)">44.45 x 165.1 — main artwork</text>
+  <text x="134.5" y="145" class="panel-id" transform="rotate(-90, 134.5, 145)">D: SIDE</text>
+  <text x="169.5" y="140" class="panel-id" transform="rotate(-90, 169.5, 140)">E: BOTTOM</text>
+
+  <text x="121" y="60" class="flap-label">← OPEN END (tray slides in/out) →</text>
+  <text x="121" y="240" class="flap-label">← OPEN END (tray slides in/out) →</text>
+
+  <!-- ===== COMPONENT 2: TRAY ===== -->
+  <text x="40" y="262" class="spec-title">COMPONENT 2: TRAY (inner, with pen recess)</text>
+
+  <!-- Panel fills -->
+  <rect x="64" y="294" width="163" height="43" class="fill-tray-base"/>
+  <rect x="64" y="270" width="163" height="24" class="fill-tray-wall"/>
+  <rect x="64" y="337" width="163" height="24" class="fill-tray-wall"/>
+  <rect x="40" y="294" width="24" height="43" class="fill-tray-wall"/>
+  <rect x="227" y="294" width="24" height="43" class="fill-tray-wall"/>
+  <rect x="40" y="270" width="24" height="24" class="fill-tab"/>
+  <rect x="227" y="270" width="24" height="24" class="fill-tab"/>
+  <rect x="40" y="337" width="24" height="24" class="fill-tab"/>
+  <rect x="227" y="337" width="24" height="24" class="fill-tab"/>
+
+  <!-- Pen recess -->
+  <rect x="68" y="310" width="155" height="14" rx="7" ry="7" class="recess-fill"/>
+  <rect x="68" y="310" width="155" height="14" rx="7" ry="7" class="recess"/>
+
+  <!-- Cut / fold -->
+  <rect x="40" y="270" width="211" height="91" class="cut"/>
+  <line x1="40" y1="270" x2="64" y2="294" class="cut"/>
+  <line x1="227" y1="294" x2="251" y2="270" class="cut"/>
+  <line x1="40" y1="361" x2="64" y2="337" class="cut"/>
+  <line x1="227" y1="337" x2="251" y2="361" class="cut"/>
+  <line x1="64" y1="270" x2="64" y2="361" class="fold"/>
+  <line x1="227" y1="270" x2="227" y2="361" class="fold"/>
+  <line x1="40" y1="294" x2="251" y2="294" class="fold"/>
+  <line x1="40" y1="337" x2="251" y2="337" class="fold"/>
+
+  <text x="145.5" y="306" class="panel-id">F: TRAY BASE</text>
+  <text x="145.5" y="330" class="panel-detail" fill="#00AA00">Pen recess ~155 x 14mm, rounded</text>
+  <text x="145.5" y="280" class="panel-detail">BACK WALL (24mm)</text>
+  <text x="145.5" y="352" class="panel-detail">FRONT WALL (24mm)</text>
+
+  <!-- ===== 3D REFERENCE ===== -->
+  <!-- Closed: sleeve wrapping tray -->
+  <text x="420" y="70" class="ref-title">3D REFERENCE — ASSEMBLED</text>
+
+  <!-- Isometric closed pen box. 165.1mm L x 44.45mm W x 25.4mm H -->
+  <!-- Scale 0.55. L_s=90.8, W_s=24.4, H_s=14.0 -->
+  <!-- Origin BL_top: (370, 105) -->
+  <!-- BR: (370+78.6, 105+45.4) = (448.6, 150.4) -->
+  <!-- FL: (370-21.1, 105+12.2) = (348.9, 117.2) -->
+  <!-- FR: (348.9+78.6, 117.2+45.4) = (427.5, 162.6) -->
+  <!-- Bottom: +14 to y -->
+
+  <polygon points="370,105 448.6,150.4 427.5,162.6 348.9,117.2" fill="#D0E8D0" stroke="#444" stroke-width="0.5"/>
+  <polygon points="348.9,117.2 427.5,162.6 427.5,176.6 348.9,131.2" fill="#B8E6B8" stroke="#444" stroke-width="0.5"/>
+  <polygon points="448.6,150.4 427.5,162.6 427.5,176.6 448.6,164.4" fill="#F5D0A0" stroke="#444" stroke-width="0.5"/>
+
+  <text x="395" y="140" class="ref-label" text-anchor="middle">C: Top (sleeve)</text>
+  <text x="375" y="155" class="ref-label">Front</text>
+  <text x="443" y="163" class="ref-label">Side</text>
+
+  <!-- Open: tray sliding out -->
+  <text x="420" y="200" class="ref-title">3D — TRAY SLIDING OUT</text>
+
+  <!-- Sleeve (left, shorter) -->
+  <polygon points="340,230 390,259 376,267 326,238" fill="#D0E8D0" stroke="#444" stroke-width="0.5" opacity="0.6"/>
+  <polygon points="326,238 376,267 376,281 326,252" fill="#B8E6B8" stroke="#444" stroke-width="0.5" opacity="0.6"/>
+
+  <!-- Tray sliding right -->
+  <polygon points="380,250 458,295 444,303 366,258" fill="#F5F5F5" stroke="#444" stroke-width="0.5"/>
+  <polygon points="366,258 444,303 444,313 366,268" fill="#E2ECF4" stroke="#444" stroke-width="0.5"/>
+  <!-- Recess hint -->
+  <line x1="384" y1="264" x2="450" y2="302" stroke="#00AA00" stroke-width="0.5" stroke-dasharray="2,1"/>
+
+  <text x="350" y="248" class="ref-label">Sleeve</text>
+  <text x="420" y="285" class="ref-label" text-anchor="middle">Tray (slides out)</text>
+  <text x="430" y="310" class="ref-label" fill="#00AA00">pen recess</text>
+
+  <!-- ASSEMBLY -->
+  <text x="420" y="340" class="spec-title" text-anchor="middle">ASSEMBLY</text>
+  <circle cx="350" cy="355" r="5.5" class="assembly-circle"/>
+  <text x="350" y="355" class="assembly-num">1</text>
+  <text x="360" y="356" class="spec-text">SLEEVE: Fold sides around, glue tab to close tube.</text>
+  <circle cx="350" cy="370" r="5.5" class="assembly-circle"/>
+  <text x="350" y="370" class="assembly-num">2</text>
+  <text x="360" y="371" class="spec-text">TRAY: Fold all four walls up, tuck corner tabs.</text>
+  <circle cx="350" cy="385" r="5.5" class="assembly-circle"/>
+  <text x="350" y="385" class="assembly-num">3</text>
+  <text x="360" y="386" class="spec-text">Slide tray into sleeve. Open on both short ends.</text>
+
+  <!-- PRINT SPECS -->
+  <text x="350" y="410" class="spec-title">PRINT SPECIFICATIONS</text>
+  <text x="350" y="423" class="spec-text">Color mode: CMYK only</text>
+  <text x="350" y="433" class="spec-text">Resolution: 300 dpi minimum</text>
+  <text x="350" y="443" class="spec-text">Bleed: Extend artwork 3mm past cut line (green)</text>
+  <text x="350" y="453" class="spec-text">Safety: Keep critical content 5mm inside cut (magenta)</text>
+  <text x="350" y="463" class="spec-text">File format: PDF/X-4 preferred</text>
+
+  <!-- NOTES -->
+  <text x="280" y="490" class="note">PRODUCTION TEMPLATE — Two separate pieces. Sleeve prints full-color exterior. Tray is interior-only.</text>
+  <text x="280" y="498" class="note">Tray is slightly smaller than sleeve interior for sliding fit. Confirm clearance with manufacturer.</text>
+  <text x="280" y="506" class="note">Pen recess: die-cut rounded channel ~155 x 14mm. Depth TBD with sourcing.</text>
+
+</svg>

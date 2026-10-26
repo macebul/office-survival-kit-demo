@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Decks - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Card Decks <span>Product Profile</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#a1"><span class="num">01.</span> Basic Product Profile</a>
+    <a href="#a8"><span class="num">08.</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a2"><span class="num">02.</span> Strategic Overview</a>
+    <a href="#a9"><span class="num">09.</span> Buyer Questions Map</a>
+    <a href="#a3"><span class="num">03.</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10.</span> Competitive Differentiation</a>
+    <a href="#a4"><span class="num">04.</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11.</span> Non-Obvious Angles</a>
+    <a href="#a5"><span class="num">05.</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12.</span> The Big Idea</a>
+    <a href="#a6"><span class="num">06.</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13.</span> Assumptions &amp; Gaps</a>
+    <a href="#a7"><span class="num">07.</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14.</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a1">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Product Identity</h3>
+    <ul>
+      <li><strong>Product Name:</strong> Card Decks (three-deck system)
+        <ul>
+          <li>Cell Talk (affirmation cards)</li>
+          <li>Rap Sheets (complaint/write-up cards)</li>
+          <li>Sweet Nothings (passive-aggressive cards)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>Brad Sterling's Corporate Rebrands</h4>
+    <ul>
+      <li><strong>Cell Talk:</strong> Self-Actualization Protocol&trade; Cards</li>
+      <li><strong>Rap Sheets:</strong> Interpersonal Feedback Delivery System&trade;</li>
+      <li><strong>Sweet Nothings:</strong> Ambient Communication Cards&trade;</li>
+    </ul>
+
+    <ul>
+      <li><strong>Parent Product:</strong> Office Survival Kit (Items 4, 5, and 6 of 7 + 1 empty recess)</li>
+      <li><strong>Brand:</strong> Witty Yeti (Amazon brand)</li>
+      <li><strong>In-Universe Brand:</strong> Elevate Co. (fictional company, appears in product copy)</li>
+      <li><strong>Product Type:</strong> Three themed card decks with custom printed item boxes</li>
+    </ul>
+
+    <h3>Role in Kit</h3>
+    <ul>
+      <li>Volume and variety anchors - three decks create visible density in Tray 2</li>
+      <li>The interactive content engine - cards are the items that get used repeatedly after unboxing</li>
+      <li>The "replayable" component - recipients cycle through cards over days and weeks</li>
+      <li>Social catalyst - cards are designed to be given to, left for, or read to coworkers</li>
+    </ul>
+
+    <h3>Physical Specs (Shared Across All Three Decks)</h3>
+    <ul>
+      <li><strong>Card size:</strong> Business card format (~3.5" x 2")</li>
+      <li><strong>Card stock:</strong> Standard business card weight (14-16pt)</li>
+      <li><strong>Print:</strong> Full color, both sides</li>
+      <li><strong>Finish:</strong> Matte or soft-touch preferred</li>
+      <li><strong>Cards per deck:</strong> 15 (final count)</li>
+    </ul>
+
+    <h3>Item Boxes (Shared Format)</h3>
+    <ul>
+      <li><strong>Box type:</strong> Tuck-end box</li>
+      <li><strong>Box dimensions:</strong> ~4" x 2.5" x 0.75" (working estimate)</li>
+      <li><strong>Material:</strong> Printed paperboard</li>
+      <li><strong>Print:</strong> Full color, all 6 sides</li>
+      <li><strong>Design:</strong> Each deck has distinct Elevate Co. division branding</li>
+    </ul>
+
+    <h3>The Three Decks</h3>
+
+    <h4>Cell Talk</h4>
+    <ul>
+      <li><strong>Division:</strong> Center for Normative Optimization</li>
+      <li><strong>Card mechanic:</strong> Front has genuine affirmation, back has Brad's delusional commentary</li>
+      <li><strong>Visual palette:</strong> White/off-white base, sage/mint green accents</li>
+      <li><strong>Aesthetic:</strong> Zen, clinical, institutional wellness</li>
+      <li><strong>Deployment:</strong> Read daily, one each morning</li>
+    </ul>
+
+    <h4>Rap Sheets</h4>
+    <ul>
+      <li><strong>Division:</strong> Interpersonal Accountability Division</li>
+      <li><strong>Card mechanic:</strong> Front has workplace charge/offense, back has Brad's verdict</li>
+      <li><strong>Visual palette:</strong> Black background, dark red/cream, amber/goldenrod cards</li>
+      <li><strong>Aesthetic:</strong> Dark, aggressive, enforcement-themed</li>
+      <li><strong>Deployment:</strong> Hand to or leave for offending coworker</li>
+    </ul>
+
+    <h4>Sweet Nothings</h4>
+    <ul>
+      <li><strong>Division:</strong> Ambient Relations Bureau</li>
+      <li><strong>Card mechanic:</strong> Front has genuine compliment, back has hyper-specific absurd insult</li>
+      <li><strong>Visual palette:</strong> Cream/off-white base, blush pink, rose gold metallic</li>
+      <li><strong>Aesthetic:</strong> Elegant, refined, upscale luxury stationery</li>
+      <li><strong>Deployment:</strong> Leave on desk, hand over with straight face</li>
+    </ul>
+
+    <h3>Discovery Context</h3>
+    <ul>
+      <li>Tray 2, all three decks side by side</li>
+      <li>Second tray revealed after Tray 1 items</li>
+      <li>Three distinct visual identities create a "collection" impression</li>
+      <li>The variety signals "there's a lot more here than you expected"</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a2">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <ul>
+      <li>Three decks of original comedy content that turn the kit from a one-time gift into a weeks-long office experience</li>
+      <li>Each deck has a distinct personality, visual identity, and use case, creating the feeling of getting three products in one</li>
+      <li>The card content is the kit's strongest "read aloud and share" element after the initial unboxing</li>
+    </ul>
+
+    <h3>Strategic Position Within the Kit</h3>
+    <ul>
+      <li>The card decks are the volume play - three boxes in Tray 2 immediately communicate "there's a lot in here"</li>
+      <li>They're the longevity play - where the pen gets used daily and the mug gets used forever, the cards get discovered and shared over weeks</li>
+      <li>They transform the kit from "unbox once, laugh, done" to "unbox, then deploy cards to coworkers for the next month"</li>
+    </ul>
+
+    <h3>Why These Items Matter</h3>
+    <ul>
+      <li>Amazon buyers browsing listing images count items. Three distinct card boxes communicate density and value</li>
+      <li>Card content is the most easily communicable humor in the kit - buyers can imagine reading specific cards</li>
+      <li>The three-deck system shows intentional variety rather than product padding</li>
+      <li>Cards are inherently interactive - they require a second person, which extends the product's social reach</li>
+    </ul>
+
+    <h3>Key Strategic Tension</h3>
+    <ul>
+      <li>The cards must be funny enough that recipients actually use them, not just laugh once and forget</li>
+      <li>Three decks with similar physical format risk blending together - the distinct visual identities must prevent this</li>
+      <li>Card content is the largest creative investment in the kit - 45 cards across three decks, each needing to land independently</li>
+      <li>The humor needs to work for anyone in an office, not just a specific office subculture</li>
+    </ul>
+
+    <h3>The Three-Deck System as a Design Choice</h3>
+    <ul>
+      <li>Three decks with distinct themes is better than one deck with mixed content</li>
+      <li>Each deck creates its own "genre" of humor: wellness parody, bureaucratic parody, luxury stationery parody</li>
+      <li>The visual contrast between decks (sage green, black/amber, blush pink) makes them photograph well side by side</li>
+      <li>Recipients develop favorites and use different decks for different office situations</li>
+    </ul>
+
+    <h3>Revenue Contribution</h3>
+    <ul>
+      <li>Highest perceived item count contribution - three boxes occupy more visual and physical space than any other single item</li>
+      <li>Card decks are understood as "$8-12 each" products, so three create $24-36 of perceived standalone value</li>
+      <li>The content is the most "shareable" element - coworkers who see the cards may search for the kit themselves</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a3">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>System-Level Analysis</h3>
+
+    <h4>Three Distinct Decks with Unified Format</h4>
+    <ul>
+      <li><strong>Feature:</strong> Three card decks sharing physical format but with completely different themes, palettes, and comedy styles</li>
+      <li><strong>Functional benefit:</strong> Variety of content types for different social situations</li>
+      <li><strong>Emotional benefit:</strong> The "collection" feeling - three coordinated products rather than one generic deck</li>
+      <li><strong>Strategic role:</strong> Creates volume perception that justifies kit price</li>
+    </ul>
+
+    <h4>Dual-Sided Card Mechanic</h4>
+    <ul>
+      <li><strong>Feature:</strong> Every card has a front reveal and a back payoff across all three decks</li>
+      <li><strong>Functional benefit:</strong> Each card is a mini experience, not just a statement</li>
+      <li><strong>Emotional benefit:</strong> The flip-and-read creates a physical comedy moment every single time</li>
+      <li><strong>Strategic role:</strong> 45 individual comedy moments packed into three small boxes</li>
+    </ul>
+
+    <h4>Brad Sterling's Voice on Every Card</h4>
+    <ul>
+      <li><strong>Feature:</strong> Brad's commentary, verdicts, or corporate branding appears on every card back</li>
+      <li><strong>Functional benefit:</strong> Consistent character voice ties all three decks to the kit's world</li>
+      <li><strong>Emotional benefit:</strong> Readers build a relationship with Brad through accumulated exposure</li>
+      <li><strong>Strategic role:</strong> Brand world deepening - by card 10, the recipient "knows" Brad</li>
+    </ul>
+
+    <hr>
+
+    <h3>Deck-Specific Analysis</h3>
+
+    <h4>Cell Talk (Affirmation Cards)</h4>
+
+    <p><strong>Genuine Affirmation on Front</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Real, recognizable self-help affirmations ("I am enough," "I release what I cannot control")</li>
+      <li><strong>Functional benefit:</strong> The affirmation itself is actually usable as a daily reminder</li>
+      <li><strong>Emotional benefit:</strong> The sincerity makes the comedy on the back land harder</li>
+      <li><strong>Strategic role:</strong> The straight setup enables the comedy payoff</li>
+    </ul>
+
+    <p><strong>Brad's Delusional Commentary on Back</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Brad interprets each affirmation through his own narcissistic, oblivious lens</li>
+      <li><strong>Functional benefit:</strong> Turns a throwaway affirmation card into a comedy piece</li>
+      <li><strong>Emotional benefit:</strong> Laughing at Brad's complete misunderstanding of basic human wisdom</li>
+      <li><strong>Strategic role:</strong> Two-layer comedy - the affirmation parodies wellness culture, Brad's response parodies hustle culture</li>
+    </ul>
+
+    <p><strong>Zen/Clinical Wellness Aesthetic</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Sage green, enso circle, "Center for Normative Optimization" branding</li>
+      <li><strong>Functional benefit:</strong> Visually distinct from the other two decks</li>
+      <li><strong>Emotional benefit:</strong> Looks like a real wellness product, which makes opening it and finding Brad's quotes funnier</li>
+      <li><strong>Strategic role:</strong> The format/content gap is the comedy engine</li>
+    </ul>
+
+    <hr>
+
+    <h4>Rap Sheets (Complaint Cards)</h4>
+
+    <p><strong>Workplace Charge/Offense on Front</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Specific, relatable office infractions ("Leaving 0:03 on the microwave," "Scheduling a meeting to discuss the results of the previous meeting")</li>
+      <li><strong>Functional benefit:</strong> Cards can be "filed" against actual coworkers for real (petty) offenses</li>
+      <li><strong>Emotional benefit:</strong> Cathartic humor - saying what everyone thinks about everyday office annoyances</li>
+      <li><strong>Strategic role:</strong> The most "interactive" deck because it requires identifying a guilty coworker</li>
+    </ul>
+
+    <p><strong>Brad's Verdict on Back</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Brad's extended response to each offense, escalating the pettiness to absurd levels</li>
+      <li><strong>Functional benefit:</strong> The verdict is the performance piece - the thing you read aloud</li>
+      <li><strong>Emotional benefit:</strong> Brad takes trivial offenses more seriously than anyone should, which validates the feeling that these things DO matter</li>
+      <li><strong>Strategic role:</strong> Transforms petty complaints into comedy monologues</li>
+    </ul>
+
+    <p><strong>Dark/Enforcement Aesthetic</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Black box, red/amber accents, QC badge, authorization seal, "Interpersonal Accountability Division"</li>
+      <li><strong>Functional benefit:</strong> Visually the most aggressive deck, stands out in the tray</li>
+      <li><strong>Emotional benefit:</strong> The official enforcement look makes petty office complaints feel like prosecutable offenses</li>
+      <li><strong>Strategic role:</strong> The gap between the authority of the format and the pettiness of the content is the joke</li>
+    </ul>
+
+    <hr>
+
+    <h4>Sweet Nothings (Passive-Aggressive Cards)</h4>
+
+    <p><strong>Genuine Compliment on Front</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Real compliments that sound sincere ("I enjoy working with you," "You bring so much energy to the team")</li>
+      <li><strong>Functional benefit:</strong> The card looks like a genuine nice gesture until it's flipped</li>
+      <li><strong>Emotional benefit:</strong> The sincerity of the front makes the flip to the back a genuine surprise every time</li>
+      <li><strong>Strategic role:</strong> The reveal mechanic is at its strongest here - each card is a twist ending</li>
+    </ul>
+
+    <p><strong>Hyper-Specific Absurd Insult on Back</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Extended metaphor insults built around everyday objects (shopping cart wheels, Roombas, expired coupons, IKEA furniture)</li>
+      <li><strong>Functional benefit:</strong> The insults are so specific and absurd that they're funny rather than mean</li>
+      <li><strong>Emotional benefit:</strong> The craft of each comparison is what entertains - it's comedy writing, not bullying</li>
+      <li><strong>Strategic role:</strong> The "spiciest" content drives the most sharing and word-of-mouth</li>
+    </ul>
+
+    <p><strong>Luxury Stationery Aesthetic</strong></p>
+    <ul>
+      <li><strong>Feature:</strong> Blush pink, rose gold metallic, ornamental flourishes, wax seal reading "HANDCRAFTED WITH PLAUSIBLE DENIABILITY"</li>
+      <li><strong>Functional benefit:</strong> The most visually distinctive deck - looks like it belongs in an upscale gift shop</li>
+      <li><strong>Emotional benefit:</strong> The luxury packaging containing savage insults is the purest expression of format vs. content comedy</li>
+      <li><strong>Strategic role:</strong> The deck most likely to be photographed and shared on social media</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a4">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Psychological Role</h3>
+    <ul>
+      <li>The card decks are the perceived value multiplier - three separate boxes make the kit feel like a substantial product</li>
+      <li>They're also the "proof of content depth" - listing images showing card text demonstrate that the humor is real, not just promised</li>
+      <li>The cards are the easiest items for a buyer to mentally preview ("I can imagine giving that to Dave from accounting")</li>
+    </ul>
+
+    <h3>Emotional Triggers (Buyer - Seeing Them in the Listing)</h3>
+    <ul>
+      <li><strong>Volume signal</strong> - Three distinct boxes in a tray say "there's a lot in here" without requiring the buyer to count items</li>
+      <li><strong>Humor preview</strong> - If listing images show individual card text, buyers can verify the comedy quality before purchasing</li>
+      <li><strong>Relatability</strong> - Card themes (affirmations, complaints, passive-aggression) map to universal office experiences</li>
+      <li><strong>Imagination activation</strong> - Buyers immediately think of specific coworkers who would get specific cards</li>
+    </ul>
+
+    <h3>Emotional Triggers (Recipient - During Unboxing)</h3>
+    <ul>
+      <li><strong>Discovery density</strong> - Opening three boxes in quick succession creates momentum and excitement</li>
+      <li><strong>Variety surprise</strong> - Each deck's distinct aesthetic signals "these aren't the same thing three times"</li>
+      <li><strong>Content depth</strong> - Flipping through cards reveals more content than the recipient expected</li>
+      <li><strong>Social impulse</strong> - The immediate instinct to read cards aloud, show favorites, and identify which coworker deserves which card</li>
+    </ul>
+
+    <h3>Decision-Making Role in Purchase</h3>
+    <ul>
+      <li>The three card decks create the strongest "what you get for your money" story in listing images</li>
+      <li>They address the "is there enough here?" concern that buyers have with multi-item gift sets</li>
+      <li>Card content visible in images serves as a humor sample that de-risks the purchase</li>
+      <li>They're the most "Instagram-able" items - flat lay potential for social content</li>
+    </ul>
+
+    <h3>Risk Perception</h3>
+    <ul>
+      <li><strong>Primary risk:</strong> "Are the cards actually funny or just cringe?"</li>
+      <li>This is the hardest risk to mitigate without seeing the actual content</li>
+      <li>Listing images showing 2-3 individual cards from each deck can pre-sell the humor quality</li>
+      <li>Reviews quoting specific cards are the strongest social proof for the entire kit</li>
+    </ul>
+
+    <h3>Cognitive Biases in Play</h3>
+    <ul>
+      <li><strong>Paradox of choice (inverted)</strong> - Three themed decks feel curated and intentional, not overwhelming. The themes are different enough that having three feels like variety, not redundancy</li>
+      <li><strong>IKEA effect</strong> - Cards that require the recipient to choose, deploy, and read aloud create a sense of participation and ownership in the comedy</li>
+      <li><strong>Social proof cascading</strong> - When a coworker receives a card and laughs, they become an ambassador for the kit. Each card deployment is a micro-marketing moment</li>
+      <li><strong>Mere exposure effect</strong> - The more cards the recipient reads, the more they "know" Brad Sterling. By the third deck, they're reading Brad's voice in their head</li>
+      <li><strong>Commitment escalation</strong> - Once someone deploys one card to a coworker, they're invested in the bit. They'll deploy more</li>
+    </ul>
+
+    <h3>The Three-Deck Psychology</h3>
+    <ul>
+      <li>Three is the smallest number that creates a pattern</li>
+      <li>One deck feels like an accessory. Two feels like a pair. Three feels like a collection</li>
+      <li>The distinct visual identities prevent the "same thing three times" fatigue</li>
+      <li>Recipients develop a favorite deck, which creates the personal attachment that one-size-fits-all products can't achieve</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a5">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: The card decks are not sold individually. These personas describe how each buyer type interacts with these items as part of the kit evaluation and unboxing experience.</p>
+
+    <div class="persona">
+      <h4>Persona 1 - "The Card Deployer"</h4>
+      <ul>
+        <li>25-40, any gender</li>
+        <li>The person who will actually use every card in the deck</li>
+        <li>Treats the office as a stage and the cards as props</li>
+      </ul>
+      <p><strong>Relationship to the Card Decks</strong></p>
+      <ul>
+        <li>This is their favorite part of the kit</li>
+        <li>They'll have a Rap Sheet on Dave's desk by Monday morning</li>
+        <li>They'll leave Sweet Nothings on the printer for discovery</li>
+        <li>Cell Talk becomes their ironic morning ritual</li>
+      </ul>
+      <div class="trigger">Key trigger: "Oh my god, this one is PERFECT for [specific coworker]"</div>
+      <div class="fear">Biggest fear: The cards are generic and don't match real office situations</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - "The Content Browser"</h4>
+      <ul>
+        <li>30-50, any gender</li>
+        <li>Reads through all 45 cards in one sitting during the unboxing</li>
+        <li>Appreciates the writing craft more than the deployment potential</li>
+      </ul>
+      <p><strong>Relationship to the Card Decks</strong></p>
+      <ul>
+        <li>They'll read every card and rank their favorites</li>
+        <li>They care about consistency - are all 15 cards in a deck actually good, or do they fall off after 5?</li>
+        <li>They're evaluating the comedy writing, not just the concept</li>
+      </ul>
+      <div class="trigger">Key trigger: "Every single one of these is funny - there are no filler cards"</div>
+      <div class="fear">Biggest fear: Half the cards are mediocre and only 3-4 are actually quotable</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - "The Social Sharer"</h4>
+      <ul>
+        <li>25-35, social media active</li>
+        <li>Will photograph their favorite cards and post them</li>
+        <li>Sees the cards as content, not just a gift</li>
+      </ul>
+      <p><strong>Relationship to the Card Decks</strong></p>
+      <ul>
+        <li>Sweet Nothings is their favorite deck because the front/back reveal is most shareable</li>
+        <li>They'll photograph individual cards flat-lay style with the box</li>
+        <li>They'll text cards to friends who weren't at the unboxing</li>
+      </ul>
+      <div class="trigger">Key trigger: "I have to post this one" (photographs a specific card)</div>
+      <div class="fear">Biggest fear: The cards don't photograph well or the text is too small to read in photos</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - "The Deck Collector"</h4>
+      <ul>
+        <li>28-45, any gender</li>
+        <li>Appreciates the three-deck system as a designed collection</li>
+        <li>Notices the distinct aesthetics and branding across decks</li>
+      </ul>
+      <p><strong>Relationship to the Card Decks</strong></p>
+      <ul>
+        <li>They appreciate that each deck has its own visual identity, division name, and Brad role</li>
+        <li>The boxes become display items on their desk shelf</li>
+        <li>They may organize cards by favorites across all three decks</li>
+      </ul>
+      <div class="trigger">Key trigger: "These are three completely different products. Each one has its own whole look"</div>
+      <div class="fear">Biggest fear: The decks all look the same and feel repetitive</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a6">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I discover three distinct card decks in the kit</p>
+      <p><strong>I want to</strong> feel like I've unlocked a library of comedy content, not just a few throwaway cards</p>
+      <p><strong>So that</strong> the kit keeps giving me new material to use long after the unboxing is over</p>
+    </div>
+
+    <h3>Supporting JTBD</h3>
+
+    <h4>Job 2 - Give Me Ammo for Office Situations</h4>
+    <ul>
+      <li>When a coworker does something annoying (schedules a meeting about a meeting, leaves time on the microwave, takes credit for group work), I want to pull the right card from the right deck and deploy it, so that I can address the situation with humor instead of frustration</li>
+    </ul>
+
+    <h4>Job 3 - Make the Kit Last</h4>
+    <ul>
+      <li>When the unboxing is over and the briefcase is on my shelf, I want reasons to open it again, so that the gift keeps working weeks after I received it</li>
+    </ul>
+
+    <h4>Job 4 - Give Me Content That's Worth Sharing</h4>
+    <ul>
+      <li>When I want to show a coworker what I got, I want individual cards that work as standalone comedy, so that the humor translates without needing to explain the full kit context</li>
+    </ul>
+
+    <h4>Job 5 - Validate That the Humor Is Real</h4>
+    <ul>
+      <li>When I'm browsing the Amazon listing and I see card text in the product images, I want to verify that the comedy is actually good, so that I'm confident the rest of the kit will be funny too</li>
+    </ul>
+
+    <h4>Job 6 - Feel Like I Got Three Products, Not One</h4>
+    <ul>
+      <li>When I open Tray 2 and see three distinct boxes with different colors and designs, I want each one to feel like its own product, so that the kit feels like a curated collection rather than padding</li>
+    </ul>
+
+    <h3>Underserved Jobs (How Competitor Card Products Fail)</h3>
+    <ul>
+      <li>The "sustained use" job - most gag card sets get flipped through once and never touched again</li>
+      <li>The "social deployment" job - most cards aren't designed for giving to other people in office contexts</li>
+      <li>The "visual variety" job - most card sets come in one box with one look, making 45 cards feel like a pile</li>
+      <li>The "Brad voice" job - no competitor has a character whose commentary on each card builds a comedic relationship over time</li>
+      <li>The "dual-sided reveal" job - most cards have content on one side only, missing the flip-and-discover moment</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a7">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p>Ranked by impact on the buyer's purchase decision and the recipient's ongoing experience.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <p><em>Drives perceived value and humor confidence</em></p>
+    <ol>
+      <li>Three distinct card decks with different themes create visible density and variety in the kit</li>
+      <li>The card content is genuinely funny and relatable to anyone who has worked in an office</li>
+      <li>Cards are interactive and designed for deployment to coworkers, extending the gift's life well beyond unboxing</li>
+      <li>Each deck has its own visual identity, so three boxes feel like three products rather than padding</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <p><em>Builds engagement and anticipation</em></p>
+    <ol start="5">
+      <li>Every card has a front/back reveal mechanic that creates a physical comedy moment</li>
+      <li>The three humor styles (wellness parody, bureaucratic parody, luxury stationery parody) cover different moods and situations</li>
+      <li>Brad Sterling's character deepens across all 45 cards, building a comedic relationship with the reader</li>
+      <li>The cards are designed to be read aloud, making them group entertainment during unboxing</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <p><em>Differentiates for detail-oriented buyers</em></p>
+    <ol start="9">
+      <li>Each deck has its own Elevate Co. division with a unique division name and Brad role</li>
+      <li>Card content is original comedy writing, not recycled internet humor or stock phrases</li>
+      <li>The passive-aggressive deck (Sweet Nothings) uses craft-based insults built around everyday objects, making them funny rather than mean</li>
+      <li>The three distinct box aesthetics (zen green, enforcement black, luxury pink) photograph well together as a collection</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a8">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="objection">
+      <h4>Objection 1 - "Three card decks feels like filler to pad the kit"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Gift sets often include low-effort items to inflate the item count</li>
+        <li><strong>Evidence needed:</strong> Each deck must look and feel like a distinct, intentional product with its own branding and personality</li>
+        <li><strong>Mitigation:</strong> The three different visual palettes, division names, and comedy styles prevent the "same thing three times" perception. Listing images should show all three boxes side by side to emphasize distinctness</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2 - "Will anyone actually use these cards or just read them once?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Most gag gift content gets consumed in the first 5 minutes and never revisited</li>
+        <li><strong>Evidence needed:</strong> The cards need to be designed for social deployment, not passive reading</li>
+        <li><strong>Mitigation:</strong> Card content is written for specific office scenarios that recur daily. "Scheduling a meeting to discuss the results of the previous meeting" happens every week - the card stays relevant. The dual-sided format also encourages repeated discovery</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3 - "Are the insults too harsh for an office gift?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Passive-aggressive humor can cross the line from funny to genuinely uncomfortable</li>
+        <li><strong>Evidence needed:</strong> The insults need to be clearly absurd rather than personal</li>
+        <li><strong>Mitigation:</strong> Sweet Nothings insults are built around everyday object comparisons (shopping cart wheels, Roombas, expired coupons), not personal attacks. The craft of the metaphor is what's funny, not the meanness. Nobody can take "you have the leadership qualities of the front shopping cart wheel" personally</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4 - "15 cards per deck feels thin"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Card games and decks are typically 30-52 cards, so 15 may feel sparse</li>
+        <li><strong>Evidence needed:</strong> Each card needs to be high-quality enough that 15 feels curated rather than insufficient</li>
+        <li><strong>Mitigation:</strong> 15 strong cards per deck beats 30 cards where half are mediocre. The dual-sided format means each card is effectively two pieces of content. Total across three decks is 45 unique comedy pieces - comparable to a full deck of content</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5 - "I can't read the card text in the listing images"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Business-card-size text is hard to show in Amazon's image carousel at standard resolution</li>
+        <li><strong>Evidence needed:</strong> Listing images need at least 2-3 dedicated closeup shots showing individual card text at readable size</li>
+        <li><strong>Mitigation:</strong> Photograph individual cards at macro level. Feature the strongest cards from each deck. The humor only sells if buyers can actually read it before purchasing</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 6 - "What if the person doesn't like one of the three themes?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Three different humor styles means some may not land with every recipient</li>
+        <li><strong>Evidence needed:</strong> The themes need to be broad enough that at least 2 of 3 will appeal to any recipient</li>
+        <li><strong>Mitigation:</strong> The three styles (sincere/absurd, complaint/cathartic, compliment/savage) cover such different emotional tones that nearly any recipient will find their preferred mode. Even if one deck isn't their style, they got two others plus the rest of the kit</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a9">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Questions the Buyer Asks When Evaluating the Listing</h3>
+    <ul>
+      <li>What do the cards actually say?</li>
+      <li>Are there three different card games or three sets of the same thing?</li>
+      <li>How many cards in each deck?</li>
+      <li>Are the cards funny enough for adults or are they generic?</li>
+      <li>Could I see myself giving these to a coworker?</li>
+    </ul>
+
+    <h3>Questions the Recipient Asks During Unboxing</h3>
+    <ul>
+      <li>Wait, there are THREE card decks? (volume surprise)</li>
+      <li>What's the difference between them? (reads box descriptions)</li>
+      <li>Okay read me one of the affirmation ones (picks Cell Talk)</li>
+      <li>Oh my god, read the back (discovers Brad's commentary)</li>
+      <li>Which one's the mean one? (reaches for Sweet Nothings)</li>
+      <li>This one's going on Dave's desk Monday (identifies target for Rap Sheets)</li>
+    </ul>
+
+    <h3>Questions the Group Asks While Watching</h3>
+    <ul>
+      <li>Read another one! (wanting more content after the first card)</li>
+      <li>Do they all have something on the back? (discovering the dual-sided mechanic)</li>
+      <li>Which one is the best? (comparing deck favorites)</li>
+      <li>Can I see the passive-aggressive ones? (reaching for Sweet Nothings)</li>
+    </ul>
+
+    <h3>Questions Asked After Unboxing (Days/Weeks Later)</h3>
+    <ul>
+      <li>Which card deck was the mean one again? (returning to deploy cards)</li>
+      <li>Did you leave that card on my desk? (coworker discovering a deployed Sweet Nothing)</li>
+      <li>Where can I get these? (coworker who received a card wanting the full kit)</li>
+    </ul>
+
+    <h3>Questions the Buyer Asks Post-Purchase</h3>
+    <ul>
+      <li>Did they like the cards? (checking which deck was the favorite)</li>
+      <li>Have they been using them at work? (hoping for ongoing deployment)</li>
+      <li>Does this company make other card sets? (interest in expanding the collection)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>The Office Humor Card Landscape</h3>
+    <ul>
+      <li>Amazon has many card-based humor products: Cards Against Humanity variants, novelty affirmation decks, office-themed card games, funny desk card sets</li>
+      <li>Most are either party games (requiring 3+ players and time commitment) or single-format decks (one joke style, one look)</li>
+      <li>Very few are designed as "deployment cards" - cards meant to be given to or left for individual coworkers</li>
+      <li>None exist within a larger branded comedy world with a character voice</li>
+    </ul>
+
+    <h3>Where Party Card Games Fall Short (for Our Context)</h3>
+    <ul>
+      <li>Require group commitment and time - can't be used spontaneously</li>
+      <li>Sit on a shelf between game nights</li>
+      <li>No social deployment mechanic - they're played, not given</li>
+      <li>No ongoing office integration</li>
+    </ul>
+
+    <h3>Where Single-Format Humor Decks Fall Short</h3>
+    <ul>
+      <li>One visual identity, one joke style - gets repetitive fast</li>
+      <li>No character voice tying cards together</li>
+      <li>No dual-sided reveal mechanic</li>
+      <li>Usually consumed in one sitting and forgotten</li>
+      <li>Generic packaging with no comedy value</li>
+    </ul>
+
+    <h3>Card Decks' Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Party Card Games</th>
+          <th>Single-Format Humor Decks</th>
+          <th>Office Survival Kit Card Decks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Use case</td><td>Scheduled game night</td><td>Read once and done</td><td>Deploy to coworkers daily</td></tr>
+        <tr><td>Humor style</td><td>Shock/combination comedy</td><td>One joke format</td><td>Three distinct comedy styles</td></tr>
+        <tr><td>Visual variety</td><td>One box, one look</td><td>One box, one look</td><td>Three boxes with unique aesthetics</td></tr>
+        <tr><td>Dual-sided</td><td>Usually one side</td><td>Usually one side</td><td>Every card has front/back reveal</td></tr>
+        <tr><td>Character voice</td><td>None</td><td>None</td><td>Brad Sterling on every card back</td></tr>
+        <tr><td>Brand world</td><td>None</td><td>None</td><td>Three Elevate Co. divisions</td></tr>
+        <tr><td>Social reach</td><td>Requires group</td><td>Solo reading</td><td>Cards travel to other people's desks</td></tr>
+        <tr><td>Replay value</td><td>Good (game mechanic)</td><td>Low</td><td>High (new situations trigger new deployments)</td></tr>
+        <tr><td>Office integration</td><td>None</td><td>Low</td><td>High (designed for workplace use)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+    <ul>
+      <li>The three-deck visual system is a product design choice competitors would need to replicate entirely, not just copy one element of</li>
+      <li>Brad Sterling's accumulated character across 45 cards creates a comedic relationship that standalone decks can't build</li>
+      <li>The "deployment" mechanic (give to or leave for coworkers) is a product behavior pattern, not just a joke - it extends the product's social reach organically</li>
+      <li>The cards exist within a kit context, giving them narrative weight that standalone card products don't have</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1 - Each Card Is a Micro-Marketing Moment</h4>
+      <p>Every time a recipient leaves a Sweet Nothing on a coworker's desk, that coworker experiences the product without buying it. They laugh. They ask where it came from. They might search for the kit. The cards are a referral engine disguised as comedy content. Each deployed card is an ad that the recipient voluntarily distributes.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2 - The Three Decks as a Mood Selector</h4>
+      <p>The three decks don't just offer variety - they offer emotional range. Having a rough morning? Pull a Cell Talk for ironic self-care. Someone finally crossed the line? Deploy a Rap Sheet. Feeling petty? Sweet Nothing on the printer. The recipient develops a relationship with the decks as emotional tools, not just joke products. This is why three decks beats one.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3 - Brad Sterling's Character Arc Is Hidden in 45 Cards</h4>
+      <p>Reading Brad's commentary across all three decks slowly reveals a coherent character: a man who genuinely believes he invented the concept of self-improvement, considers himself above the rules he enforces, and packages everything as a product. By card 30, the recipient isn't just laughing at individual jokes - they're laughing at Brad as a complete person. This accumulated comedy is impossible for single-joke products to achieve.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4 - The Deployment Mechanic Creates a Kit Census</h4>
+      <p>When cards start appearing on desks around the office, people who weren't at the unboxing become aware of the kit's existence. The cards "census" the office - they reach people who never saw the briefcase. This expands the product's footprint without additional purchases. In a 20-person office, one kit can be experienced by 15+ people through card deployment alone.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5 - The Luxury-Packaging-Over-Savage-Content Gap</h4>
+      <p>Sweet Nothings' design (blush pink, rose gold, ornamental flourishes, wax seal reading "HANDCRAFTED WITH PLAUSIBLE DENIABILITY") is the purest expression of the kit's comedy engine: format stays buttoned-up, content gets unleashed. This single deck demonstrates the product's comedy philosophy better than any description could. If a buyer "gets" Sweet Nothings, they'll trust that the rest of the kit understands comedy the same way.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6 - Cards Solve the "What Do I Do With This?" Problem</h4>
+      <p>Most gag gift items have no clear next action after the laugh. You laugh, you set it down, it's done. Cards have a built-in action: read the next one. And another. And another. Then: give one to Karen. The cards turn passive gift ownership into active social behavior. The product literally tells you what to do with it, and doing it is fun.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7 - The Three-Deck System Tests the Standalone Product Concept</h4>
+      <p>If post-launch data shows that one deck consistently gets more social media mentions, more specific Amazon reviews, or more "which one was the [X] one?" inquiries, it signals standalone product potential. Cell Talk could become its own SKU. Sweet Nothings could become a holiday gift. The three-deck format is a product testing framework disguised as a kit feature.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">The card decks aren't bonus content. They're the kit's long game.</p>
+
+    <p>The pen gets the first impression. The mug gets the big reveal. But the cards are the part of the kit that's still working a month later. They're the reason someone opens the briefcase again on a Tuesday afternoon, pulls out a Rap Sheet for the coworker who scheduled another meeting-about-a-meeting, and walks it over to their desk.</p>
+
+    <p>Every other item in the kit has a single moment: the unboxing. The cards have 45 moments, delivered one at a time, on the recipient's schedule, in their actual office, to their actual coworkers. They turn a gift into a behavior.</p>
+
+    <p>This is why the card content is the single most important creative investment in the kit. The pen needs to feel premium. The mug needs to surprise. But the cards need to be so funny, so specific, and so deployable that the recipient can't help but use them. That's what separates a gift that gets appreciated from a gift that gets remembered.</p>
+
+    <h3>Implication for All Content Creation</h3>
+    <ul>
+      <li>Card content quality is the hardest thing to show in listing images and the most important thing to get right</li>
+      <li>Feature the 3-4 strongest cards from each deck prominently in the listing carousel</li>
+      <li>Reviews that quote specific cards are the single most valuable social proof the kit can earn</li>
+      <li>The three distinct visual identities must be visible in product photos - the "three different products" impression drives perceived value</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. 15 cards per deck is the final count</strong> - This profile assumes 15 cards each for Cell Talk, Rap Sheets, and Sweet Nothings. If the count increases to 20, the value proposition strengthens but COGS rise. If it drops to 10, the decks may feel thin.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. All 45 cards meet a consistent quality bar</strong> - The comedy must be strong across every single card. One mediocre card in a deck of 15 is noticeable. This profile assumes every card has been written and tested to the same standard.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. The three distinct visual identities will read as distinct at box size</strong> - At ~4" x 2.5", the sage green, black/amber, and blush pink palettes need to be clearly different at a glance. Assuming the design execution achieves this.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Recipients will actually deploy cards to coworkers</strong> - The "deployment" strategy depends on recipients being social enough to hand cards to colleagues. If most recipients just read the cards and put them back in the box, the long-game value proposition weakens.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Business card format is the right size</strong> - 3.5" x 2" is easy to produce and familiar to hold, but it constrains the amount of text per card. Brad's longer commentaries (Rap Sheets especially) need to fit at a readable font size.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Dual-sided printing at business card quality is cost-viable</strong> - Full color both sides on 14-16pt stock across 45 cards needs to be priced within kit COGS.</p>
+    </div>
+
+    <hr>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Card content is the strongest asset but also the most fragile</strong> - If any cards feel like filler, recycled internet humor, or forced, the entire deck credibility drops. Every card needs final review and testing.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Box copy for all three decks is incomplete</strong> - Each box has 6 printable surfaces. The design briefs define direction and some surface copy, but final box text for all surfaces needs a dedicated writing session.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. Card printing method not confirmed</strong> - Digital printing vs. offset at 45 cards x [kit volume] affects quality, cost, and timeline. Need quotes from production partners.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. No physical card mockup tested</strong> - Font sizes, readability, and the flip-and-read experience have not been validated with printed samples. Longer Brad quotes (Rap Sheets Cards 2, 5, 6) may need trimming for fit.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Sweet Nothings' longest cards may not fit format</strong> - Cards 2 and 7 have longer back-side text. Need to confirm they fit at a readable size on a 3.5" x 2" card or identify which can be trimmed.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Deployment behavior is untested</strong> - The assumption that recipients will give cards to coworkers has not been validated with real people. May need an insert or instruction card in each box suggesting deployment.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Naming hierarchy unresolved (same as all items)</strong> - "Cell Talk" vs. "Self-Actualization Protocol&trade; Cards" hero treatment on each box depends on the kit-wide naming decision.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1 - Print Physical Card Samples Before Finalizing Content</h4>
+      <ul>
+        <li>The longest Brad quotes (Rap Sheets Cards 2, 5, 6, 12; Sweet Nothings Cards 2, 7, 14) may need trimming to fit 3.5" x 2" at readable font size</li>
+        <li>Print all 45 cards at actual size and verify readability</li>
+        <li>A card that's funny but illegible is worse than a card that's slightly shorter and scannable</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2 - Test the Deployment Mechanic with Real People</h4>
+      <ul>
+        <li>Give 3-5 people a set of cards and ask them to use them at work over a week</li>
+        <li>Track which cards actually get deployed, which just get read, and which get shared digitally</li>
+        <li>If deployment rates are low, consider adding a small instruction insert ("How to Deploy" card) in each box</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3 - Feature Individual Card Content in Listing Images</h4>
+      <ul>
+        <li>The cards are only as valuable as the buyer's confidence in the humor</li>
+        <li>Dedicate at least 2 listing images to closeup shots of individual cards (front and back)</li>
+        <li>Choose the strongest cards from each deck: Shopping cart wheel (Sweet Nothings 8), Microwave (Rap Sheets 3), and "I am enough" (Cell Talk 1) are strong candidates</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4 - Finalize Box Copy for All Three Decks</h4>
+      <ul>
+        <li>Each box has 6 surfaces, and the design briefs define direction but not final text</li>
+        <li>Run a dedicated copy session for each box, using the same "every surface has content" approach as the Cubicle Shank box</li>
+        <li>The boxes need to be entertaining before the recipient even opens them</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5 - Confirm Card Stock and Finish</h4>
+      <ul>
+        <li>Matte or soft-touch finish affects how the cards feel in hand and how they photograph</li>
+        <li>Request samples of both finishes at 14pt and 16pt</li>
+        <li>The cards should feel like premium stationery, not cheap business cards</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6 - Consider a "Best Of" Showcase Card</h4>
+      <ul>
+        <li>Include one showcase card from each deck face-up when the box is opened, so the first card the recipient sees is a strong one</li>
+        <li>First impressions apply to card decks just like they apply to the kit overall</li>
+        <li>Cell Talk Card 1 ("I am enough"), Rap Sheets Card 3 (microwave), and Sweet Nothings Card 8 (shopping cart wheel) are strong openers</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7 - Track Which Deck Gets the Most Social Mentions Post-Launch</h4>
+      <ul>
+        <li>If Sweet Nothings consistently outperforms, it signals standalone SKU potential</li>
+        <li>If Cell Talk's "morning affirmation" ritual takes off, it could become a desk calendar product</li>
+        <li>The three-deck format is a built-in A/B/C test for future product line expansion</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+// Extract markdown-formatted plain text (bold preserved as **bold**)
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

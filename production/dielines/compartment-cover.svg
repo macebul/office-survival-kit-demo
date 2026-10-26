@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 460 400"
+     width="460mm" height="400mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .panel-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 5px; fill: #444; text-anchor: middle; dominant-baseline: central; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; text-anchor: middle; }
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #666; text-anchor: middle; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #999; text-anchor: middle; }
+    .legend-cut { stroke: #E60000; stroke-width: 0.5; }
+    .legend-fold { stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; }
+    .zone-fill-top { fill: #e2ecf4; stroke: none; opacity: 0.5; }
+    .zone-fill-wall { fill: #fef3e2; stroke: none; opacity: 0.5; }
+    .zone-fill-flap { fill: #e8f4e8; stroke: none; opacity: 0.5; }
+  </style>
+
+  <!-- COMPARTMENT COVER (J-SHAPED) — FLAT DIELINE -->
+  <!-- Single piece that folds into a J shape -->
+  <!-- Top surface: 342.9 x 101.6 mm (13.5" x 4.0") -->
+  <!-- Vertical wall: 342.9 x 105.7 mm (~4.16" drop) -->
+  <!-- Floor flap: 342.9 x 76.2 mm (3.0" forward extension) -->
+  <!-- Total flat: 342.9 x 283.5 mm -->
+  <!-- Material: ~24pt rigid paperboard, dark carbon fiber texture -->
+
+  <text x="230" y="14" class="title">COMPARTMENT COVER — J-SHAPED FLAT DIELINE</text>
+  <text x="230" y="22" class="subtitle">342.9 mm wide × 283.5 mm total flat height — Folds into J-shape</text>
+  <text x="230" y="28" class="subtitle">Material: ~24pt rigid paperboard, dark carbon fiber texture, both sides printable</text>
+
+  <line x1="55" y1="37" x2="70" y2="37" class="legend-cut" fill="none"/>
+  <text x="73" y="38" class="legend-text" text-anchor="start">Cut / Die line</text>
+  <line x1="120" y1="37" x2="135" y2="37" class="legend-fold" fill="none"/>
+  <text x="138" y="38" class="legend-text" text-anchor="start">Fold / Crease line</text>
+
+  <!-- Zone fills -->
+  <rect x="50" y="55" width="342.9" height="101.6" class="zone-fill-top"/>
+  <rect x="50" y="156.6" width="342.9" height="105.7" class="zone-fill-wall"/>
+  <rect x="50" y="262.3" width="342.9" height="76.2" class="zone-fill-flap"/>
+
+  <!-- CUT LINE — Rectangle outline -->
+  <rect x="50" y="55" width="342.9" height="283.5" class="cut"/>
+
+  <!-- FOLD LINES -->
+  <line x1="50" y1="156.6" x2="392.9" y2="156.6" class="fold"/>
+  <line x1="50" y1="262.3" x2="392.9" y2="262.3" class="fold"/>
+
+  <!-- PANEL LABELS -->
+  <text x="221.45" y="100" class="panel-label">TOP SURFACE</text>
+  <text x="221.45" y="108" class="flap-label">342.9 × 101.6 mm (13.5" × 4.0")</text>
+  <text x="221.45" y="115" class="flap-label">Spans back zone opening — teaser copy on top face</text>
+  <text x="221.45" y="122" class="flap-label">Underside: narrative reveal copy</text>
+
+  <text x="221.45" y="205" class="panel-label">VERTICAL WALL</text>
+  <text x="221.45" y="213" class="flap-label">342.9 × 105.7 mm (13.5" × ~4.16")</text>
+  <text x="221.45" y="220" class="flap-label">Drops vertically at divider line — outer face flush with divider</text>
+  <text x="221.45" y="227" class="flap-label">Inner face visible when compartment is accessed</text>
+
+  <text x="221.45" y="293" class="panel-label">FLOOR FLAP</text>
+  <text x="221.45" y="301" class="flap-label">342.9 × 76.2 mm (13.5" × 3.0")</text>
+  <text x="221.45" y="308" class="flap-label">Extends forward under trays — trapped by tray stack weight</text>
+
+  <!-- Fold direction indicators -->
+  <text x="221.45" y="151" class="flap-label">↓ FOLD DOWN (90°) ↓</text>
+  <text x="221.45" y="258" class="flap-label">↓ FOLD FORWARD (90°) ↓</text>
+
+  <!-- RIGHT-SIDE DIMENSIONS -->
+  <line x1="392.9" y1="55" x2="420" y2="55" class="dim-line"/>
+  <line x1="392.9" y1="156.6" x2="420" y2="156.6" class="dim-line"/>
+  <line x1="392.9" y1="262.3" x2="420" y2="262.3" class="dim-line"/>
+  <line x1="392.9" y1="338.5" x2="420" y2="338.5" class="dim-line"/>
+
+  <line x1="410" y1="55" x2="410" y2="156.6" class="dim-arrow"/>
+  <text x="410" y="105.8" class="dim-text" transform="rotate(-90, 410, 105.8)">101.6 (top surface)</text>
+
+  <line x1="410" y1="156.6" x2="410" y2="262.3" class="dim-arrow"/>
+  <text x="410" y="209.45" class="dim-text" transform="rotate(-90, 410, 209.45)">105.7 (wall drop)</text>
+
+  <line x1="410" y1="262.3" x2="410" y2="338.5" class="dim-arrow"/>
+  <text x="410" y="300.4" class="dim-text" transform="rotate(-90, 410, 300.4)">76.2 (floor flap)</text>
+
+  <!-- Total height -->
+  <line x1="430" y1="55" x2="430" y2="338.5" class="dim-arrow"/>
+  <line x1="426" y1="55" x2="434" y2="55" class="dim-line"/>
+  <line x1="426" y1="338.5" x2="434" y2="338.5" class="dim-line"/>
+  <text x="430" y="196.75" class="dim-text" transform="rotate(-90, 430, 196.75)">Total: 283.5 mm</text>
+
+  <!-- BOTTOM DIMENSION (width) -->
+  <line x1="50" y1="338.5" x2="50" y2="352" class="dim-line"/>
+  <line x1="392.9" y1="338.5" x2="392.9" y2="352" class="dim-line"/>
+  <line x1="50" y1="348" x2="392.9" y2="348" class="dim-arrow"/>
+  <text x="221.45" y="346" class="dim-text">Width: 342.9 mm (13.5")</text>
+
+  <!-- NOTES -->
+  <text x="230" y="365" class="note">J-shaped compartment cover: single flat piece that folds at two crease lines to form a J-profile.</text>
+  <text x="230" y="370" class="note">Top surface rests on back zone walls. Wall drops at divider. Floor flap extends under tray stack.</text>
+  <text x="230" y="375" class="note">Both sides of top surface are printable. Material thickness: ~1.6mm (~24pt rigid paperboard).</text>
+
+
+</svg>

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 700 950"
+     width="700mm" height="950mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .hinge { fill: none; stroke: #CC6600; stroke-width: 0.5; stroke-dasharray: 5,2,1,2; }
+    .panel-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #444; text-anchor: middle; dominant-baseline: central; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; text-anchor: middle; }
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #666; text-anchor: middle; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #999; text-anchor: middle; }
+    .legend-cut { stroke: #E60000; stroke-width: 0.5; }
+    .legend-fold { stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .legend-hinge { stroke: #CC6600; stroke-width: 0.5; stroke-dasharray: 5,2,1,2; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; }
+    .lid-fill { fill: #e2ecf4; stroke: none; opacity: 0.3; }
+    .wall-fill { fill: #fef3e2; stroke: none; opacity: 0.3; }
+    .floor-fill { fill: #f5f5f5; stroke: none; }
+    .tab-fill { fill: #f0f0f0; stroke: none; opacity: 0.5; }
+    .zone-line { stroke: #00AA00; stroke-width: 0.4; stroke-dasharray: 2,1.5; }
+    .zone-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #00AA00; text-anchor: middle; dominant-baseline: central; }
+    .zone-fill-front { fill: #e8f4e8; stroke: none; opacity: 0.2; }
+    .zone-fill-back { fill: #f4e8e8; stroke: none; opacity: 0.2; }
+  </style>
+
+  <!-- BRIEFCASE — HINGED CLAMSHELL DIELINE -->
+  <!-- Exterior: 355.6 x 292.1 x 127.0 mm (14.0" x 11.5" x 5.0") -->
+  <!-- Material: 24pt paperboard, matte black exterior -->
+  <!-- Walls: 6.35mm (0.25") thick all around -->
+  <!-- Interior depth: 114.3mm (4.5") -->
+  <!-- Lid: 6.35mm thick, hinged at back edge -->
+
+  <!-- Layout (unfolded from top to bottom): -->
+  <!--   LID (355.6 x 292.1) -->
+  <!--   HINGE -->
+  <!--   BACK WALL (355.6 x 114.3) -->
+  <!--   FLOOR (355.6 x 292.1) with side walls extending left/right -->
+  <!--   FRONT WALL (355.6 x 114.3) -->
+
+  <!-- Positions: -->
+  <!-- x: side_left=50, floor_left=164.3, floor_right=519.9, side_right=634.2 -->
+  <!-- y: lid_top=55, lid_bot=347.1, back_top=347.1, back_bot=461.4 -->
+  <!--    floor_top=461.4, floor_bot=753.5, front_top=753.5, front_bot=867.8 -->
+
+  <text x="350" y="14" class="title">BRIEFCASE — HINGED CLAMSHELL DIELINE</text>
+  <text x="350" y="22" class="subtitle">355.6 × 292.1 × 127.0 mm (14.0" × 11.5" × 5.0") — 24pt paperboard, matte black</text>
+  <text x="350" y="28" class="subtitle">Magnetic closure (4× neodymium), die-cut cardboard handle, printed clasps</text>
+
+  <!-- Legend -->
+  <line x1="50" y1="38" x2="65" y2="38" class="legend-cut" fill="none"/>
+  <text x="68" y="39" class="legend-text" text-anchor="start">Cut / Die line</text>
+  <line x1="115" y1="38" x2="130" y2="38" class="legend-fold" fill="none"/>
+  <text x="133" y="39" class="legend-text" text-anchor="start">Fold / Crease line</text>
+  <line x1="185" y1="38" x2="200" y2="38" class="legend-hinge" fill="none"/>
+  <text x="203" y="39" class="legend-text" text-anchor="start">Hinge</text>
+  <line x1="235" y1="38" x2="250" y2="38" class="zone-line" fill="none"/>
+  <text x="253" y="39" class="legend-text" text-anchor="start">Interior zone divider</text>
+
+  <!-- ============================================ -->
+  <!-- PANEL FILLS                                  -->
+  <!-- ============================================ -->
+
+  <!-- Lid -->
+  <rect x="164.3" y="55" width="355.6" height="292.1" class="lid-fill"/>
+  <!-- Back wall -->
+  <rect x="164.3" y="347.1" width="355.6" height="114.3" class="wall-fill"/>
+  <!-- Floor -->
+  <rect x="164.3" y="461.4" width="355.6" height="292.1" class="floor-fill"/>
+  <!-- Front wall -->
+  <rect x="164.3" y="753.5" width="355.6" height="114.3" class="wall-fill"/>
+  <!-- Left side wall -->
+  <rect x="50" y="461.4" width="114.3" height="292.1" class="wall-fill"/>
+  <!-- Right side wall -->
+  <rect x="519.9" y="461.4" width="114.3" height="292.1" class="wall-fill"/>
+  <!-- Corner tabs -->
+  <rect x="50" y="347.1" width="114.3" height="114.3" class="tab-fill"/>
+  <rect x="519.9" y="347.1" width="114.3" height="114.3" class="tab-fill"/>
+  <rect x="50" y="753.5" width="114.3" height="114.3" class="tab-fill"/>
+  <rect x="519.9" y="753.5" width="114.3" height="114.3" class="tab-fill"/>
+
+  <!-- Interior zone fills on floor -->
+  <!-- Back zone: from floor_top + wall_thickness to divider -->
+  <!-- Wall thickness = 6.35, back zone depth = 107.95 -->
+  <!-- y: 461.4 + 6.35 = 467.75 to 467.75 + 107.95 = 575.7 -->
+  <rect x="170.65" y="467.75" width="342.9" height="107.95" class="zone-fill-back"/>
+  <!-- Front zone: from divider + thickness to floor_bottom - wall_thickness -->
+  <!-- Divider at y=575.7, thickness=6.35, front zone = 165.1 -->
+  <!-- y: 575.7 + 6.35 = 582.05 to 582.05 + 165.1 = 747.15 -->
+  <rect x="170.65" y="582.05" width="342.9" height="165.1" class="zone-fill-front"/>
+
+  <!-- ============================================ -->
+  <!-- CUT LINES                                    -->
+  <!-- ============================================ -->
+
+  <!-- Lid outline (separate piece, connects at hinge) -->
+  <rect x="164.3" y="55" width="355.6" height="292.1" class="cut"/>
+
+  <!-- Base cross outline -->
+  <path class="cut" d="
+    M 164.3,347.1
+    L 50,347.1
+    L 50,867.8
+    L 164.3,867.8
+    L 164.3,753.5
+    L 519.9,753.5
+    L 519.9,867.8
+    L 634.2,867.8
+    L 634.2,347.1
+    L 519.9,347.1
+    L 519.9,461.4
+    L 164.3,461.4
+    Z
+  "/>
+
+  <!-- Corner cuts -->
+  <line x1="50" y1="461.4" x2="164.3" y2="461.4" class="cut"/>
+  <line x1="519.9" y1="461.4" x2="634.2" y2="461.4" class="cut"/>
+  <line x1="50" y1="753.5" x2="164.3" y2="753.5" class="cut"/>
+  <line x1="519.9" y1="753.5" x2="634.2" y2="753.5" class="cut"/>
+
+  <!-- ============================================ -->
+  <!-- FOLD LINES                                   -->
+  <!-- ============================================ -->
+
+  <!-- Back wall / Floor fold -->
+  <line x1="164.3" y1="461.4" x2="519.9" y2="461.4" class="fold"/>
+  <!-- Floor / Front wall fold -->
+  <line x1="164.3" y1="753.5" x2="519.9" y2="753.5" class="fold"/>
+  <!-- Left side wall folds -->
+  <line x1="164.3" y1="347.1" x2="164.3" y2="867.8" class="fold"/>
+  <!-- Right side wall folds -->
+  <line x1="519.9" y1="347.1" x2="519.9" y2="867.8" class="fold"/>
+
+  <!-- ============================================ -->
+  <!-- HINGE LINE (Lid to Back wall)                -->
+  <!-- ============================================ -->
+
+  <line x1="164.3" y1="347.1" x2="519.9" y2="347.1" class="hinge"/>
+  <text x="342.1" y="343" class="flap-label" fill="#CC6600">HINGE — lid folds open here</text>
+
+  <!-- ============================================ -->
+  <!-- INTERIOR ZONE DIVIDERS (on floor panel)      -->
+  <!-- ============================================ -->
+
+  <!-- Compartment cover positions -->
+  <line x1="170.65" y1="575.7" x2="513.55" y2="575.7" class="zone-line"/>
+  <line x1="170.65" y1="582.05" x2="513.55" y2="582.05" class="zone-line"/>
+  <!-- Compartment cover floor flap (76.2mm forward from divider) -->
+  <line x1="170.65" y1="658.25" x2="513.55" y2="658.25" class="zone-line"/>
+
+  <!-- ============================================ -->
+  <!-- PANEL LABELS                                 -->
+  <!-- ============================================ -->
+
+  <!-- Lid -->
+  <text x="342.1" y="190" class="panel-label">LID PANEL (EXTERIOR: TOP SURFACE)</text>
+  <text x="342.1" y="198" class="flap-label">355.6 × 292.1 mm (14.0" × 11.5")</text>
+  <text x="342.1" y="206" class="flap-label">Exterior: main label, rubber stamp, barcode/evidence tag</text>
+  <text x="342.1" y="214" class="flap-label">Interior: full printable surface (~342.9 × ~279.4 mm)</text>
+
+  <!-- Back wall -->
+  <text x="342.1" y="398" class="panel-label">BACK WALL</text>
+  <text x="342.1" y="406" class="flap-label">355.6 × 114.3 mm (14.0" × 4.5")</text>
+  <text x="342.1" y="414" class="flap-label">Exterior: back face of briefcase</text>
+
+  <!-- Floor -->
+  <text x="342.1" y="600" class="panel-label">FLOOR / BASE</text>
+  <text x="342.1" y="608" class="flap-label">355.6 × 292.1 mm (14.0" × 11.5")</text>
+
+  <!-- Interior zone labels -->
+  <text x="342.1" y="520" class="zone-label">BACK ZONE (mug compartment)</text>
+  <text x="342.1" y="527" class="flap-label">Interior: ~342.9 × ~107.95 mm (13.5" × 4.25")</text>
+  <text x="342.1" y="534" class="flap-label">Hidden compartment — mug + shredded paper + foam backup</text>
+
+  <text x="342.1" y="576" class="flap-label" fill="#00AA00">← COMPARTMENT COVER — vertical surface (6.35mm thick, full height) →</text>
+
+  <text x="342.1" y="618" class="flap-label" fill="#00AA00">COMPARTMENT COVER — floor flap (76.2mm)</text>
+  <text x="342.1" y="625" class="flap-label">Trapped under tray stack weight</text>
+
+  <text x="342.1" y="680" class="zone-label">FRONT ZONE (tray zone)</text>
+  <text x="342.1" y="687" class="flap-label">Interior: ~342.9 × ~165.1 mm (13.5" × 6.5")</text>
+  <text x="342.1" y="694" class="flap-label">Tray 1 + Tray 2 stacked here, doc sets between</text>
+
+  <!-- Front wall -->
+  <text x="342.1" y="798" class="panel-label">FRONT WALL (HANDLE SIDE)</text>
+  <text x="342.1" y="806" class="flap-label">355.6 × 114.3 mm (14.0" × 4.5")</text>
+  <text x="342.1" y="814" class="flap-label">Exterior: handle (centered), 2× printed clasps, IT asset tag, INSPECTED BY: GARY, FRAGILE</text>
+  <text x="342.1" y="822" class="flap-label">Interior: 4× neodymium magnets embedded along this edge</text>
+
+  <!-- Side walls -->
+  <text x="107.15" y="600" class="panel-label" transform="rotate(-90, 107.15, 600)">LEFT SIDE WALL</text>
+  <text x="107.15" y="614" class="flap-label" transform="rotate(-90, 107.15, 614)">292.1 × 114.3</text>
+  <text x="577.05" y="600" class="panel-label" transform="rotate(-90, 577.05, 600)">RIGHT SIDE WALL</text>
+  <text x="577.05" y="614" class="flap-label" transform="rotate(-90, 577.05, 614)">292.1 × 114.3</text>
+
+  <!-- Corner tab labels -->
+  <text x="107.15" y="404" class="flap-label">TAB</text>
+  <text x="577.05" y="404" class="flap-label">TAB</text>
+  <text x="107.15" y="810" class="flap-label">TAB</text>
+  <text x="577.05" y="810" class="flap-label">TAB</text>
+
+  <!-- ============================================ -->
+  <!-- DIMENSION ANNOTATIONS                        -->
+  <!-- ============================================ -->
+
+  <!-- Right side: Lid height -->
+  <line x1="519.9" y1="55" x2="655" y2="55" class="dim-line"/>
+  <line x1="519.9" y1="347.1" x2="655" y2="347.1" class="dim-line"/>
+  <line x1="648" y1="55" x2="648" y2="347.1" class="dim-arrow"/>
+  <text x="648" y="201" class="dim-text" transform="rotate(-90, 648, 201)">Lid: 292.1 (11.5")</text>
+
+  <!-- Right side: Back wall height -->
+  <line x1="634.2" y1="461.4" x2="655" y2="461.4" class="dim-line"/>
+  <line x1="648" y1="347.1" x2="648" y2="461.4" class="dim-arrow"/>
+  <text x="648" y="404" class="dim-text" transform="rotate(-90, 648, 404)">Wall: 114.3 (4.5")</text>
+
+  <!-- Right side: Floor height -->
+  <line x1="634.2" y1="753.5" x2="655" y2="753.5" class="dim-line"/>
+  <line x1="648" y1="461.4" x2="648" y2="753.5" class="dim-arrow"/>
+  <text x="648" y="607.45" class="dim-text" transform="rotate(-90, 648, 607.45)">Floor: 292.1 (11.5")</text>
+
+  <!-- Right side: Front wall height -->
+  <line x1="634.2" y1="867.8" x2="655" y2="867.8" class="dim-line"/>
+  <line x1="648" y1="753.5" x2="648" y2="867.8" class="dim-arrow"/>
+  <text x="648" y="810" class="dim-text" transform="rotate(-90, 648, 810)">Wall: 114.3 (4.5")</text>
+
+  <!-- Far right: Total height -->
+  <line x1="668" y1="55" x2="668" y2="867.8" class="dim-arrow"/>
+  <line x1="664" y1="55" x2="672" y2="55" class="dim-line"/>
+  <line x1="664" y1="867.8" x2="672" y2="867.8" class="dim-line"/>
+  <text x="668" y="461.4" class="dim-text" transform="rotate(-90, 668, 461.4)">Total flat height: 812.8 mm</text>
+
+  <!-- Bottom: Floor width -->
+  <line x1="164.3" y1="867.8" x2="164.3" y2="890" class="dim-line"/>
+  <line x1="519.9" y1="867.8" x2="519.9" y2="890" class="dim-line"/>
+  <line x1="164.3" y1="883" x2="519.9" y2="883" class="dim-arrow"/>
+  <text x="342.1" y="881" class="dim-text">Floor / Lid width: 355.6 mm (14.0")</text>
+
+  <!-- Bottom: Side wall width -->
+  <line x1="50" y1="867.8" x2="50" y2="890" class="dim-line"/>
+  <line x1="50" y1="887" x2="164.3" y2="887" class="dim-arrow"/>
+  <text x="107.15" y="885" class="dim-text">114.3</text>
+
+  <line x1="634.2" y1="867.8" x2="634.2" y2="890" class="dim-line"/>
+  <line x1="519.9" y1="887" x2="634.2" y2="887" class="dim-arrow"/>
+  <text x="577.05" y="885" class="dim-text">114.3</text>
+
+  <!-- Bottom: Total width -->
+  <line x1="50" y1="895" x2="634.2" y2="895" class="dim-arrow"/>
+  <text x="342.1" y="893" class="dim-text">Total flat width: 584.2 mm</text>
+
+  <!-- Interior zone dimensions (left side of floor) -->
+  <line x1="164.3" y1="467.75" x2="42" y2="467.75" class="dim-line"/>
+  <line x1="164.3" y1="575.7" x2="42" y2="575.7" class="dim-line"/>
+  <line x1="164.3" y1="582.05" x2="42" y2="582.05" class="dim-line"/>
+  <line x1="164.3" y1="747.15" x2="42" y2="747.15" class="dim-line"/>
+
+  <line x1="35" y1="467.75" x2="35" y2="575.7" class="dim-arrow"/>
+  <text x="35" y="521.7" class="dim-text" transform="rotate(-90, 35, 521.7)">Back zone: 107.95 (4.25")</text>
+
+  <line x1="35" y1="582.05" x2="35" y2="747.15" class="dim-arrow"/>
+  <text x="35" y="664.6" class="dim-text" transform="rotate(-90, 35, 664.6)">Front zone: 165.1 (6.5")</text>
+
+  <line x1="25" y1="575.7" x2="25" y2="582.05" class="dim-arrow"/>
+  <text x="18" y="578.875" class="dim-text" transform="rotate(-90, 18, 578.875)">6.35</text>
+
+  <!-- ============================================ -->
+  <!-- NOTES                                        -->
+  <!-- ============================================ -->
+
+  <text x="350" y="910" class="note">24pt paperboard throughout. Walls 6.35mm (0.25") thick. Matte black exterior, interior surfaces printable.</text>
+  <text x="350" y="915" class="note">Lid hinged at back edge. 4× neodymium disc magnets along front wall edge for closure.</text>
+  <text x="350" y="920" class="note">Interior: J-shaped compartment cover separates front tray zone from back mug compartment (see compartment-cover dieline).</text>
+  <text x="350" y="925" class="note">Cover's vertical surface acts as divider wall; floor flap (76.2mm) extends forward under tray stack.</text>
+  <text x="350" y="930" class="note">Handle: die-cut cardboard, duct-tape wrapped, centered on front wall exterior. Clasps: printed graphics (flat, no emboss).</text>
+  <text x="350" y="935" class="note">All dimensions in millimeters (mm). Interior features shown for reference.</text>
+
+</svg>

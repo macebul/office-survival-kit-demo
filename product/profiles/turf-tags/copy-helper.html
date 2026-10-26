@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turf Tags - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Turf Tags <span>Product Profile</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#a1"><span class="num">01.</span> Basic Product Profile</a>
+    <a href="#a8"><span class="num">08.</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a2"><span class="num">02.</span> Strategic Overview</a>
+    <a href="#a9"><span class="num">09.</span> Buyer Questions Map</a>
+    <a href="#a3"><span class="num">03.</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10.</span> Competitive Differentiation</a>
+    <a href="#a4"><span class="num">04.</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11.</span> Non-Obvious Angles</a>
+    <a href="#a5"><span class="num">05.</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12.</span> The Big Idea</a>
+    <a href="#a6"><span class="num">06.</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13.</span> Assumptions &amp; Gaps</a>
+    <a href="#a7"><span class="num">07.</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14.</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a1">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Product Identity</h3>
+    <ul>
+      <li><strong>Product Name:</strong> Turf Tags</li>
+      <li><strong>Brad Sterling's Corporate Rebrand:</strong> Workspace Personalization Labels&trade;</li>
+      <li><strong>Parent Product:</strong> Office Survival Kit (Item 3 of 7 + 1 empty recess)</li>
+      <li><strong>Brand:</strong> Witty Yeti (Amazon brand)</li>
+      <li><strong>In-Universe Brand:</strong> Elevate Co. (fictional company, appears in product copy)</li>
+      <li><strong>Division:</strong> Territorial Compliance Division</li>
+      <li><strong>Product Type:</strong> Die-cut adhesive stickers for workspace territory-marking, with custom printed tuck-end item box</li>
+    </ul>
+
+    <h3>Role in Kit</h3>
+    <ul>
+      <li>The most physically deployable item in the kit - stickers leave the briefcase and enter the workplace</li>
+      <li>Transforms "office supplies" into territory-marking tools</li>
+      <li>Highest word-of-mouth potential - each deployed sticker is a visible conversation starter at someone's desk, fridge, or equipment</li>
+      <li>Overcomes the "stickers are filler" perception through premium packaging and territorial framing</li>
+    </ul>
+
+    <h3>Physical Specs - Sticker Strip</h3>
+    <ul>
+      <li><strong>Strip size:</strong> ~4.5" x 1.25"</li>
+      <li><strong>Individual count:</strong> 6-12 stickers (final count pending - box currently reads "CONTAINS: 12")</li>
+      <li><strong>Individual sizes:</strong> Mix of small (~0.75") and medium (~1.5"-2")</li>
+      <li><strong>Material:</strong> Vinyl preferred (durable, water-resistant); paper acceptable if significant cost savings</li>
+      <li><strong>Finish:</strong> Matte or glossy (open to recommendation)</li>
+      <li><strong>Cut:</strong> Die-cut to shape preferred; kiss-cut acceptable</li>
+    </ul>
+
+    <h3>Item Box</h3>
+    <ul>
+      <li><strong>Box type:</strong> Tuck-end (flat format)</li>
+      <li><strong>Dimensions:</strong> ~5" x 3.5" x 0.5" (working estimate)</li>
+      <li><strong>Material:</strong> Printed paperboard (14-18pt)</li>
+      <li><strong>Print:</strong> Full color, all 6 exterior sides</li>
+      <li><strong>Color:</strong> Bold yellow (caution tape / warning sign / construction zone aesthetic)</li>
+      <li><strong>Design:</strong> Brad Sterling's Elevate Co. retail branding with "Territorial Compliance Division" header</li>
+      <li><strong>Hero illustration:</strong> Black silhouette of a dog lifting its leg on an office chair</li>
+      <li><strong>Interior tuck flap:</strong> "START WITH THE FRIDGE."</li>
+    </ul>
+
+    <h3>Approved Copy</h3>
+    <ul>
+      <li><strong>Subheader:</strong> "MARK YOUR TERRITORY."</li>
+      <li><strong>Subtitle:</strong> "Because Asking Nicely Didn't Work."</li>
+      <li><strong>Packaging panel copy:</strong> "Every desk. Every mug. Every stapler that 'wandered off.' Claim it. Tag it. Sleep soundly. These aren't decorations. They're boundaries."</li>
+      <li><strong>Bottom face thesis:</strong> "SHARING IS ~~CARING~~ OVER."</li>
+    </ul>
+
+    <h3>Key Box Copy</h3>
+    <ul>
+      <li><strong>Front fine print:</strong> "This product has been used as evidence in 3 workplace disputes and 1 divorce."</li>
+      <li><strong>Instruction panel (top edge):</strong> PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT (IKEA-style icons)</li>
+      <li><strong>Right side:</strong> "9/5 STARS - BRAD STERLING" (Brad rates himself above the scale)</li>
+      <li><strong>Left side:</strong> "NOT RESPONSIBLE FOR DISPUTES, CONFRONTATIONS, OR AT ANYONE BIGGER THAN YOU."</li>
+      <li><strong>Back face:</strong> "TERRITORIAL ASSESSMENT REPORT / Form WPL-7" with Brad's photo and quote</li>
+    </ul>
+
+    <h3>Discovery Context</h3>
+    <ul>
+      <li>Tray 1, wide back recess (right side, alongside Lifer Ink)</li>
+      <li>Same tray as Cubicle Shank (center) and Lifer Ink (left)</li>
+      <li>Yellow box creates immediate visual contrast against other items in the tray</li>
+      <li>Dog silhouette visible from above communicates the concept before the box is picked up</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a2">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <ul>
+      <li>Adhesive stickers reframed as territory-marking contraband for the workplace</li>
+      <li>The prison parallel made operational: inmates mark territory through dominance, office workers do it through passive-aggressive labeling</li>
+      <li>Three layers of comedy: the concept (marking office territory like a dog), Brad's framing (a legitimate Territorial Compliance Division), and the designs themselves (stickers that are funny enough to actually deploy)</li>
+    </ul>
+
+    <h3>Strategic Position Within the Kit</h3>
+    <ul>
+      <li>The most physically deployable item in the kit - stickers are designed to leave the briefcase and enter the workplace</li>
+      <li>While the pen stays on a desk and the tattoos stay on a person, stickers scatter across the office - on fridges, monitors, chairs, water bottles</li>
+      <li>Each deployed sticker is an outpost for the kit's brand and humor</li>
+      <li>Sits in Tray 1 alongside Cubicle Shank and Lifer Ink, contributing to the "item discovery" phase</li>
+    </ul>
+
+    <h3>Why This Item Matters</h3>
+    <ul>
+      <li>Stickers have the highest perception problem in the kit - recipients expect them to be cheap filler</li>
+      <li>But they also have the highest deployment potential - they physically enter shared office spaces</li>
+      <li>A sticker on the break room fridge is visible to dozens of coworkers who never saw the kit</li>
+      <li>The yellow box with dog illustration creates the strongest visual identity of any item box in the tray</li>
+    </ul>
+
+    <h3>Key Strategic Tension</h3>
+    <ul>
+      <li>Must overcome the "oh, stickers" dismissal that plague every sticker-based product component</li>
+      <li>The box packaging must work harder than any other item box because the category expectation is lowest</li>
+      <li>If the sticker designs aren't funny enough to deploy, they stay in the box and the social value never activates</li>
+      <li>The bold yellow color and dog illustration are doing the heavy lifting to signal "these stickers are different"</li>
+    </ul>
+
+    <h3>Box as Standalone Entertainment</h3>
+    <ul>
+      <li>The yellow box is designed to be the most immediately eye-catching item in Tray 1</li>
+      <li>The IKEA-style instruction panel (PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT) is a read-aloud comedy piece</li>
+      <li>Brad's "Territorial Assessment Report" on the back face is a standalone comedy document</li>
+      <li>The bottom face thesis ("SHARING IS ~~CARING~~ OVER.") rewards the instinct to flip the box over</li>
+      <li>"START WITH THE FRIDGE." on the tuck flap primes deployment behavior before the stickers are even visible</li>
+    </ul>
+
+    <h3>Revenue Contribution</h3>
+    <ul>
+      <li>Lowest perceived standalone value among kit items (stickers are understood as worth $1-3)</li>
+      <li>But highest potential for organic marketing reach - deployed stickers are visible to people who never bought the kit</li>
+      <li>The yellow box has the strongest visual identity for Instagram/TikTok content</li>
+      <li>Low COGS with disproportionate social impact makes this the kit's best cost-to-visibility ratio</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a3">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Sticker-Level Analysis</h3>
+
+    <h4>Territory-Marking Design Concepts</h4>
+    <ul>
+      <li><strong>Feature:</strong> Each sticker communicates ownership, boundaries, or territorial claims (dog silhouette, flag, "MINE," lock icon, crown)</li>
+      <li><strong>Functional benefit:</strong> Stickers are literally usable as property markers on desks, mugs, containers, and equipment</li>
+      <li><strong>Emotional benefit:</strong> Gives permission to mark territory in a socially acceptable way - "it's a joke, but also please don't touch my stuff"</li>
+      <li><strong>Strategic role:</strong> Every design reinforces the territorial conceit that differentiates these from generic novelty stickers</li>
+    </ul>
+
+    <h4>Die-Cut Individual Shapes</h4>
+    <ul>
+      <li><strong>Feature:</strong> Each sticker is cut to its own shape rather than square-cut from a sheet</li>
+      <li><strong>Functional benefit:</strong> Professional appearance when deployed - looks intentional, not like something torn from a strip</li>
+      <li><strong>Emotional benefit:</strong> Die-cut stickers feel higher quality than sheet stickers, adding perceived value</li>
+      <li><strong>Strategic role:</strong> Addresses the "cheap filler" perception by making each individual sticker feel designed and premium</li>
+    </ul>
+
+    <h4>Mix of Sizes</h4>
+    <ul>
+      <li><strong>Feature:</strong> Range from small (~0.75") to medium (~1.5"-2") across the strip</li>
+      <li><strong>Functional benefit:</strong> Different sizes fit different surfaces - small for water bottles and phones, medium for monitors and fridges</li>
+      <li><strong>Emotional benefit:</strong> Variety gives the recipient tactical choices about where and how visibly to deploy</li>
+      <li><strong>Strategic role:</strong> More deployment-appropriate sizes means more likely actual deployment across varied surfaces</li>
+    </ul>
+
+    <h4>Vinyl Material (Preferred)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Durable, water-resistant adhesive vinyl</li>
+      <li><strong>Functional benefit:</strong> Stickers survive on water bottles, fridge doors, and surfaces that get wiped down</li>
+      <li><strong>Emotional benefit:</strong> "These stickers are serious" - the material communicates permanence and commitment</li>
+      <li><strong>Strategic role:</strong> Durability reinforces the territorial claim - these aren't temporary decorations, they're markers</li>
+    </ul>
+
+    <h4>Copy Pairings on Each Sticker</h4>
+    <ul>
+      <li><strong>Feature:</strong> Short text paired with each design (e.g., "Marked," "The throne is occupied," "Cross at your own risk")</li>
+      <li><strong>Functional benefit:</strong> The text delivers the punchline that the image sets up</li>
+      <li><strong>Emotional benefit:</strong> Each sticker is a complete micro-joke, not just a graphic element</li>
+      <li><strong>Strategic role:</strong> Text pairings make each sticker a conversation piece - coworkers read the text and react</li>
+    </ul>
+
+    <hr>
+
+    <h3>Box-Level Analysis</h3>
+
+    <h4>Bold Yellow Color</h4>
+    <ul>
+      <li><strong>Feature:</strong> Bright yellow background (caution tape / construction zone aesthetic) across all surfaces</li>
+      <li><strong>Functional benefit:</strong> Strongest visual contrast of any item in Tray 1 - impossible to miss</li>
+      <li><strong>Emotional benefit:</strong> Yellow reads as "warning" and "territory marking" before any text is read</li>
+      <li><strong>Strategic role:</strong> Instant visual differentiation from Lifer Ink's cream/gold and Cubicle Shank's matte black</li>
+    </ul>
+
+    <h4>Dog-on-Chair Hero Illustration</h4>
+    <ul>
+      <li><strong>Feature:</strong> Black silhouette of a dog lifting its leg on an office chair</li>
+      <li><strong>Functional benefit:</strong> Communicates the entire product concept in a single image</li>
+      <li><strong>Emotional benefit:</strong> Universally understood, immediately funny, no text required</li>
+      <li><strong>Strategic role:</strong> The single strongest visual decision on any item box in the kit - it's the "get it in 1 second" element</li>
+    </ul>
+
+    <h4>IKEA-Style Instruction Panel</h4>
+    <ul>
+      <li><strong>Feature:</strong> Five sequential icons (PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT) on the top edge</li>
+      <li><strong>Functional benefit:</strong> None (that's the joke)</li>
+      <li><strong>Emotional benefit:</strong> The deadpan escalation from mundane sticker application to royal procession to helicopter escape is the box's best read-aloud moment</li>
+      <li><strong>Strategic role:</strong> Designed for group performance - the recipient reads these steps aloud and the room laughs at the escalation</li>
+    </ul>
+
+    <h4>"Territorial Assessment Report" Back Face</h4>
+    <ul>
+      <li><strong>Feature:</strong> Brad's official Form WPL-7 with checkboxes, expected outcomes, and a Brad Sterling photo with "Chief Territorial Officer&trade;" title</li>
+      <li><strong>Functional benefit:</strong> Consistent brand voice and character presence across all item boxes</li>
+      <li><strong>Emotional benefit:</strong> The corporate form that doesn't need to exist - the institutional format applied to desk stickers creates absurdist comedy</li>
+      <li><strong>Strategic role:</strong> Brad Mode 1 (institutional) at his best - a document that exists because Brad decided it should</li>
+    </ul>
+
+    <h4>"START WITH THE FRIDGE." Tuck Flap</h4>
+    <ul>
+      <li><strong>Feature:</strong> Single deployment instruction discovered when opening the box</li>
+      <li><strong>Functional benefit:</strong> Primes specific action before the sticker sheet is even visible</li>
+      <li><strong>Emotional benefit:</strong> The specificity of "the fridge" is funnier than a generic "apply anywhere" because the fridge IS the most contested territory in every office</li>
+      <li><strong>Strategic role:</strong> Activates deployment behavior immediately - the recipient already has a target before they see the stickers</li>
+    </ul>
+
+    <h4>"SHARING IS ~~CARING~~ OVER." Bottom Face</h4>
+    <ul>
+      <li><strong>Feature:</strong> Four-word thesis statement on the hidden bottom surface</li>
+      <li><strong>Functional benefit:</strong> Rewards the instinct to flip and examine every surface</li>
+      <li><strong>Emotional benefit:</strong> A discovery moment that encapsulates the entire item's attitude in a single struck-through word</li>
+      <li><strong>Strategic role:</strong> The most quotable line on the box - designed to be referenced in conversation and reviews</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a4">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Psychological Role</h3>
+    <ul>
+      <li>Turf Tags is the "deployment vehicle" for the kit's humor into shared office spaces</li>
+      <li>While other items live on the recipient's desk or person, stickers physically scatter across the workplace</li>
+      <li>A sticker on the break room fridge reaches an audience that never saw the kit or knew it existed</li>
+      <li>The stickers transform the recipient from a gift receiver into an active participant who distributes comedy content</li>
+    </ul>
+
+    <h3>Emotional Triggers (Buyer - Seeing It in the Listing)</h3>
+    <ul>
+      <li><strong>Variety signal</strong> - "This kit has stickers too? There's so much in here" - stickers add to the perceived item count and content diversity</li>
+      <li><strong>Social imagination</strong> - The buyer imagines the recipient sticking one on their monitor and coworkers reacting</li>
+      <li><strong>Approachability</strong> - Stickers are the most universally understood and least intimidating item category. Everyone knows how stickers work</li>
+      <li><strong>Risk-free fun</strong> - Unlike tattoos (body commitment) or the pen (quality dependency), stickers are zero-stakes. If one is bad, you just don't stick it anywhere</li>
+    </ul>
+
+    <h3>Emotional Triggers (Recipient - During Unboxing)</h3>
+    <ul>
+      <li><strong>Visual pop</strong> - The yellow box is the most visually arresting object in Tray 1. It demands to be picked up</li>
+      <li><strong>Concept click</strong> - The dog-on-chair illustration communicates the concept before any text is read. The recipient "gets it" in 1 second</li>
+      <li><strong>Read-aloud activation</strong> - The instruction panel (PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT) triggers group performance</li>
+      <li><strong>Deployment planning</strong> - "START WITH THE FRIDGE." on the tuck flap shifts the recipient from examining to planning. They're thinking about where to put these before they've seen the designs</li>
+    </ul>
+
+    <h3>Decision-Making Role in Purchase</h3>
+    <ul>
+      <li>Stickers are not a purchase driver for the kit - nobody buys a $27 kit because it includes stickers</li>
+      <li>But they contribute to the "there's so much in here" perception that justifies the price</li>
+      <li>The yellow box in listing images adds visual variety and color contrast to the product photography</li>
+      <li>Sticker deployment in review photos serves as authentic UGC that builds social proof for future buyers</li>
+    </ul>
+
+    <h3>Risk Perception</h3>
+    <ul>
+      <li>Lowest risk item in the kit - stickers can't fail mechanically, can't be worn wrong, can't run out of ink</li>
+      <li>The only risk is the "oh, stickers" dismissal - the perception that they're cheap filler</li>
+      <li>The yellow box, dog illustration, and territorial framing exist specifically to neutralize this dismissal</li>
+      <li>If the stickers look generic in listing images, they become invisible. They need to look designed and intentional</li>
+    </ul>
+
+    <h3>Cognitive Biases in Play</h3>
+    <ul>
+      <li><strong>Mere exposure effect</strong> - A sticker on a shared surface (fridge, printer, conference room) gets seen repeatedly by many people. Each exposure normalizes the humor and builds curiosity about the source</li>
+      <li><strong>Reciprocity</strong> - When one person deploys a sticker, it gives coworkers implicit permission to request one for their own desk. The kit's social reach compounds</li>
+      <li><strong>Endowment via deployment</strong> - Once you've stuck a "MINE" sticker on your monitor, you've made a public territorial claim. Removing it would feel like surrendering territory. The sticker stays</li>
+      <li><strong>Scarcity</strong> - With only 6-12 stickers, each one is a finite resource. Recipients choose carefully where to deploy, which increases the perceived value of each individual sticker</li>
+    </ul>
+
+    <h3>Awareness Context</h3>
+    <ul>
+      <li>The yellow box stands out dramatically against the briefcase interior and other items' color palettes</li>
+      <li>In listing images, it adds a pop of color that breaks up the matte black and cream tones</li>
+      <li>The dog illustration is one of the most immediately recognizable elements across all listing photos</li>
+      <li>Stickers in review photos serve as bottom-of-funnel social proof that the kit's contents actually get used</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a5">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: Turf Tags are not sold individually. These personas describe how each buyer type interacts with this specific item as part of the kit evaluation and unboxing experience.</p>
+
+    <div class="persona">
+      <h4>Persona 1 - "The Territory Defender"</h4>
+      <ul>
+        <li>25-45, any gender</li>
+        <li>Fiercely protective of their desk space, lunch, and office supplies</li>
+        <li>Has strong opinions about shared spaces and boundary violations</li>
+      </ul>
+      <p><strong>Relationship to Turf Tags</strong></p>
+      <ul>
+        <li>This item speaks directly to their lived experience</li>
+        <li>They'll deploy stickers within 24 hours of unboxing, starting with their lunch container</li>
+        <li>They see the stickers as both funny and genuinely useful</li>
+        <li>Each sticker is a passive-aggressive message they've always wanted to send</li>
+      </ul>
+      <div class="trigger">Key trigger: "Finally. Someone understands." (reads "SHARING IS CARING OVER.")</div>
+      <div class="fear">Biggest fear: The sticker designs are too generic or cute - they need to actually say something</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - "The Office Vandal"</h4>
+      <ul>
+        <li>22-35, any gender</li>
+        <li>Enjoys harmless pranks, desk decorations, and subtle chaos</li>
+        <li>Will put a sticker on someone else's stuff just to see their reaction</li>
+      </ul>
+      <p><strong>Relationship to Turf Tags</strong></p>
+      <ul>
+        <li>These stickers are prank ammunition</li>
+        <li>They'll deploy them on coworkers' desks, chairs, and monitors (not just their own)</li>
+        <li>The territorial claim on someone else's property is funnier than on their own</li>
+        <li>They're the reason stickers travel the furthest from the original recipient</li>
+      </ul>
+      <div class="trigger">Key trigger: "Which one do I put on my boss's chair?"</div>
+      <div class="fear">Biggest fear: The stickers aren't funny enough to justify the bit</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - "The Dismisser"</h4>
+      <ul>
+        <li>30-50, any gender</li>
+        <li>Sees "stickers" listed in the kit and assumes it's the weakest item</li>
+        <li>Has low expectations before picking up the yellow box</li>
+      </ul>
+      <p><strong>Relationship to Turf Tags</strong></p>
+      <ul>
+        <li>This is the persona the box packaging is designed to convert</li>
+        <li>The yellow color and dog illustration create curiosity before the text is read</li>
+        <li>The instruction panel and fine print escalation build genuine surprise</li>
+        <li>If the box earns a laugh, the stickers get a chance. If the box is boring, the stickers stay in it</li>
+      </ul>
+      <div class="trigger">Key trigger: "Okay, the box is actually really funny" (converts from dismissal to engagement)</div>
+      <div class="fear">Biggest fear: Their initial assumption was right and the stickers are just filler</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - "The Collector/Saver"</h4>
+      <ul>
+        <li>25-40, any gender</li>
+        <li>Doesn't want to "use up" things - hoards special stickers, nice pens, limited edition items</li>
+        <li>Will admire the stickers but hesitate to deploy them</li>
+      </ul>
+      <p><strong>Relationship to Turf Tags</strong></p>
+      <ul>
+        <li>With only 6-12 stickers, scarcity triggers their preservation instinct</li>
+        <li>They'll pick a favorite and protect it rather than deploy it</li>
+        <li>The tuck flap instruction ("START WITH THE FRIDGE.") tries to override this impulse with a specific action prompt</li>
+        <li>They may keep the yellow box on display because it's the most visually striking object from the kit</li>
+      </ul>
+      <div class="trigger">Key trigger: "These are too good to waste" (appreciates the designs but hesitates to deploy)</div>
+      <div class="fear">Biggest fear: Regretting where they deployed a sticker because they can't get more</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a6">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I discover the Turf Tags box in the kit tray</p>
+      <p><strong>I want to</strong> find sticker designs funny and specific enough that I actually deploy them in the office</p>
+      <p><strong>So that</strong> my workspace has visible evidence of my personality and territorial claims that generate conversations</p>
+    </div>
+
+    <h3>Supporting JTBD</h3>
+
+    <h4>Job 2 - Overcome My Low Expectations</h4>
+    <ul>
+      <li>When I see stickers included in a gag gift kit, I want the packaging and designs to surprise me, so that I don't dismiss them as cheap filler before giving them a chance</li>
+    </ul>
+
+    <h4>Job 3 - Give Me a Deployment Target</h4>
+    <ul>
+      <li>When I open the box, I want a specific suggestion for where to start, so that I'm not staring at a sticker sheet wondering what to do with them. "START WITH THE FRIDGE." solves this</li>
+    </ul>
+
+    <h4>Job 4 - Let Me Mark My Territory Without Being Aggressive</h4>
+    <ul>
+      <li>When I put a sticker on my monitor, lunch container, or desk, I want it to communicate "this is mine" in a way that's funny rather than hostile, so that coworkers get the joke instead of filing an HR complaint</li>
+    </ul>
+
+    <h4>Job 5 - Give Me Material to Share</h4>
+    <ul>
+      <li>When a coworker sees a deployed sticker and asks about it, I want the design to be self-explanatory, so that the joke lands without me having to explain the kit</li>
+    </ul>
+
+    <h4>Job 6 - Make the Box Worth Keeping</h4>
+    <ul>
+      <li>When I've deployed all the stickers, I want the box itself to be entertaining and displayable, so that the product's value extends beyond the sticker sheet</li>
+    </ul>
+
+    <h3>Underserved Jobs (How Competitor Sticker Products Fail)</h3>
+    <ul>
+      <li>The "reframe the category" job - most sticker products don't try to overcome the "just stickers" perception. The packaging is minimal and confirms the low-value expectation</li>
+      <li>The "deployment activation" job - no competitor sticker product tells you exactly where to start. They assume motivation, which most recipients don't have</li>
+      <li>The "territory marking" job - most office stickers are decorative, not territorial. Flowers, motivational quotes, and cute animals don't claim space. These do</li>
+      <li>The "box as entertainment" job - sticker packaging is universally disposable. Nobody keeps a sticker sheet's packaging on their desk. The yellow box is designed to be kept</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a7">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p>Ranked by impact on the buyer's perception of the kit and the recipient's deployment behavior.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <p><em>Overcomes category dismissal and drives deployment</em></p>
+    <ol>
+      <li>The sticker designs are territory-marking tools with specific deployment value, not generic decorations</li>
+      <li>The yellow box with dog illustration communicates the concept instantly and creates visual surprise</li>
+      <li>The box packaging is a standalone comedy piece with the instruction panel, fine print escalation, and Brad's Territorial Assessment Report</li>
+      <li>Each sticker is funny enough to actually deploy in a shared office space</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <p><em>Builds engagement and extends value</em></p>
+    <ol start="5">
+      <li>The IKEA-style instruction panel (PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT) is a designed read-aloud moment</li>
+      <li>"START WITH THE FRIDGE." on the tuck flap primes specific deployment behavior</li>
+      <li>Die-cut vinyl construction signals quality and permanence</li>
+      <li>"SHARING IS ~~CARING~~ OVER." on the bottom face encapsulates the entire attitude in four words</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <p><em>Differentiates for engaged recipients</em></p>
+    <ol start="9">
+      <li>Brad's "Territorial Assessment Report" on the back face is a standalone comedy document</li>
+      <li>"9/5 STARS - BRAD STERLING" adds a character comedy beat (Brad rates himself above the scale)</li>
+      <li>The front face fine print escalation from "adhesive property markers" to "3 workplace disputes and 1 divorce" rewards close reading</li>
+      <li>The yellow color palette creates visual distinction from every other item in the kit and the tray</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a8">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: Most purchase objections apply to the kit as a whole. These objections are specific to how the Turf Tags item influences or creates hesitation.</p>
+
+    <div class="objection">
+      <h4>Objection 1 - "Stickers? Really? That's the weakest item in any gift kit."</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Years of gag gifts and subscription boxes padding contents with generic sticker sheets</li>
+        <li><strong>Evidence needed:</strong> The yellow box with dog illustration must be visible in listing images and communicate "these are not ordinary stickers" at a glance</li>
+        <li><strong>Mitigation:</strong> The territorial framing ("MARK YOUR TERRITORY"), the IKEA instruction panel, and Brad's institutional branding all work to reframe stickers from "filler" to "deployment tools." The box must be the evidence that these stickers are different</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2 - "Will anyone actually stick these anywhere?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Most novelty stickers stay on the backing sheet. Deployment rates for included stickers in gift kits are very low</li>
+        <li><strong>Evidence needed:</strong> Sticker designs must be specific and deployable - not just funny to look at, but funny to see on a fridge or monitor</li>
+        <li><strong>Mitigation:</strong> The "START WITH THE FRIDGE." tuck flap instruction gives a specific deployment target. The designs are territorial claims, not decorations - they have a functional purpose (marking your stuff) layered under the comedy</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3 - "Won't stickers on office equipment cause problems?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Some workplaces have strict policies about personal items on company equipment</li>
+        <li><strong>Evidence needed:</strong> Not directly addressable in listing content, but the humor tone should signal "harmless fun" not "vandalism"</li>
+        <li><strong>Mitigation:</strong> The designs are all workplace-friendly and non-offensive. A sticker that says "MINE" on a lunch container is clearly lighthearted. The stickers are designed for personal items and shared spaces (fridges, water bottles), not company servers</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4 - "Only 6-12 stickers seems thin for a dedicated box"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Sticker packs on Amazon often include 50-100 stickers for $5-10. A small strip feels like less value</li>
+        <li><strong>Evidence needed:</strong> Quality over quantity framing. Die-cut vinyl stickers with unique designs feel different from bulk-printed sheets</li>
+        <li><strong>Mitigation:</strong> Each sticker is individually designed with a copy pairing. The box packaging adds entertainment value beyond the stickers themselves. The premium box treatment signals these are curated, not bulk</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5 - "The yellow box seems like it doesn't match the rest of the kit"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> The briefcase is matte black, the pen box is matte black, and the yellow box is a dramatic visual departure</li>
+        <li><strong>Evidence needed:</strong> The yellow reads as "caution tape / warning sign" - it's territorial vocabulary, not random color choice</li>
+        <li><strong>Mitigation:</strong> The Elevate Co. branding, Brad's voice, and the typography treatment connect it to the kit's brand system. The color difference is intentional - it makes the item impossible to ignore in the tray and creates visual variety in listing photos</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a9">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: These questions are specific to the Turf Tags item as it appears within the kit listing and unboxing experience.</p>
+
+    <h3>Questions the Buyer Asks When Evaluating the Listing</h3>
+    <ul>
+      <li>What's the yellow thing? (immediately drawn to the color contrast in product photos)</li>
+      <li>Are those stickers? What do they say?</li>
+      <li>Is that a dog peeing on a chair? (the illustration triggers curiosity)</li>
+      <li>Would my coworker actually put these somewhere?</li>
+    </ul>
+
+    <h3>Questions the Recipient Asks During Unboxing</h3>
+    <ul>
+      <li>What's this yellow box? (picks it up first or second because the color demands attention)</li>
+      <li>Oh my god, is that a dog peeing on a chair? (the illustration lands)</li>
+      <li>Wait, read the steps on the side! (discovers the IKEA instruction panel)</li>
+      <li>"HOLD COURT"? "ACCEPT PARADE"? What is this? (reads aloud, group laughs at escalation)</li>
+      <li>"START WITH THE FRIDGE." - okay, I know what I'm doing with these (opens box with a plan)</li>
+    </ul>
+
+    <h3>Questions the Group Asks While Watching</h3>
+    <ul>
+      <li>What does that yellow box say? (the color draws attention from across the room)</li>
+      <li>Read the instructions! (pointing at the top edge)</li>
+      <li>Which sticker are you putting where? (already planning deployment)</li>
+      <li>Can I have one? (the territorial claim creates ironic desire - now THEY want to mark territory too)</li>
+    </ul>
+
+    <h3>Questions Asked After Deployment</h3>
+    <ul>
+      <li>Whose sticker is that? (coworker noticing a deployed sticker on shared equipment)</li>
+      <li>Where did you get those? (the target question for social reach)</li>
+      <li>Are there more? (interest in additional stickers or the full kit)</li>
+      <li>Can I get a set? (the deployed sticker becomes a gateway to kit awareness)</li>
+    </ul>
+
+    <h3>Questions the Buyer Asks Post-Purchase</h3>
+    <ul>
+      <li>Did they put the stickers anywhere? (hoping for deployment)</li>
+      <li>Which one was their favorite? (curiosity about design preferences)</li>
+      <li>Did anyone at the office react? (hoping the social moment happened)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>The Office Sticker Landscape</h3>
+    <ul>
+      <li>Amazon has thousands of sticker listings for office/workplace use, overwhelmingly in two categories: motivational quotes and decorative art</li>
+      <li>Funny office stickers exist but are almost always crude humor, meme reproductions, or generic "I hate Mondays" territory</li>
+      <li>Sticker packs in gag gift kits are universally treated as filler - bulk-printed, low-effort sheet stickers with no packaging personality</li>
+      <li>No product on the market frames office stickers as territory-marking tools with institutional branding and a character voice</li>
+    </ul>
+
+    <h3>Where Motivational Office Stickers Fall Short (for Our Context)</h3>
+    <ul>
+      <li>Earnest and sincere - "You've got this!" stickers have zero comedy value</li>
+      <li>Generic designs that could be from any brand or no brand</li>
+      <li>No character voice, no narrative context, no entertainment value</li>
+      <li>Deployed for personal inspiration, not social entertainment</li>
+    </ul>
+
+    <h3>Where "Funny" Office Sticker Packs Fall Short</h3>
+    <ul>
+      <li>Rely on meme culture that dates quickly</li>
+      <li>Usually sold in bulk (50-100 stickers) with highly variable quality across the set</li>
+      <li>No packaging entertainment - they arrive in a bag or basic cardboard sleeve</li>
+      <li>No deployment framing - they're stickers, not tools</li>
+      <li>No brand world connecting the designs into a cohesive set</li>
+    </ul>
+
+    <h3>Where Gag Gift Kit Stickers Fall Short</h3>
+    <ul>
+      <li>Universally treated as filler to pad the item count</li>
+      <li>Minimal design effort - often the lowest-quality component</li>
+      <li>No individual packaging or comedy framing</li>
+      <li>Recipients confirm the low expectation by ignoring them</li>
+    </ul>
+
+    <h3>Turf Tags' Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Motivational Stickers</th>
+          <th>"Funny" Sticker Packs</th>
+          <th>Gag Gift Kit Stickers</th>
+          <th>Turf Tags</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Purpose</td><td>Personal inspiration</td><td>Decoration/humor</td><td>Pad item count</td><td>Territory marking</td></tr>
+        <tr><td>Packaging</td><td>Basic</td><td>Bag or sleeve</td><td>None (loose in kit)</td><td>Premium comedy box</td></tr>
+        <tr><td>Character voice</td><td>None</td><td>None</td><td>None</td><td>Brad Sterling / Elevate Co.</td></tr>
+        <tr><td>Deployment framing</td><td>Stick anywhere</td><td>Stick anywhere</td><td>Don't bother</td><td>"START WITH THE FRIDGE."</td></tr>
+        <tr><td>Visual identity</td><td>Generic</td><td>Varied</td><td>Minimal</td><td>Yellow + dog illustration</td></tr>
+        <tr><td>Comedy surfaces</td><td>Zero</td><td>Maybe wrapper</td><td>Zero</td><td>6 box sides + tuck flap</td></tr>
+        <tr><td>Social reach</td><td>Low</td><td>Medium</td><td>Very low</td><td>High (territory claims visible to all)</td></tr>
+        <tr><td>Perceived value</td><td>Fair ($5-10 for bulk)</td><td>Fair ($5-10 for bulk)</td><td>Zero (filler)</td><td>Premium (curated, branded, boxed)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+    <ul>
+      <li>The territorial framing (stickers as property markers, not decorations) creates a unique product positioning no competitor occupies</li>
+      <li>Brad Sterling's "Territorial Compliance Division" and the institutional branding require a full character world to replicate</li>
+      <li>The yellow box with dog illustration is a strong visual identity that makes the product instantly recognizable</li>
+      <li>The IKEA instruction panel and "Territorial Assessment Report" are comedy formats, not just copy - competitors would need to build comparable comedy architecture</li>
+      <li>The tuck flap deployment instruction ("START WITH THE FRIDGE.") is a behavioral design choice that increases actual deployment rates - no competitor attempts this</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1 - The Item With the Highest Perception Gap to Overcome</h4>
+      <p>Every item in the kit benefits from low expectations, but stickers face the steepest climb. The category expectation is "disposable filler." The yellow box, dog illustration, and institutional comedy are all working harder than any other item's packaging because they have to overcome more. If the box converts a skeptic from "oh, stickers" to "okay, these stickers are different," the kit has just done something no other gag gift achieves.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2 - The Kit's Best Word-of-Mouth Vehicle</h4>
+      <p>The pen lives on one desk. The mug lives in one kitchen. The tattoos live on one person. But stickers scatter. One sticker on a shared fridge reaches every person who opens that fridge. One sticker on a conference room table is seen by every meeting attendee. Stickers are the kit's distributed marketing network. They generate "where did you get that?" questions from people who never saw the kit.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3 - The Only Item That Invites Coworkers Into the Kit</h4>
+      <p>When a coworker sees a deployed sticker and asks "can I have one?", the recipient has a decision: share a sticker or hold the territory. Either way, the coworker is now aware of the kit. No other item creates this specific social dynamic. The pen is personal. The mug is personal. But stickers are social currency that can be given away, creating new kit ambassadors.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4 - The Dog Illustration Does More Work Than Any Text</h4>
+      <p>In a kit full of smart, layered text comedy, the dog-on-chair silhouette is the one element that needs zero words to communicate. It's the most instinctive, universal comedy beat on any item box. A dog peeing on furniture is funny in every culture, every age group, every office. The illustration communicates the entire product concept (territory marking) in a visual that takes 0.5 seconds to process. No other item box has a single visual this powerful.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5 - Yellow as Territorial Vocabulary</h4>
+      <p>The yellow box isn't just "a different color." Yellow is the color of caution tape, warning signs, construction zones, and hazard markers. These are all territory-claiming visual languages. The color choice communicates "boundary" before the text is read. It's the only item box that uses color itself as a comedy device rather than just an aesthetic choice.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6 - The Scarcity Mechanic</h4>
+      <p>With only 6-12 stickers, each one is a finite resource. This creates a psychological dynamic that bulk sticker packs ($5 for 100) never achieve. Recipients genuinely deliberate about where to deploy each sticker because they can't get more. This deliberation increases perceived value, makes deployment feel meaningful, and creates conversations when someone asks "why did you put THAT one THERE?"</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7 - The Anti-Filler Strategy as a Category Play</h4>
+      <p>If Turf Tags succeeds in overcoming the "stickers are filler" perception, it proves a broader product design principle: any item category can be elevated through packaging comedy, territorial framing, and character voice. The strategy isn't just good for this kit - it's a repeatable playbook. If stickers can be reframed from filler to deployment tools, what else can be reframed?</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">Turf Tags aren't stickers. They're territorial claims filed with the Department of You.</p>
+
+    <p>Every office has contested territory - the good fridge shelf, the quiet desk by the window, the mug that everyone "borrows." Turf Tags give the recipient official documentation of ownership. Not legally binding. Not enforceable. But branded, laminated, and sanctioned by Brad Sterling's Territorial Compliance Division, which is more authority than most HR departments have.</p>
+
+    <p>The comedy isn't "funny stickers in a box." The comedy is a fully branded corporate program for marking territory with adhesive property markers, complete with an institutional assessment report, IKEA-style deployment instructions, and a self-rated 9/5-star review from the founder.</p>
+
+    <p>If the stickers feel like filler, nobody deploys them. If they feel like officially sanctioned territorial claims, they go on fridges, monitors, and lunch containers within 24 hours.</p>
+
+    <h3>Implication for All Content Creation</h3>
+    <ul>
+      <li>Never position Turf Tags as "also includes stickers." Position it as "includes a territory-marking system from Elevate Co.'s Territorial Compliance Division"</li>
+      <li>The yellow box should be visible in listing images because the color and illustration do more instant communication than any text</li>
+      <li>The dog-on-chair illustration should be prominent enough to be legible in Amazon thumbnails - it's the fastest concept-delivery element in the entire kit</li>
+      <li>Deployment is the success metric. Content should make the recipient want to deploy, not just admire. "START WITH THE FRIDGE." is the operational template - specific, actionable, funny</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. The yellow box will create positive visual contrast, not dissonance</strong> - This profile assumes the bold yellow reads as "caution tape / territorial" rather than "doesn't match the kit." If the yellow feels like a random color choice rather than intentional territorial vocabulary, the box loses its conceptual anchor.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Recipients will actually deploy stickers</strong> - The deployment framing and "START WITH THE FRIDGE." instruction are designed to activate behavior, but deployment rates for included stickers in gift kits are historically very low. This hasn't been tested.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. 6-12 stickers is the right count</strong> - The box currently says "CONTAINS: 12" but the copy document suggests 6-8. More stickers add value but may require a larger strip or multiple strips. Fewer stickers strengthen the scarcity mechanic but may feel thin.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. The dog illustration will print well at box size</strong> - The black silhouette should reproduce cleanly, but the illustration quality needs to be verified at actual print dimensions on actual paperboard stock.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Vinyl stickers are cost-viable at kit COGS</strong> - Vinyl is preferred for durability and the "permanent claim" messaging, but paper stickers may be necessary if vinyl pushes COGS beyond budget. Paper stickers undercut the "permanent territory" positioning.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. The "Territorial Assessment Report" back face works as comedy</strong> - Brad's institutional form format (checkboxes, expected outcomes, Chief Territorial Officer title) is strong in concept but hasn't been tested with real people. Some recipients may skip the back face entirely.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. The naming hierarchy is settled</strong> - This profile assumes "Turf Tags" gets hero treatment and "Workspace Personalization Labels&trade;" plays the Brad rebrand role. If the naming hierarchy inverts kit-wide, the front face layout changes.</p>
+    </div>
+
+    <hr>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Sticker count not finalized</strong> - Box says 12, copy document says 6-8. Must resolve before box copy is locked. The count affects perceived value, strip size, and COGS.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Final sticker designs not selected</strong> - 10 working concepts exist (5 Tier 1, 3 Tier 2, 2 Tier 3) plus 4 potential additions. Final selection requires stakeholder feedback on which designs are funniest and most deployable.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. Sticker material not confirmed</strong> - Vinyl vs. paper affects durability, cost, finish, and the "permanent claim" messaging. Need quotes from production partner.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Front face fine print density unaudited</strong> - The zone below the red divider line is text-heavy. Some lines may not earn their space. Need a line-by-line audit to cut anything that doesn't contribute to comedy or institutional atmosphere.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Left side text may not be legible at production scale</strong> - "NOT RESPONSIBLE FOR DISPUTES, CONFRONTATIONS, OR AT ANYONE BIGGER THAN YOU." is a long line for a narrow surface (~0.5" height). Needs readability testing at actual size.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Six stars on front face vs. "9/5 STARS" on right side</strong> - Potential redundancy between two star-related elements. Need to clarify the relationship or cut one.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Visual differentiation from Lifer Ink tested only in concept</strong> - Both boxes share the same tray recess and similar dimensions. The yellow vs. cream/gold distinction needs to be verified at actual tray-viewing distance.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>8. No physical mockup tested</strong> - Dog illustration impact, instruction panel readability, and overall box presence in the tray have not been validated with real people at real size.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1 - Lock the Sticker Count and Update the Box Copy</h4>
+      <ul>
+        <li>The box says "CONTAINS: 12" but the copy document suggests 6-8</li>
+        <li>This is the single most critical consistency issue for this item</li>
+        <li>Decide on the final count based on COGS, strip size, and perceived value</li>
+        <li>12 stickers strengthens value perception but requires more designs. 8 stickers with stronger individual designs may be better than 12 with filler</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2 - Finalize Sticker Designs Through a Deployment Test</h4>
+      <ul>
+        <li>Don't just ask "which designs are funniest" - ask "which would you actually stick somewhere?"</li>
+        <li>Give 3-5 people the 10 concepts (printed at actual size) and ask them to identify deployment targets</li>
+        <li>Track which designs get assigned to specific surfaces vs. which just get "yeah, that's funny"</li>
+        <li>A sticker that's funny but has no natural deployment surface is not a strong sticker for this product</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3 - Confirm Vinyl vs. Paper With the Production Partner</h4>
+      <ul>
+        <li>Get COGS quotes for both materials at the expected kit volume</li>
+        <li>If vinyl is within budget, use vinyl - it supports the "permanent claim" messaging and survives on surfaces that get wiped</li>
+        <li>If paper is necessary for COGS, adjust the copy accordingly - don't promise durability you can't deliver</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4 - Audit the Front Face Fine Print Zone</h4>
+      <ul>
+        <li>Every line below the red divider needs to earn its space</li>
+        <li>Read each line in isolation and ask: "Does this get a reaction, or is it just atmosphere?"</li>
+        <li>Cut lines that are institutional atmosphere without comedy payoff - they add density without earning laughs</li>
+        <li>Resolve the six-stars vs. "9/5 STARS" redundancy before print</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5 - Test the Instruction Panel Readability at Actual Size</h4>
+      <ul>
+        <li>The IKEA-style icons (PEEL / STICK / HOLD COURT / ACCEPT PARADE / EXIT) are the box's best read-aloud element</li>
+        <li>They sit on the top edge (~0.5" height), which is a very narrow surface</li>
+        <li>Print at 1:1 and confirm the icons and labels are legible at arm's length</li>
+        <li>If they're too small, consider moving the instruction panel to a larger surface or increasing icon size at the expense of some text</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6 - Place the Yellow Box Prominently in Listing Photos</h4>
+      <ul>
+        <li>The yellow color and dog illustration are the most visually striking elements in the kit</li>
+        <li>In the hero shot and content-spread listing images, the yellow box should be visible and front-facing</li>
+        <li>The color contrast against the matte black briefcase creates a "pop" that draws the eye in thumbnails</li>
+        <li>The dog illustration is legible enough to communicate the concept even at search-result thumbnail size</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7 - Pair Turf Tags and Lifer Ink Side by Side at Actual Size</h4>
+      <ul>
+        <li>Both boxes share the same tray recess</li>
+        <li>Print both boxes at actual size and place them in a mockup tray to verify visual distinction</li>
+        <li>The yellow vs. cream/gold should read as clearly different items, not color variants of the same thing</li>
+        <li>Verify that each box has its own identity at tray-viewing distance (18-24 inches)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+// Extract markdown-formatted plain text (bold preserved as **bold**)
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

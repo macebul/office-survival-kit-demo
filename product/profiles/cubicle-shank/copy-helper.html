@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cubicle Shank - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Cubicle Shank <span>Product Profile</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#a1"><span class="num">01.</span> Basic Product Profile</a>
+    <a href="#a8"><span class="num">08.</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a2"><span class="num">02.</span> Strategic Overview</a>
+    <a href="#a9"><span class="num">09.</span> Buyer Questions Map</a>
+    <a href="#a3"><span class="num">03.</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10.</span> Competitive Differentiation</a>
+    <a href="#a4"><span class="num">04.</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11.</span> Non-Obvious Angles</a>
+    <a href="#a5"><span class="num">05.</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12.</span> The Big Idea</a>
+    <a href="#a6"><span class="num">06.</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13.</span> Assumptions &amp; Gaps</a>
+    <a href="#a7"><span class="num">07.</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14.</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a1">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Product Identity</h3>
+    <ul>
+      <li><strong>Product Name:</strong> Cubicle Shank</li>
+      <li><strong>Brad Sterling's Corporate Rebrand:</strong> Executive Tactical Stylus&trade;</li>
+      <li><strong>Parent Product:</strong> Office Survival Kit (Item 1 of 7 + 1 empty recess)</li>
+      <li><strong>Brand:</strong> Witty Yeti (Amazon brand)</li>
+      <li><strong>In-Universe Brand:</strong> Elevate Co. (fictional company, appears in product copy)</li>
+      <li><strong>Product Type:</strong> Tactical-style ballpoint pen with custom printed item box</li>
+    </ul>
+
+    <h3>Role in Kit</h3>
+    <ul>
+      <li>Hero item</li>
+      <li>First item discovered in Tray 1 (center recess)</li>
+      <li>Sets the tone for the entire unboxing experience</li>
+      <li>Establishes the quality bar that tells the recipient "this isn't a cheap gag gift"</li>
+    </ul>
+
+    <h3>Physical Specs</h3>
+    <ul>
+      <li><strong>Style:</strong> Tactical/survival pen aesthetic (angular, aggressive design)</li>
+      <li><strong>Material:</strong> Aluminum or metal body (matte black preferred)</li>
+      <li><strong>Length:</strong> ~5.5" x 0.6" (standard pen dimensions)</li>
+      <li><strong>Ink:</strong> Black, replaceable cartridge preferred</li>
+      <li><strong>Weight:</strong> Should feel substantial, not cheap</li>
+      <li><strong>Features:</strong> Glass breaker tip optional but on-brand; clip for pocket carry</li>
+    </ul>
+
+    <h3>Item Box</h3>
+    <ul>
+      <li><strong>Box type:</strong> Tray-and-sleeve (matchbox style)</li>
+      <li><strong>Dimensions:</strong> ~6.5" x 1.75" x 1" (working estimate)</li>
+      <li><strong>Material:</strong> Printed paperboard (14-18pt)</li>
+      <li><strong>Print:</strong> Full color, all sides</li>
+      <li><strong>Design:</strong> Brad Sterling's Elevate Co. retail branding</li>
+      <li><strong>Interior:</strong> Die-cut recess shaped for pen, visible copy area around/below pen</li>
+    </ul>
+
+    <h3>Customization</h3>
+    <ul>
+      <li><strong>Method:</strong> Engraved or printed text on barrel</li>
+      <li><strong>Location:</strong> Along the barrel, visible when held</li>
+      <li><strong>Text:</strong> "FOR OFFICE USE ONLY"</li>
+    </ul>
+
+    <h3>Approved Copy</h3>
+    <ul>
+      <li><strong>Subheader:</strong> "It writes. Among other things."</li>
+      <li><strong>Packaging panel:</strong> "Some call it a pen. Survivors call it a Cubicle Shank. Ideal for intimidating your way to the last donut in the break room. Sure, it writes - but its real value is the reminder: you're not just taking notes. You're taking names."</li>
+      <li><strong>Interior reveal:</strong> "THE PEN IS MIGHTIER THAN THE SWORD. QUIETER, TOO."</li>
+    </ul>
+
+    <h3>Discovery Context</h3>
+    <ul>
+      <li>Tray 1, narrow front recess (centered)</li>
+      <li>First tray revealed after lifting Doc Set 1</li>
+      <li>Flanked by Lifer Ink (left) and Turf Tags (right)</li>
+      <li>Recipient picks it up, reads the box, then slides the sleeve open</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a2">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <ul>
+      <li>A functional writing instrument disguised as a prison weapon disguised as a premium corporate product</li>
+      <li>Three layers of comedy baked into a single pen: the name (prison slang), the branding (Brad's dead-serious tactical marketing), and the object itself (genuinely useful)</li>
+      <li>Sets the quality expectation for everything else in the kit</li>
+    </ul>
+
+    <h3>Strategic Position Within the Kit</h3>
+    <ul>
+      <li>The Cubicle Shank is the first item the recipient encounters and the one most likely to be kept long-term</li>
+      <li>It bridges the gap between "joke product" and "real product" - this pen actually works and feels good in hand</li>
+      <li>As the hero item, it determines whether the recipient trusts the kit's quality or dismisses it as cheap novelty</li>
+    </ul>
+
+    <h3>Why This Item Matters</h3>
+    <ul>
+      <li>First impressions anchor the entire experience</li>
+      <li>If the first thing someone picks up feels cheap, they'll assume everything else is cheap</li>
+      <li>If it feels surprisingly good, they'll approach every subsequent item with raised expectations and genuine curiosity</li>
+      <li>The pen is also the most visible keepable - it goes on desks, into pen cups, into pockets</li>
+    </ul>
+
+    <h3>Key Strategic Tension</h3>
+    <ul>
+      <li>Must look like a joke and feel like a premium product simultaneously</li>
+      <li>The comedy comes from the packaging and branding, not from the pen being a cheap gag</li>
+      <li>If the pen itself is the joke (low quality, falls apart), the whole kit loses credibility</li>
+      <li>If the pen is too serious (no comedy on the object), it becomes a generic tactical pen</li>
+    </ul>
+
+    <h3>Box as Standalone Entertainment</h3>
+    <ul>
+      <li>The item box is designed to be an entertainment piece independent of the pen</li>
+      <li>Every surface has scannable comedy copy in Brad's voice</li>
+      <li>The matchbox slide mechanism creates a physical reveal moment</li>
+      <li>The box has artifact value - recipients keep it on their desk even after the pen comes out</li>
+    </ul>
+
+    <h3>Revenue Contribution</h3>
+    <ul>
+      <li>Highest perceived standalone value among kit items (pens are understood as worth $5-15)</li>
+      <li>Strongest "I'd actually buy this separately" signal from any item in the kit</li>
+      <li>The engraved barrel creates a branded touchpoint that lives outside the briefcase</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a3">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Pen-Level Analysis</h3>
+
+    <h4>Tactical Design Aesthetic</h4>
+    <ul>
+      <li><strong>Feature:</strong> Angular, aggressive aluminum body with matte black finish</li>
+      <li><strong>Functional benefit:</strong> Ergonomic grip, durable construction, professional appearance</li>
+      <li><strong>Emotional benefit:</strong> Feels like something confiscated from a heist movie, not a dollar store giveaway</li>
+      <li><strong>Strategic role:</strong> The design itself is the first joke - a tactical pen for surviving spreadsheets</li>
+    </ul>
+
+    <h4>Substantial Weight and Material</h4>
+    <ul>
+      <li><strong>Feature:</strong> Metal body (aluminum preferred) with noticeable heft</li>
+      <li><strong>Functional benefit:</strong> Comfortable writing experience, won't feel disposable</li>
+      <li><strong>Emotional benefit:</strong> Surprise at quality - "wait, this is actually a good pen"</li>
+      <li><strong>Strategic role:</strong> The quality surprise validates the entire kit's price point</li>
+    </ul>
+
+    <h4>"FOR OFFICE USE ONLY" Barrel Engraving</h4>
+    <ul>
+      <li><strong>Feature:</strong> Engraved or printed text visible when pen is held</li>
+      <li><strong>Functional benefit:</strong> Personalized branding visible during daily use</li>
+      <li><strong>Emotional benefit:</strong> An ongoing joke every time someone borrows or notices the pen</li>
+      <li><strong>Strategic role:</strong> The pen becomes a conversation starter at the recipient's desk permanently</li>
+    </ul>
+
+    <h4>Replaceable Ink Cartridge</h4>
+    <ul>
+      <li><strong>Feature:</strong> Standard replaceable ink cartridge</li>
+      <li><strong>Functional benefit:</strong> The pen has actual longevity beyond the joke</li>
+      <li><strong>Emotional benefit:</strong> "This isn't disposable" signal reinforces perceived value</li>
+      <li><strong>Strategic role:</strong> Extends product life and keeps the brand visible</li>
+    </ul>
+
+    <h4>Glass Breaker Tip (Optional)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Hardened tip designed to break glass in emergencies</li>
+      <li><strong>Functional benefit:</strong> None (in an office context)</li>
+      <li><strong>Emotional benefit:</strong> Absurd escalation of the tactical theme - "for emergencies only"</li>
+      <li><strong>Strategic role:</strong> Additional comedy layer without adding meaningful cost</li>
+    </ul>
+
+    <hr>
+
+    <h3>Box-Level Analysis</h3>
+
+    <h4>Tray-and-Sleeve (Matchbox) Construction</h4>
+    <ul>
+      <li><strong>Feature:</strong> Outer sleeve slides off to reveal inner tray with pen</li>
+      <li><strong>Functional benefit:</strong> Pen is presented rather than dumped out</li>
+      <li><strong>Emotional benefit:</strong> The slide creates a physical reveal moment with tactile satisfaction</li>
+      <li><strong>Strategic role:</strong> Miniature Pelican-case energy - makes a $3 box feel like a $20 presentation</li>
+    </ul>
+
+    <h4>Matte Black with White/Red Typography</h4>
+    <ul>
+      <li><strong>Feature:</strong> Dark color scheme with bold contrasting type</li>
+      <li><strong>Functional benefit:</strong> High readability, premium shelf presence</li>
+      <li><strong>Emotional benefit:</strong> Looks like actual military/tactical product packaging</li>
+      <li><strong>Strategic role:</strong> The more "real" the packaging looks, the funnier the subversive content hits</li>
+    </ul>
+
+    <h4>Brad Sterling's Elevate Co. Branding</h4>
+    <ul>
+      <li><strong>Feature:</strong> Full institutional branding including "Tactical Writing Division" header</li>
+      <li><strong>Functional benefit:</strong> Consistent brand world across all kit touchpoints</li>
+      <li><strong>Emotional benefit:</strong> The corporate veneer makes every joke land harder by contrast</li>
+      <li><strong>Strategic role:</strong> Establishes the brand voice pattern that repeats across all item boxes</li>
+    </ul>
+
+    <h4>Multi-Surface Comedy Copy</h4>
+    <ul>
+      <li><strong>Feature:</strong> Unique copy on top, bottom, edges, and interior</li>
+      <li><strong>Functional benefit:</strong> Content on every angle rewards the instinct to flip and explore</li>
+      <li><strong>Emotional benefit:</strong> The box gives the recipient "material" to perform for the group</li>
+      <li><strong>Strategic role:</strong> Each surface escalates the comedy - field deployment steps, care warnings, prohibited activities icons</li>
+    </ul>
+
+    <h4>"Field Deployment" Instructions</h4>
+    <ul>
+      <li><strong>Feature:</strong> Numbered steps on the long edge (1. REMOVE FROM HOUSING / 2. ESTABLISH GRIP / 3. MAINTAIN EYE CONTACT)</li>
+      <li><strong>Functional benefit:</strong> None (that's the joke)</li>
+      <li><strong>Emotional benefit:</strong> The deadpan institutional format makes mundane pen usage sound like a tactical operation</li>
+      <li><strong>Strategic role:</strong> The most "read aloud" content on the box - designed for group performance</li>
+    </ul>
+
+    <h4>Interior Reveal Copy</h4>
+    <ul>
+      <li><strong>Feature:</strong> "THE PEN IS MIGHTIER THAN THE SWORD. QUIETER, TOO."</li>
+      <li><strong>Functional benefit:</strong> Rewards the act of opening the box</li>
+      <li><strong>Emotional benefit:</strong> A payoff line that feels like discovering a secret</li>
+      <li><strong>Strategic role:</strong> Closes the micro-comedy arc of the box experience before the pen is even picked up</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a4">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Psychological Role</h3>
+    <ul>
+      <li>The Cubicle Shank is the quality anchor for the entire kit</li>
+      <li>When a buyer sees this item in listing images, it answers the question "is this stuff actually well-made?"</li>
+      <li>When a recipient picks it up first, it sets the emotional trajectory for every item that follows</li>
+    </ul>
+
+    <h3>Emotional Triggers (Buyer - Seeing It in the Listing)</h3>
+    <ul>
+      <li><strong>Quality signal</strong> - "The pen looks real, not like a cheap party favor"</li>
+      <li><strong>Comedy preview</strong> - The box copy visible in images signals the humor style before purchase</li>
+      <li><strong>Value justification</strong> - A premium-looking pen helps rationalize the $25-30 kit price</li>
+      <li><strong>Familiarity</strong> - Everyone understands what a pen is. It's the most recognizable item in the kit. Low cognitive load, high comfort</li>
+    </ul>
+
+    <h3>Emotional Triggers (Recipient - During Unboxing)</h3>
+    <ul>
+      <li><strong>Surprise</strong> - The weight and material quality exceed expectations for something inside a "gag gift"</li>
+      <li><strong>Performance fuel</strong> - The box copy gives them lines to read aloud</li>
+      <li><strong>Ownership pride</strong> - "I'd actually use this" is the reaction that validates the gift-giver's choice</li>
+      <li><strong>Anticipation</strong> - If the first item is this good, what else is in here?</li>
+    </ul>
+
+    <h3>Decision-Making Role in Purchase</h3>
+    <ul>
+      <li>The pen is the most "rational" item in the kit</li>
+      <li>It gives the buyer permission to spend because they can point to functional value</li>
+      <li>In the mental math of "$27 for a joke gift," the pen represents $10-15 of perceived real value</li>
+      <li>This is the item that converts the kit from "pure gag" to "gag gift with actual useful stuff in it"</li>
+    </ul>
+
+    <h3>Risk Mitigation Role</h3>
+    <ul>
+      <li>Main risk for any gag gift: "What if the recipient hates it?"</li>
+      <li>The pen is the safety net - even if the humor doesn't land perfectly, the recipient walks away with a genuinely good pen</li>
+      <li>This is unconscious but powerful: buyers feel safer choosing a kit that includes something inarguably useful</li>
+    </ul>
+
+    <h3>Cognitive Biases in Play</h3>
+    <ul>
+      <li><strong>Anchoring</strong> - The pen's quality anchors expectations for everything else upward</li>
+      <li><strong>Halo effect</strong> - A well-made pen makes buyers assume the mug, cards, and booklets are also well-made</li>
+      <li><strong>Endowment effect</strong> - Once the recipient holds the pen, they feel ownership. It's immediately "theirs" in a way that stickers or cards aren't</li>
+      <li><strong>Peak-end rule</strong> - As the first item discovered, the pen sets the "peak" early. Combined with the mug as the final reveal, the unboxing has strong peak-end framing</li>
+    </ul>
+
+    <h3>Awareness Context</h3>
+    <ul>
+      <li>Buyers encountering the kit on Amazon are likely seeing the pen prominently in listing images</li>
+      <li>The pen box with its tactical branding is one of the most visually distinctive elements for thumbnails</li>
+      <li>It communicates "this is a real product" in the 1-2 seconds a buyer spends scanning search results</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a5">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: The Cubicle Shank is not sold individually. These personas describe how each buyer type interacts with this specific item as part of the kit evaluation and unboxing experience.</p>
+
+    <div class="persona">
+      <h4>Persona 1 - "The Quality Skeptic"</h4>
+      <ul>
+        <li>30-50, any gender</li>
+        <li>Has been burned by cheap Amazon gag gifts before</li>
+        <li>Reads reviews carefully, zooms into product images</li>
+      </ul>
+      <p><strong>Relationship to the Cubicle Shank</strong></p>
+      <ul>
+        <li>This is the item they scrutinize hardest in the listing photos</li>
+        <li>If the pen looks cheap in images, they're out</li>
+        <li>If the pen looks premium, they start believing the rest of the kit is worth the price</li>
+      </ul>
+      <div class="trigger">Key trigger: "Wait, that pen actually looks like a real tactical pen"</div>
+      <div class="fear">Biggest fear: Opening the box at the party and realizing the pen is a flimsy piece of plastic</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - "The Read-It-Aloud Performer"</h4>
+      <ul>
+        <li>25-40, any gender</li>
+        <li>The person at the party who makes everything funnier by narrating it</li>
+        <li>Will pick up the pen box, pause, and dramatically read every surface</li>
+      </ul>
+      <p><strong>Relationship to the Cubicle Shank</strong></p>
+      <ul>
+        <li>The box is their prop. The pen is secondary to the performance</li>
+        <li>They'll read "FIELD DEPLOYMENT" instructions to the group like an announcement</li>
+        <li>They'll slide the sleeve off slowly for dramatic effect</li>
+      </ul>
+      <div class="trigger">Key trigger: "Hold on, hold on - listen to this" (reads box copy aloud)</div>
+      <div class="fear">Biggest fear: There's nothing funny enough on the packaging to perform with</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - "The Desk Display Collector"</h4>
+      <ul>
+        <li>25-45, any gender</li>
+        <li>Keeps interesting objects on their desk (Funko pops, desk toys, novelty items)</li>
+        <li>Values aesthetic objects with personality</li>
+      </ul>
+      <p><strong>Relationship to the Cubicle Shank</strong></p>
+      <ul>
+        <li>Both the pen and the box become desk artifacts</li>
+        <li>The "FOR OFFICE USE ONLY" engraving gets noticed by visitors</li>
+        <li>The box stays on display even after the pen is in the pen cup</li>
+      </ul>
+      <div class="trigger">Key trigger: "This is going on my desk immediately"</div>
+      <div class="fear">Biggest fear: The pen looks cool in photos but cheap in person</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - "The Practical Justifier"</h4>
+      <ul>
+        <li>30-55, any gender</li>
+        <li>Needs to rationalize fun purchases with utility</li>
+        <li>The person who says "well at least it's useful" about gifts</li>
+      </ul>
+      <p><strong>Relationship to the Cubicle Shank</strong></p>
+      <ul>
+        <li>This item is their permission slip for enjoying the rest of the kit</li>
+        <li>"It's not just a gag gift - it comes with a really nice pen"</li>
+        <li>They'll use the pen daily and it becomes their go-to "where'd you get that?" conversation starter</li>
+      </ul>
+      <div class="trigger">Key trigger: "Okay but honestly, this pen is actually really solid"</div>
+      <div class="fear">Biggest fear: The pen runs out of ink in a week and there's no way to replace it</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a6">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I discover the Cubicle Shank in the kit</p>
+      <p><strong>I want to</strong> immediately feel that this is a well-made, funny, keepable item</p>
+      <p><strong>So that</strong> I trust the rest of the kit is going to be equally good</p>
+    </div>
+
+    <h3>Supporting JTBD</h3>
+
+    <h4>Job 2 - Give Me Material to Perform</h4>
+    <ul>
+      <li>When I pick up the pen box in front of coworkers, I want to find something on the packaging worth reading aloud, so that the group gets a laugh and I get to be the entertainer</li>
+    </ul>
+
+    <h4>Job 3 - Make Me Look Good at My Desk</h4>
+    <ul>
+      <li>When I put this pen in my pen cup or on my desk, I want it to look like a cool tactical pen (not a cheap novelty), so that coworkers notice it and I can tell the story of how I got it</li>
+    </ul>
+
+    <h4>Job 4 - Justify the Kit's Price</h4>
+    <ul>
+      <li>When I'm evaluating whether this kit is worth $25-30, I want to see a pen that looks like it could cost $10-15 on its own, so that the price feels reasonable for everything combined</li>
+    </ul>
+
+    <h4>Job 5 - Create a Reveal Moment</h4>
+    <ul>
+      <li>When I slide the sleeve off the pen box, I want the interior reveal to feel intentional and satisfying, so that the physical act of opening it becomes part of the entertainment</li>
+    </ul>
+
+    <h4>Job 6 - Give Me Something I'll Actually Use</h4>
+    <ul>
+      <li>When the laughter dies down and the unboxing is over, I want a pen that writes well and feels good in my hand, so that the gift has daily utility beyond the initial joke</li>
+    </ul>
+
+    <h3>Underserved Jobs (How Competitor Gag Pens Fail)</h3>
+    <ul>
+      <li>The "quality surprise" job - most novelty pens feel like vending machine toys</li>
+      <li>The "packaging as content" job - most pens come in plastic clamshells or plain boxes with zero personality</li>
+      <li>The "desk artifact" job - most gag pens are embarrassing enough that they go in a drawer, not on display</li>
+      <li>The "ongoing conversation" job - most funny pens have a visual gag that gets old; an engraving like "FOR OFFICE USE ONLY" stays funny because it's subtle</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a7">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p>Ranked by impact on the buyer's perception of the kit and the recipient's experience.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <p><em>Drives kit purchase confidence and first-item impression</em></p>
+    <ol>
+      <li>It's a genuinely well-made tactical pen, not a cheap novelty</li>
+      <li>The packaging is a comedy piece on its own, with scannable jokes on every surface</li>
+      <li>It's the first item discovered, and it sets the quality expectation for the entire kit</li>
+      <li>The pen actually writes well and is designed to be kept and used daily</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <p><em>Builds engagement and extends value</em></p>
+    <ol start="5">
+      <li>The matchbox-style box creates a satisfying physical reveal moment</li>
+      <li>The box copy is designed to be read aloud to a group</li>
+      <li>The "FOR OFFICE USE ONLY" engraving turns the pen into an ongoing desk joke</li>
+      <li>Brad Sterling's corporate branding ("Executive Tactical Stylus&trade;") adds a comedy layer that rewards closer reading</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <p><em>Differentiates for detail-oriented recipients</em></p>
+    <ol start="9">
+      <li>Every surface of the box has unique content (top, bottom, edges, interior)</li>
+      <li>The "Field Deployment" instructions parody military/tactical product inserts</li>
+      <li>The prohibited activities icons add visual comedy for those who flip and examine</li>
+      <li>The box itself becomes a desk artifact with display value independent of the pen</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a8">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: Most purchase objections apply to the kit as a whole. These objections are specific to how the Cubicle Shank item influences or creates hesitation.</p>
+
+    <div class="objection">
+      <h4>Objection 1 - "Is that pen actually decent or is it a cheap toy?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Years of gag gifts with novelty pens that break after one use</li>
+        <li><strong>Evidence needed:</strong> Close-up images showing metal construction, professional finish, and real writing capability</li>
+        <li><strong>Mitigation:</strong> Listing images should show the pen at a quality level that reads as "$10-15 tactical pen," not as "dollar store filler." The material and weight should be visible</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2 - "A tactical pen in a gag gift feels overdone"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Tactical pens are a cliche in the men's gift category on Amazon</li>
+        <li><strong>Evidence needed:</strong> Proof that this pen is part of a comedy experience, not just another tactical pen listing</li>
+        <li><strong>Mitigation:</strong> The packaging copy and the "Cubicle Shank" name immediately differentiate this from serious tactical pen products. The comedy context transforms a commodity item into a unique experience</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3 - "Will the barrel engraving wear off?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Printed text on pens often rubs off with use, feeling cheap</li>
+        <li><strong>Evidence needed:</strong> Confirmation of engraving vs. printing method durability</li>
+        <li><strong>Mitigation:</strong> Prefer laser engraving over pad printing. If printing is necessary, select a method tested for durability under daily handling</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4 - "The box is funny but is it too dense to read?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Small text on narrow surfaces might not be scannable in a social setting</li>
+        <li><strong>Evidence needed:</strong> Physical mockup testing at actual size to confirm readability at arm's length</li>
+        <li><strong>Mitigation:</strong> Typographic hierarchy must prioritize the single funniest line at a size readable from 3-4 feet. Secondary content can be smaller and reward closer examination</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5 - "Is this the right item to lead with in the unboxing?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> If the pen doesn't grab attention in the tray, it might be picked up second or third</li>
+        <li><strong>Evidence needed:</strong> The box should visually distinguish itself from Lifer Ink and Turf Tags boxes in the same tray</li>
+        <li><strong>Mitigation:</strong> The matte black with white/red type already contrasts against other boxes. The longer matchbox format structurally differentiates it. Center placement in the tray reinforces hero status</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a9">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Note: These questions are specific to the Cubicle Shank item as it appears within the kit listing and unboxing experience.</p>
+
+    <h3>Questions the Buyer Asks When Evaluating the Listing</h3>
+    <ul>
+      <li>Is that pen real or a toy?</li>
+      <li>What does the box say on it?</li>
+      <li>Is the pen actually usable or just for laughs?</li>
+      <li>Does it look like something a grown adult would keep on their desk?</li>
+    </ul>
+
+    <h3>Questions the Recipient Asks During Unboxing</h3>
+    <ul>
+      <li>What does this box say? (reaches for it)</li>
+      <li>Wait, is this a real pen? (picks it up, feels the weight)</li>
+      <li>What does it say on the barrel? (reads "FOR OFFICE USE ONLY")</li>
+      <li>Can I try it? (writes something to confirm it works)</li>
+    </ul>
+
+    <h3>Questions the Group Asks While Watching</h3>
+    <ul>
+      <li>What does that box say? (leaning in or asking the opener to read it)</li>
+      <li>Read the instructions on the side! (pointing at the Field Deployment steps)</li>
+      <li>Does it actually write? (curiosity about functional quality)</li>
+    </ul>
+
+    <h3>Questions Asked After Unboxing</h3>
+    <ul>
+      <li>Where'd you get that pen? (desk visitors noticing the engraving)</li>
+      <li>What's the box from? (noticing the box as a desk artifact)</li>
+      <li>Can I get one of these kits? (the pen as a gateway to kit awareness)</li>
+    </ul>
+
+    <h3>Questions the Buyer Asks Post-Purchase</h3>
+    <ul>
+      <li>Did they like the pen? (first question gift-givers ask recipients)</li>
+      <li>Does the company make just the pen separately? (interest in standalone product)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>The Tactical Pen Landscape</h3>
+    <ul>
+      <li>Amazon has hundreds of tactical pen listings priced from $8-30</li>
+      <li>Most position as serious EDC (everyday carry) tools with glass breakers, multi-tools, and survival features</li>
+      <li>A smaller segment positions as novelty or gag gift pens (funny shapes, crude jokes, or branded gimmicks)</li>
+      <li>Almost none occupy the middle ground: a genuinely good pen wrapped in smart comedy packaging</li>
+    </ul>
+
+    <h3>Where Serious Tactical Pens Fall Short (for Our Context)</h3>
+    <ul>
+      <li>Zero humor - they take themselves completely seriously</li>
+      <li>Packaging is generic black box or plastic clamshell with zero personality</li>
+      <li>No character voice, no narrative, no entertainment value</li>
+      <li>Marketed to a "tactical/survival" buyer, not a gift buyer</li>
+      <li>Nobody reads the packaging aloud at a party</li>
+    </ul>
+
+    <h3>Where Novelty Pens Fall Short</h3>
+    <ul>
+      <li>Cheap construction - plastic bodies, bad ink, disposable feel</li>
+      <li>One-dimensional humor - a funny shape or a crude phrase and that's it</li>
+      <li>No layered comedy - you "get it" in 1 second and there's nothing more to discover</li>
+      <li>No packaging entertainment - the joke is the pen itself, the box is an afterthought</li>
+      <li>Zero desk artifact value - you wouldn't proudly display one</li>
+    </ul>
+
+    <h3>Cubicle Shank's Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Serious Tactical Pen</th>
+          <th>Novelty Gag Pen</th>
+          <th>Cubicle Shank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Build quality</td><td>High</td><td>Low</td><td>High</td></tr>
+        <tr><td>Comedy value</td><td>None</td><td>One joke</td><td>Layered across pen + box + 6 surfaces</td></tr>
+        <tr><td>Packaging effort</td><td>Generic box</td><td>Afterthought</td><td>Custom multi-surface comedy piece</td></tr>
+        <tr><td>Read-aloud potential</td><td>Zero</td><td>Maybe the label</td><td>Every surface has performable content</td></tr>
+        <tr><td>Desk display value</td><td>Pen only</td><td>Neither</td><td>Both pen and box</td></tr>
+        <tr><td>Brand world</td><td>None</td><td>None</td><td>Elevate Co. / Brad Sterling character</td></tr>
+        <tr><td>Gift context</td><td>Awkward</td><td>One-note</td><td>Anchors a complete entertainment experience</td></tr>
+        <tr><td>Daily use</td><td>Yes</td><td>Usually no</td><td>Yes</td></tr>
+        <tr><td>Price perception</td><td>Fair</td><td>Overpriced for quality</td><td>High value as part of kit context</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+    <ul>
+      <li>The dual naming system (Cubicle Shank + Executive Tactical Stylus&trade;) creates a comedy device that can't be replicated with a single product name</li>
+      <li>The multi-surface box copy requires a brand voice and character world that competitors would need to build from scratch</li>
+      <li>The pen exists within a larger kit ecosystem, giving it narrative context that a standalone pen can never match</li>
+      <li>Brad Sterling's institutional branding turns generic product packaging into comedy set design</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1 - The Quality Trojan Horse</h4>
+      <p>The Cubicle Shank's real strategic job isn't comedy. It's trust. It's the item that converts a skeptical recipient from "this is a gag gift" to "wait, this is actually good stuff." Every other item in the kit benefits from the credibility the pen establishes. The pen is doing more psychological work than any other single item.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2 - The Box Is the Product, the Pen Is the Bonus</h4>
+      <p>For the unboxing experience specifically, the item box delivers more entertainment value than the pen itself. The recipient will spend 15-30 seconds reading and reacting to the box, then 2-3 seconds acknowledging the pen. The box is the comedy set. The pen is what you take home after the show.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3 - The Only Item That Leaves the Briefcase Daily</h4>
+      <p>Stickers get placed once. Tattoos are temporary. Cards stay in the box. The booklets get read and shelved. But the pen goes in a pocket or pen cup and shows up at every meeting, every desk visit, every signing session. It's the only item with a permanent daily presence outside the kit context. "FOR OFFICE USE ONLY" works 365 days a year.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4 - The Dual Name as Comedy Architecture</h4>
+      <p>"Cubicle Shank" and "Executive Tactical Stylus&trade;" aren't just two names for the same thing. They're two complete worldviews colliding on a single box. The prison name is what the recipients say. The corporate name is what Brad Sterling says. The gap between them is where the comedy lives. This naming tension can be replicated across every item in the kit as a structural comedy device.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5 - Permission to Keep</h4>
+      <p>Gag gifts have a disposal problem. Recipients laugh, appreciate the thought, and throw the item away within a week. A genuinely good pen with a subtle engraving solves this. Nobody throws away a good pen. The comedy travels with the utility. This is the item that prevents the entire kit from becoming trash.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6 - The 2-Second Listing Anchor</h4>
+      <p>In Amazon search results, the pen box is one of the most visually striking elements in the kit's product images. Its matte black tactical look reads as "premium" in a thumbnail. Among listings full of bright-colored novelty items, the pen box communicates "this is different" before the buyer even clicks. It anchors the listing as a premium product in a category full of cheap impulse buys.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7 - The Institutional Comedy Format</h4>
+      <p>The pen box doesn't just use military/tactical styling for aesthetics. It uses it as a comedy format. "Field Deployment" instructions, "Prohibited Activities" icons, QC stamps, classification marks - these are institutional communication patterns played completely straight. The format IS the joke. This is a transferable comedy technique that works because people instinctively take institutional formatting seriously, then laugh when the content subverts expectations.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">The Cubicle Shank isn't a funny pen. It's the opening act.</p>
+
+    <p>Every comedy show needs an opening act that sets the tone, earns the audience's trust, and tells them what kind of show they're watching. The Cubicle Shank does this for the entire Office Survival Kit experience. It's the first item picked up. It establishes that the quality is real, the comedy is layered, and the experience rewards exploration.</p>
+
+    <p>The pen itself is the proof of quality. The box is the proof of comedy. Together, they tell the recipient: "Take this seriously. Everything in here is going to be this good."</p>
+
+    <p>If the pen fails - cheap material, bad ink, no weight - the audience checks out before the show starts. If the pen succeeds, they lean in for everything that follows.</p>
+
+    <h3>Implication for All Content Creation</h3>
+    <ul>
+      <li>Never position the Cubicle Shank as a standalone joke. It's always in context of what comes after it</li>
+      <li>The pen's quality should be visible in images, not just claimed in copy</li>
+      <li>The box copy should be legible in listing photos because it's doing double duty: demonstrating humor style AND demonstrating production quality</li>
+      <li>The hero item earns the audience's trust. Every other item in the kit gets to cash in on that trust</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. The pen quality will match the positioning</strong> - This profile assumes a metal-body pen with real weight and a smooth writing experience. If COGS force a plastic body or cheap mechanism, the entire "quality anchor" strategy collapses and every downstream item suffers.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. The engraving will be durable</strong> - "FOR OFFICE USE ONLY" is a long-term comedy element that only works if it stays visible after months of daily use. Assuming laser engraving or equivalent durability.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. The matchbox mechanism will feel premium</strong> - The tray-and-sleeve construction needs to slide smoothly and feel intentional. If the paperboard is too thin (below 18pt), the box will feel flimsy and undercut the reveal moment.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. The box dimensions work at 6.5" x 1.75" x 1"</strong> - These are working estimates. The tray recess in the briefcase needs to accommodate the actual final dimensions, and the copy layouts are designed for these proportions.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Center placement in Tray 1 drives first-pick behavior</strong> - Assuming the recipient naturally reaches for the center item first. If they reach for a side item (Lifer Ink or Turf Tags), the Cubicle Shank loses its "opening act" advantage.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. The dual naming system will be resolved kit-wide</strong> - This profile assumes "Cubicle Shank" gets hero treatment and "Executive Tactical Stylus&trade;" plays the institutional header role. If the naming hierarchy inverts, the box layout and comedy delivery change significantly.</p>
+    </div>
+
+    <hr>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Final pen sourcing not complete</strong> - No samples selected. Cost difference between aluminum and steel unknown. Multiple tactical pen styles need sampling.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Kit-wide naming hierarchy not decided</strong> - The relationship between prison terms and Brad's corporate rebrands is not locked across all items. This blocks the top face layout of the box.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. Item box copy not finalized</strong> - Brad's box-specific copy (distinct from the packaging panel copy in the copy document) needs a dedicated writing session.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Box dimensions unconfirmed</strong> - 6.5" x 1.75" x 1" is a working estimate pending sourcing partner confirmation.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Short end treatments not designed</strong> - The open sleeve ends (1.75" x 1.0") are visible when the box sits in the tray recess. No design exists for these surfaces yet.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. No physical mockup tested</strong> - Typography readability, matchbox mechanism feel, and interior reveal impact have not been tested at actual print size with real people.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Engraving vs. printing decision pending</strong> - Barrel text method affects durability, cost, and appearance. Samples needed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1 - Resolve the Naming Hierarchy Before Finalizing the Box</h4>
+      <ul>
+        <li>The single biggest blocker for the Cubicle Shank box is whether "Cubicle Shank" or "Executive Tactical Stylus&trade;" gets hero treatment on the top face</li>
+        <li>This decision cascades to every other item box in the kit</li>
+        <li>Run a dedicated session to establish the naming system kit-wide, then update all box layouts simultaneously</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2 - Sample 2-3 Pen Styles Before Committing</h4>
+      <ul>
+        <li>The pen quality is the quality anchor for the entire kit. Do not source the cheapest option</li>
+        <li>Request samples of at least 2-3 tactical pen styles in the $2-4 COGS range</li>
+        <li>Evaluate each for weight, writing quality, finish durability, and "first impression" feel</li>
+        <li>The pen should pass the "hand it to someone without context and they'll say it's a nice pen" test</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3 - Test the Box at Actual Print Size</h4>
+      <ul>
+        <li>Design files look great on screen but the box is physically narrow (1.75" wide, 1" edges)</li>
+        <li>Print a 1:1 mockup and test readability at arm's length and at 3-4 feet</li>
+        <li>Confirm the "Field Deployment" steps on the long edge are readable at 1" height</li>
+        <li>If text is too small, prioritize fewer words at larger size over cramming everything in</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4 - Prioritize Engraving Over Printing for the Barrel</h4>
+      <ul>
+        <li>"FOR OFFICE USE ONLY" needs to survive daily handling for months</li>
+        <li>Laser engraving is more durable and feels more premium than pad printing</li>
+        <li>Get cost quotes for both and strongly prefer engraving unless the cost delta is unreasonable</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5 - Design the Short Ends as Visible Tray Elements</h4>
+      <ul>
+        <li>When the box sits in its tray recess, the open sleeve ends (1.75" x 1.0") face upward</li>
+        <li>These are the surfaces the recipient sees before picking up the box</li>
+        <li>Even minimal treatment (catalog numbers, classification marks, Elevate Co. branding) adds institutional authenticity</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6 - Confirm the Comedy Hierarchy on the Top Face</h4>
+      <ul>
+        <li>Identify which single line is the "read aloud" line for the group</li>
+        <li>That line needs to be scannable at arm's length within 2-3 seconds</li>
+        <li>Every other element on the top face serves this one line by creating context around it</li>
+        <li>Test with 2-3 people who haven't seen the box: "What's the first thing you read?"</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7 - Consider the Pen as a Standalone SKU Later</h4>
+      <ul>
+        <li>The Cubicle Shank has the strongest "I'd buy this by itself" signal of any kit item</li>
+        <li>After the kit launches and establishes the brand, a standalone Cubicle Shank listing could extend the product line</li>
+        <li>This is a future consideration, not a current priority - do not let it complicate the kit launch</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+// Extract markdown-formatted plain text (bold preserved as **bold**)
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+// Get clean HTML from artifact body for rich-text clipboard
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  // Remove copy buttons or other UI chrome that leaked in
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

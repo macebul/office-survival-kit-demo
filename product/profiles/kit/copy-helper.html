@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Survival Kit - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Hidden plain-text for clipboard */
+  .copy-data { display: none; }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Office Survival Kit <span>Product Profile</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#a1"><span class="num">01.</span> Basic Product Profile</a>
+    <a href="#a8"><span class="num">08.</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a2"><span class="num">02.</span> Strategic Overview</a>
+    <a href="#a9"><span class="num">09.</span> Buyer Questions Map</a>
+    <a href="#a3"><span class="num">03.</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10.</span> Competitive Differentiation</a>
+    <a href="#a4"><span class="num">04.</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11.</span> Non-Obvious Angles</a>
+    <a href="#a5"><span class="num">05.</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12.</span> The Big Idea</a>
+    <a href="#a6"><span class="num">06.</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13.</span> Assumptions &amp; Gaps</a>
+    <a href="#a7"><span class="num">07.</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14.</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a1">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Product Identity</h3>
+    <ul>
+      <li><strong>Product Name:</strong> Office Survival Kit</li>
+      <li><strong>Brand:</strong> Witty Yeti (parent company: Witty Yeti)</li>
+      <li><strong>In-Universe Brand:</strong> Elevate Co. (fictional company, appears in product copy)</li>
+      <li><strong>Product Type:</strong> Multi-item comedy gift set in briefcase-style packaging</li>
+    </ul>
+
+    <h3>Pricing &amp; Availability</h3>
+    <ul>
+      <li><strong>Price Range:</strong> $24.99 to $29.99 (pending final COGS)</li>
+      <li><strong>Primary Sales Channel:</strong> Amazon FBA</li>
+    </ul>
+
+    <h3>Target Customer</h3>
+    <ul>
+      <li>Gift buyers ages 25-55</li>
+      <li>Purchasing for coworkers, friends, or family who work office jobs</li>
+      <li>Skews toward male recipients but purchased by both men and women</li>
+    </ul>
+
+    <h3>Key Purchase Occasions</h3>
+    <ul>
+      <li>White elephant / Secret Santa exchanges</li>
+      <li>Birthdays</li>
+      <li>Holiday gifting (Q4 peak)</li>
+      <li>Farewell / going-away gifts</li>
+      <li>"Just because" office humor gifts</li>
+    </ul>
+
+    <h3>What It Is</h3>
+    <ul>
+      <li>A briefcase containing 7 themed items plus one empty recess, all built around the concept that office life is a prison sentence</li>
+      <li>Items range from functional (pen, mug) to interactive (card decks, tattoos, stickers) to purely comedic (empty recess with joke placard)</li>
+      <li>Includes two document sets: a 12-page character-driven booklet and a 16-page activity/survival guide</li>
+    </ul>
+
+    <h3>Physical Specs</h3>
+    <ul>
+      <li>Briefcase: 14" x 11.5" x 5.0", rigid paperboard, magnetic closure</li>
+      <li>Ships in custom printed outer box (~15.5" x 13" x 6.5")</li>
+      <li>Total weight: estimated 3-4 lbs</li>
+    </ul>
+
+    <h3>The 7 Items + 1 Recess</h3>
+    <ol>
+      <li><strong>Cubicle Shank</strong> - tactical-style ballpoint pen in custom box</li>
+      <li><strong>Lifer Ink</strong> - sheet of temporary office-themed prison tattoos</li>
+      <li><strong>Turf Tags</strong> - sheet of die-cut territorial stickers</li>
+      <li><strong>Cell Talk</strong> - affirmation card deck</li>
+      <li><strong>Rap Sheets</strong> - complaint/write-up card deck</li>
+      <li><strong>Sweet Nothings</strong> - passive-aggressive card deck</li>
+      <li><strong>Mug Shot</strong> - white enamel camp mug (hidden compartment reveal)</li>
+      <li><strong>Confiscated Stapler</strong> - empty die-cut recess with joke placard</li>
+    </ol>
+
+    <h3>Brand Character</h3>
+    <ul>
+      <li><strong>Brad Sterling</strong>, CVO &amp; Founder of Elevate Co.</li>
+      <li>A hustle-culture motivational speaker who genuinely believes he's saving people from cubicle life</li>
+      <li>Sole voice across all copy</li>
+      <li>Comedy works on two layers: sharp office-as-prison humor plus Brad's complete lack of self-awareness about himself</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a2">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <ul>
+      <li>A premium comedy gift that delivers a sustained entertainment experience, not a one-note laugh</li>
+      <li>The briefcase format, layered reveal sequence, and character-driven copy create an unboxing event that entertains everyone in the room</li>
+      <li>Quality and comedy depth justify the price point against cheaper disposable gag gifts</li>
+    </ul>
+
+    <h3>Strategic Position</h3>
+    <ul>
+      <li>Sits above impulse-buy gag gifts ($10-15 range) in both price and perceived value</li>
+      <li>Competes on entertainment density - more jokes, more items, more discovery moments per dollar</li>
+      <li>The briefcase packaging signals "this is a real gift" rather than "this is a throwaway joke"</li>
+    </ul>
+
+    <h3>Market Context</h3>
+    <ul>
+      <li>Office humor is universally relatable among working adults</li>
+      <li>Gag gift category on Amazon is crowded with low-effort, single-item products</li>
+      <li>White elephant and Secret Santa drive significant seasonal demand in Q4</li>
+      <li>Growing consumer appetite for "experience" gifts over simple objects</li>
+    </ul>
+
+    <h3>Key Strategic Tension</h3>
+    <ul>
+      <li>Must be funny enough to justify buying as a joke gift</li>
+      <li>Must feel premium enough that the recipient doesn't immediately throw it away</li>
+      <li>The comedy can't be so niche that it alienates mainstream office workers</li>
+      <li>Brad Sterling's character must land with people who have zero context about him</li>
+    </ul>
+
+    <h3>Revenue Model</h3>
+    <ul>
+      <li>Amazon FBA primary channel</li>
+      <li>Part of Witty Yeti's expanding gag gift portfolio</li>
+      <li>Potential for repeat purchases across Witty Yeti brand (customer who buys one gift may return for others)</li>
+    </ul>
+
+    <h3>Success Metrics</h3>
+    <ul>
+      <li>Unit sales velocity on Amazon</li>
+      <li>Review quality and volume (unboxing reactions drive social proof)</li>
+      <li>Low return rate (indicates perceived value matches price)</li>
+      <li>Social media organic content (TikTok/YouTube unboxing as free marketing)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a3">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Item-Level Analysis</h3>
+
+    <h4>Cubicle Shank (Tactical Pen)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Tactical-style ballpoint pen in custom printed box</li>
+      <li><strong>Functional benefit:</strong> Actually usable writing instrument</li>
+      <li><strong>Emotional benefit:</strong> Gets the first laugh and sets the tone for everything that follows</li>
+      <li><strong>Strategic role:</strong> Hero item, first impression, establishes quality bar</li>
+    </ul>
+
+    <h4>Lifer Ink (Temporary Tattoos)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Sheet of office-themed prison-style temporary tattoos</li>
+      <li><strong>Functional benefit:</strong> Wearable, interactive, shareable in a group</li>
+      <li><strong>Emotional benefit:</strong> Physical comedy - people actually put them on and photograph it</li>
+      <li><strong>Strategic role:</strong> Social media content generator, group activity catalyst</li>
+    </ul>
+
+    <h4>Turf Tags (Stickers)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Sheet of die-cut stickers for "marking territory"</li>
+      <li><strong>Functional benefit:</strong> Can actually be placed on office items (mug, laptop, desk)</li>
+      <li><strong>Emotional benefit:</strong> Extends the joke beyond the unboxing into daily office life</li>
+      <li><strong>Strategic role:</strong> Longevity play - the joke lives on at the recipient's desk</li>
+    </ul>
+
+    <h4>Cell Talk (Affirmation Cards)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Deck of office-survival affirmation cards</li>
+      <li><strong>Functional benefit:</strong> Can be displayed, shared, or used as daily desk humor</li>
+      <li><strong>Emotional benefit:</strong> Relatable validation wrapped in comedy</li>
+      <li><strong>Strategic role:</strong> Adds perceived volume and variety to the kit</li>
+    </ul>
+
+    <h4>Rap Sheets (Complaint Cards)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Deck of complaint/write-up cards</li>
+      <li><strong>Functional benefit:</strong> Can be "filed" against coworkers as a running joke</li>
+      <li><strong>Emotional benefit:</strong> Cathartic humor about real office frustrations</li>
+      <li><strong>Strategic role:</strong> Interactive and reusable, extends product life</li>
+    </ul>
+
+    <h4>Sweet Nothings (Passive-Aggressive Cards)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Deck of passive-aggressive message cards</li>
+      <li><strong>Functional benefit:</strong> Can be left on coworkers' desks, used in office banter</li>
+      <li><strong>Emotional benefit:</strong> Says what everyone thinks but nobody says out loud</li>
+      <li><strong>Strategic role:</strong> The "spiciest" content, drives word-of-mouth and sharing</li>
+    </ul>
+
+    <h4>Mug Shot (Camp Mug)</h4>
+    <ul>
+      <li><strong>Feature:</strong> White enamel camp mug hidden in a secret compartment</li>
+      <li><strong>Functional benefit:</strong> Daily-use drinkware</li>
+      <li><strong>Emotional benefit:</strong> The surprise reveal at the end of the unboxing, biggest reaction moment</li>
+      <li><strong>Strategic role:</strong> Provides the climax of the reveal sequence, highest perceived standalone value</li>
+    </ul>
+
+    <h4>Confiscated Stapler (Empty Recess)</h4>
+    <ul>
+      <li><strong>Feature:</strong> Empty die-cut recess with a joke placard</li>
+      <li><strong>Functional benefit:</strong> None (that's the joke)</li>
+      <li><strong>Emotional benefit:</strong> Unexpected meta-humor, gets a laugh precisely because there's nothing there</li>
+      <li><strong>Strategic role:</strong> $0 COGS comedy, demonstrates the product's commitment to the bit</li>
+    </ul>
+
+    <hr>
+
+    <h3>Packaging-Level Analysis</h3>
+
+    <h4>Briefcase Format</h4>
+    <ul>
+      <li><strong>Feature:</strong> Rigid paperboard briefcase with magnetic closure</li>
+      <li><strong>Functional benefit:</strong> Reusable storage, display piece</li>
+      <li><strong>Emotional benefit:</strong> Signals premium quality before anything is opened</li>
+      <li><strong>Strategic role:</strong> Justifies price point, differentiates from bag-in-box competitors</li>
+    </ul>
+
+    <h4>15-Step Reveal Sequence</h4>
+    <ul>
+      <li><strong>Feature:</strong> Deliberately designed unboxing progression from outer box to hidden mug</li>
+      <li><strong>Functional benefit:</strong> Paces the experience so nothing is missed</li>
+      <li><strong>Emotional benefit:</strong> Builds anticipation and delivers escalating comedy</li>
+      <li><strong>Strategic role:</strong> Designed for both in-person group entertainment and filmed content</li>
+    </ul>
+
+    <h4>Brad Sterling Character Voice</h4>
+    <ul>
+      <li><strong>Feature:</strong> Consistent fictional character across all touchpoints</li>
+      <li><strong>Functional benefit:</strong> Unified brand identity</li>
+      <li><strong>Emotional benefit:</strong> The comedy has a "narrator" which makes the whole thing feel like a world, not just a product</li>
+      <li><strong>Strategic role:</strong> Creates memorability and shareability that generic joke products can't match</li>
+    </ul>
+
+    <h4>Doc Set 1 - "From the Desk of Brad Sterling"</h4>
+    <ul>
+      <li><strong>Feature:</strong> 12-page full-color booklet with photorealistic imagery and instant-read humor</li>
+      <li><strong>Functional benefit:</strong> Readable content that extends the experience</li>
+      <li><strong>Emotional benefit:</strong> Deepens the Brad Sterling world, delivers comedy that rewards reading</li>
+      <li><strong>Strategic role:</strong> Differentiator - no competing gag gift includes this level of produced content</li>
+    </ul>
+
+    <h4>Doc Set 2 - Activity/Survival Guide</h4>
+    <ul>
+      <li><strong>Feature:</strong> 16-page mini booklet with activities, checklists, and interactive elements</li>
+      <li><strong>Functional benefit:</strong> Actually usable in office settings as ongoing humor</li>
+      <li><strong>Emotional benefit:</strong> Makes the recipient feel like there's always more to discover</li>
+      <li><strong>Strategic role:</strong> Extends product life beyond initial unboxing</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a4">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Purchase Motivation</h3>
+    <ul>
+      <li>The buyer wants to give a gift that makes them look clever and thoughtful</li>
+      <li>They want the moment of giving to be entertaining for the group, not just the recipient</li>
+      <li>They're spending more than they would on a generic gag gift because they want the reaction to match the investment</li>
+    </ul>
+
+    <h3>Emotional Triggers</h3>
+    <ul>
+      <li><strong>Recognition</strong> - "This is SO perfect for [person]" moment when they find the listing</li>
+      <li><strong>Anticipation</strong> - Excitement about watching someone open it</li>
+      <li><strong>Social currency</strong> - Being the person who found the best gift at the party</li>
+      <li><strong>Relatability</strong> - Office humor connects across industries, roles, and seniority levels</li>
+    </ul>
+
+    <h3>Decision-Making Framework</h3>
+    <ul>
+      <li>Gift buyers evaluate differently than self-purchasers</li>
+      <li>They're buying a reaction, not an object</li>
+      <li>Key question in their mind: "Will this actually land, or will it fall flat?"</li>
+      <li>Secondary question: "Does this look cheap, or does it look like I put thought into it?"</li>
+    </ul>
+
+    <h3>Risk Perception</h3>
+    <ul>
+      <li><strong>Main risk:</strong> spending $25-30 on a joke that doesn't land</li>
+      <li><strong>Mitigating factors:</strong> item variety (something will hit), premium packaging (looks like a real gift), the mug has standalone value</li>
+      <li>Amazon reviews and unboxing content are the primary trust signals</li>
+    </ul>
+
+    <h3>Cognitive Biases in Play</h3>
+    <ul>
+      <li><strong>Social proof</strong> - Reviews and UGC unboxing videos reduce perceived risk</li>
+      <li><strong>Anchoring</strong> - The briefcase format anchors perceived value higher than the price</li>
+      <li><strong>Peak-end rule</strong> - The mug reveal at the end creates a strong positive memory of the entire experience</li>
+      <li><strong>Loss aversion</strong> - "What if I get them a boring gift and someone else brings this?" (relevant in white elephant contexts)</li>
+      <li><strong>Reciprocity</strong> - The gift gives so much content and discovery that the recipient feels genuinely delighted, not like they received a throwaway joke</li>
+    </ul>
+
+    <h3>Awareness Level (Schwartz Scale)</h3>
+    <ul>
+      <li>Most buyers are problem-aware ("I need a funny gift for an office person") but not solution-aware</li>
+      <li>They're browsing Amazon searching for "funny office gifts" or "white elephant gifts"</li>
+      <li>Some may be product-aware if they've seen an unboxing video or social post</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a5">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="persona">
+      <h4>Persona 1 - "The White Elephant Winner"</h4>
+      <p><strong>Who:</strong> 28-40, any gender. Office worker buying for a holiday party exchange. Budget-conscious but willing to spend more to "win" the exchange.</p>
+      <ul>
+        <li>Searches Amazon in November/December</li>
+        <li>Reads reviews obsessively, looking for confirmation it's actually funny</li>
+        <li>Compares 3-5 options before committing</li>
+        <li>Wants the gift everyone fights over in the swap</li>
+      </ul>
+      <div class="trigger">"This is the one that'll have everyone dying"</div>
+      <div class="fear">Biggest fear: Buying something that gets a polite chuckle and then sits unclaimed</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - "The Thoughtful Joker"</h4>
+      <p><strong>Who:</strong> 30-50, any gender. Buying for a specific coworker's birthday, farewell, or promotion. Knows the recipient well enough to know they'd appreciate office humor.</p>
+      <ul>
+        <li>Searches with intent ("funny gift for coworker who hates meetings")</li>
+        <li>Cares about quality because it's a named gift, not anonymous</li>
+        <li>Wants it to feel personal even though it's a mass product</li>
+        <li>May add a handwritten note to personalize</li>
+      </ul>
+      <div class="trigger">"This is exactly [person's name]"</div>
+      <div class="fear">Biggest fear: It arriving and looking cheap or low-effort</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - "The Office Culture Builder"</h4>
+      <p><strong>Who:</strong> 35-55, often a manager or team lead. Buying for team morale, onboarding humor, or a team event. May buy multiples.</p>
+      <ul>
+        <li>Less price-sensitive per unit</li>
+        <li>Values appropriateness - humor needs to be office-safe</li>
+        <li>Wants something that brings the team together</li>
+        <li>May expense it</li>
+      </ul>
+      <div class="trigger">"This would be hilarious for our team offsite"</div>
+      <div class="fear">Biggest fear: HR getting involved because the humor crosses a line</div>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - "The Content-Aware Gifter"</h4>
+      <p><strong>Who:</strong> 25-40, social media active. Has seen an unboxing video or social post about the product. Already sold on the concept, looking for the listing.</p>
+      <ul>
+        <li>Arrives with high intent from an external referral</li>
+        <li>Skims reviews to confirm what they already believe</li>
+        <li>Fast conversion, low comparison shopping</li>
+        <li>Likely to film their own unboxing or the recipient's reaction</li>
+      </ul>
+      <div class="trigger">"I saw this on TikTok and I need it for [person]"</div>
+      <div class="fear">Biggest fear: That it won't be as good as the video made it look</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a6">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I need to buy a gift for someone who works in an office</p>
+      <p><strong>I want to</strong> find something that's genuinely funny and feels like a real gift</p>
+      <p><strong>So that</strong> the moment of giving is entertaining for everyone and the recipient actually keeps it</p>
+    </div>
+
+    <h3>Supporting JTBD</h3>
+
+    <h4>Job 2 - Win the Exchange</h4>
+    <ul><li>When I'm going to a white elephant or Secret Santa party, I want to bring the gift everyone fights over, so that I get social credit for having the best find</li></ul>
+
+    <h4>Job 3 - Express a Shared Experience</h4>
+    <ul><li>When I want to acknowledge that office life is absurd, I want to give something that validates that feeling through humor, so that the recipient feels seen and we bond over the shared joke</li></ul>
+
+    <h4>Job 4 - Look Like a Thoughtful Gift-Giver</h4>
+    <ul><li>When I'm giving a gift to a coworker, I want it to look like I put real thought and money into it, so that I don't come across as someone who grabbed something last-minute</li></ul>
+
+    <h4>Job 5 - Create a Group Moment</h4>
+    <ul><li>When I'm at a party or team event, I want the gift opening to be a shared experience, so that it entertains the room rather than just the recipient</li></ul>
+
+    <h4>Job 6 - Generate Content</h4>
+    <ul><li>When someone opens this gift, I want the unboxing to be visually interesting and progressively surprising, so that it's worth filming and sharing</li></ul>
+
+    <h3>Underserved Jobs (Currently Poorly Served by Competitors)</h3>
+    <ul>
+      <li><strong>The "sustained entertainment" job</strong> - most gag gifts deliver one punchline and they're done</li>
+      <li><strong>The "quality signal" job</strong> - most gag gifts look and feel disposable</li>
+      <li><strong>The "discovery" job</strong> - most gag gifts have no layers to uncover</li>
+      <li><strong>The "group experience" job</strong> - most gifts are opened, laughed at briefly, and set aside</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a7">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Ranked by likely impact on purchase decisions.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <p style="color:#666; font-size:0.85rem; margin-bottom:0.5rem;">Drives the click and the conversion</p>
+    <ol>
+      <li>It's genuinely funny with layers of humor, not a one-liner product</li>
+      <li>It looks and feels like a premium gift, not a cheap joke</li>
+      <li>It contains multiple items, creating a "wow, there's more" unboxing effect</li>
+      <li>It works perfectly for white elephant, birthdays, and office gifting</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <p style="color:#666; font-size:0.85rem; margin-bottom:0.5rem;">Builds confidence and reduces hesitation</p>
+    <ol start="5">
+      <li>The reveal sequence builds from item to item with a surprise ending</li>
+      <li>Individual items are actually usable (pen writes, mug is real, cards are playable)</li>
+      <li>The humor is office-universal, not niche or exclusionary</li>
+      <li>It's designed for group entertainment, not just the recipient</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <p style="color:#666; font-size:0.85rem; margin-bottom:0.5rem;">Differentiates for engaged shoppers</p>
+    <ol start="9">
+      <li>A fictional character ties the whole experience together with a consistent voice</li>
+      <li>Includes two produced booklets with original content</li>
+      <li>Interactive elements (tattoos, stickers, cards) extend life beyond unboxing</li>
+      <li>The empty recess is a meta-joke that shows commitment to the comedy</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a8">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="objection">
+      <h4>Objection 1 - "Is it actually funny or just trying to be?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Most gag gifts on Amazon overpromise and underdeliver on humor</li>
+        <li><strong>Evidence needed:</strong> Reviews quoting specific jokes, unboxing videos showing real laughter</li>
+        <li><strong>Mitigation:</strong> UGC content strategy, detailed product images showing actual copy on items</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2 - "$25-30 is a lot for a joke gift"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Mental anchoring against $10-15 single-item gag gifts</li>
+        <li><strong>Evidence needed:</strong> Showing the 7+ items, briefcase quality, and comparison to "what $30 gets you elsewhere"</li>
+        <li><strong>Mitigation:</strong> Product images that communicate density and quality, "what's inside" breakdowns</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3 - "Will the recipient actually use any of this or will it go in the trash?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Guilt about waste, especially for a gift</li>
+        <li><strong>Evidence needed:</strong> Showing the pen, mug, and cards as functional items with standalone value</li>
+        <li><strong>Mitigation:</strong> Emphasize the mug and pen as daily-use items, cards as ongoing office entertainment</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4 - "Is the humor office-appropriate?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Fear of giving something that crosses professional boundaries</li>
+        <li><strong>Evidence needed:</strong> Clear signals that the humor is PG/PG-13 and about universal office experiences</li>
+        <li><strong>Mitigation:</strong> Product description language that positions the humor as "relatable" not "edgy"</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5 - "Will it arrive in time / look good when it arrives?"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Standard Amazon shipping anxiety, amplified for gifts</li>
+        <li><strong>Evidence needed:</strong> Prime badge, packaging quality visible in images</li>
+        <li><strong>Mitigation:</strong> FBA handles this, but product images should show the outer box and briefcase looking pristine</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 6 - "I don't know if [specific person] would like this"</h4>
+      <ul>
+        <li><strong>Root cause:</strong> Gift-giving anxiety about personal taste</li>
+        <li><strong>Evidence needed:</strong> Social proof showing wide appeal across office worker types</li>
+        <li><strong>Mitigation:</strong> Reviews from different demographics, positioning as "for anyone who's ever worked in an office"</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a9">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Before Clicking the Listing</h3>
+    <ul>
+      <li>Is this actually funny or just another generic gag gift?</li>
+      <li>What's included for that price?</li>
+      <li>Is this appropriate for a work setting?</li>
+      <li>Will it arrive by [date]?</li>
+    </ul>
+
+    <h3>On the Listing Page</h3>
+    <ul>
+      <li>What exactly comes in the kit?</li>
+      <li>What do the items look like up close?</li>
+      <li>Is the briefcase real quality or flimsy?</li>
+      <li>What do the reviews say about the humor landing?</li>
+      <li>Is this good for white elephant / Secret Santa / birthdays?</li>
+    </ul>
+
+    <h3>Before Adding to Cart</h3>
+    <ul>
+      <li>Is $25-30 worth it compared to other options I'm seeing?</li>
+      <li>Will the person I'm buying for actually appreciate this?</li>
+      <li>Is there anything inappropriate in here I should worry about?</li>
+      <li>Can I see what the unboxing experience actually looks like?</li>
+    </ul>
+
+    <h3>After Purchase (Pre-Arrival)</h3>
+    <ul>
+      <li>When will it arrive?</li>
+      <li>Does it come in gift-ready packaging or do I need to wrap it?</li>
+    </ul>
+
+    <h3>After Giving the Gift</h3>
+    <ul>
+      <li>Where can I buy more for other people?</li>
+      <li>Does this company make other products like this?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>The Current Landscape</h3>
+    <ul>
+      <li>Gag gifts on Amazon range from $8-25, dominated by single-item novelties</li>
+      <li>Common competitors: funny mugs, desk signs, novelty desk toys, Cards Against Humanity-style card games, The Onion merchandise</li>
+      <li>Most are one-punchline products with minimal packaging effort</li>
+      <li>Very few multi-item curated sets exist in this price range</li>
+    </ul>
+
+    <h3>Where Competitors Fall Short</h3>
+    <ul>
+      <li>Single-joke products have zero replay value</li>
+      <li>Cheap packaging signals "this is disposable" to the recipient</li>
+      <li>No narrative or character ties items together</li>
+      <li>No designed unboxing progression</li>
+      <li>No content beyond the product itself (no booklets, no guides, no world-building)</li>
+    </ul>
+
+    <h3>Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Typical Gag Gift</th><th>Office Survival Kit</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Item count</td><td>1</td><td>7 + empty recess</td></tr>
+        <tr><td>Packaging</td><td>Poly bag or plain box</td><td>Magnetic briefcase in custom outer box</td></tr>
+        <tr><td>Comedy depth</td><td>Single joke</td><td>Layered across every touchpoint</td></tr>
+        <tr><td>Unboxing time</td><td>5 seconds</td><td>5-10 minutes</td></tr>
+        <tr><td>Reusability</td><td>Usually none</td><td>Pen, mug, cards, stickers all usable</td></tr>
+        <tr><td>Character/voice</td><td>None</td><td>Brad Sterling across all copy</td></tr>
+        <tr><td>Produced content</td><td>None</td><td>Two booklets (28 total pages)</td></tr>
+        <tr><td>Group entertainment</td><td>Low</td><td>High (designed for audience)</td></tr>
+        <tr><td>Social media potential</td><td>Low</td><td>High (15-step reveal sequence)</td></tr>
+        <tr><td>Price justification</td><td>Weak</td><td>Strong (density + quality)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+    <ul>
+      <li>The character-driven world is hard to replicate without it feeling like a copy</li>
+      <li>The reveal sequence requires packaging engineering that most competitors won't invest in</li>
+      <li>The multi-item format with produced content creates a value perception that single items can't match</li>
+      <li>Witty Yeti's brand portfolio creates cross-selling opportunity that standalone products don't have</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1 - The Gift That Performs</h4>
+      <p>This isn't a product the recipient uses alone. It's a performance piece. The buyer is essentially hiring this kit to entertain a room. That changes what matters: timing, pacing, and audience reaction outweigh individual item quality.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2 - Comedy as Packaging</h4>
+      <p>The real product isn't 7 items in a briefcase. The real product is the experience of discovering them. The items are props in a comedy set. The briefcase is the stage. Brad Sterling is the comedian. This reframe matters for how the listing communicates value.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3 - The Anti-Corporate Corporate Gift</h4>
+      <p>There's an irony layer most competitors miss. This looks corporate (briefcase, professional packaging, document sets) but subverts everything corporate. That tension is the comedy engine. The more "official" it looks, the funnier the content hits.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4 - The Empty Recess as a Trust Signal</h4>
+      <p>Including an intentionally empty slot with a joke placard communicates something no competitor does: "We care more about making you laugh than about filling every slot with product." It signals confidence in the comedy over product padding.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5 - Functional Items as Comedy Permission</h4>
+      <p>The pen works. The mug is real. The cards are playable. These functional items give the buyer "permission" to spend $25-30 because they can rationalize it as not purely a joke purchase. The functional items are doing emotional work even if nobody consciously acknowledges it.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6 - The Second Audience Problem</h4>
+      <p>The buyer and the recipient are different people with different needs. The buyer needs to feel confident the joke will land. The recipient needs to feel the gift is worth keeping. The current product design serves both, but the listing needs to sell to the buyer while showing evidence it'll satisfy the recipient.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7 - The "Also From Elevate Co." Gag as a Real Funnel</h4>
+      <p>The outer box includes fictional products "from Elevate Co." This comedy bit could become a real product development pipeline. Jokes that get strong social engagement could signal demand for actual future SKUs.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">The Office Survival Kit isn't a gag gift. It's a comedy show in a briefcase.</p>
+
+    <p>Every other product in this category delivers a punchline. This delivers a set. It has an opening act (the outer box), rising action (the briefcase exterior and reveal sequence), multiple scenes (each item discovery), and a closer (the hidden mug). It even has a narrator (Brad Sterling) and printed programs (the two document sets).</p>
+
+    <p>The buyer isn't purchasing items. They're purchasing 5-10 minutes of group entertainment with props the recipient gets to keep.</p>
+
+    <p>This is why the product justifies $25-30 in a $10-15 category. The comparison isn't "gag gift vs. gag gift." The comparison is "gag gift vs. group entertainment experience." And on a per-minute-of-entertainment basis, this is cheaper than almost anything else you could buy.</p>
+
+    <h3>Implication for All Content Creation</h3>
+    <ul>
+      <li>Every touchpoint should pace like comedy, not describe like a product listing</li>
+      <li>Item descriptions should build anticipation for what comes next, not just explain what's in hand</li>
+      <li>The listing itself should feel like the first act of the show</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Price will be $24.99-29.99</strong> - Final COGS not locked. If price needs to go higher, the value proposition gets harder to defend in a gag gift context.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>2. Brad Sterling lands without context</strong> - The character is rich in the internal docs, but a first-time Amazon buyer has zero context. Assuming the listing, packaging, and copy can establish him quickly enough.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>3. 70/30 gift vs. self-purchase holds</strong> - If self-purchase is higher than expected, messaging needs to shift toward personal office humor rather than gifting language.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>4. Q4 is the primary sales window</strong> - Could limit year-round velocity. Birthday and farewell gifting may be underestimated as a steady baseline.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>5. Office humor remains universally relatable</strong> - Remote/hybrid work hasn't killed office culture jokes, but the target demo increasingly works from home. The humor may need to work for "anyone who's ever worked in an office" rather than "people currently in offices."</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>6. The humor is PG/PG-13</strong> - Assumed from the existing copy. If any items push into R-rated territory, the "office-appropriate gifting" angle weakens.</p>
+    </div>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Card deck content doesn't exist yet</strong> - Three decks (Cell Talk, Rap Sheets, Sweet Nothings) have concepts but no written cards. This is the largest content gap.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>2. Doc Set 1 copy needs rework</strong> - Feedback indicated the comedy style needs to shift toward photorealistic imagery with instant-read humor. Current direction may need significant revision.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>3. Doc Set 2 copy not written</strong> - Framework and page map exist, but zero final content.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>4. Final item count per card deck TBD</strong> - 10 vs. 15 vs. 20 cards per deck affects perceived value and COGS.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>5. No competitive audit done</strong> - Differentiation claims in this profile are based on general category knowledge, not specific product comparisons. A real Amazon competitive audit would strengthen positioning.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>6. No customer testing</strong> - Zero external validation of the humor, pricing, or unboxing experience outside the development team.</p>
+    </div>
+    <div class="numbered-item">
+      <p><strong>7. Tattoo and sticker designs need narrowing</strong> - 21 tattoo concepts and 10 sticker concepts exist but haven't been curated to final selections.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1 - Lock the Card Content First</h4>
+      <ul>
+        <li>Three decks with no written cards is the single biggest content gap</li>
+        <li>These cards will also inform Doc Set 2's activity sections</li>
+        <li>Priority: write and test card content before finalizing either document set</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2 - Run a Competitive Audit on Amazon</h4>
+      <ul>
+        <li>Search "funny office gifts," "white elephant gifts under $30," "gag gifts for coworkers"</li>
+        <li>Document the top 10 competitors by review count and rating</li>
+        <li>Identify exactly what they do poorly that this kit does well</li>
+        <li>Use findings to sharpen listing copy and A+ content</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3 - Validate the "Comedy Show in a Briefcase" Positioning</h4>
+      <ul>
+        <li>This Big Idea should inform every piece of content from listing to packaging</li>
+        <li>Test it with 3-5 people outside the project: "Would you pay $27 for a comedy show in a briefcase for your coworker?"</li>
+        <li>If it resonates, build the entire listing around this frame</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4 - Resolve the Doc Set 1 Direction</h4>
+      <ul>
+        <li>The feedback about wanting photorealistic imagery with instant-read humor is a significant pivot from the current copy direction</li>
+        <li>Settle the visual and comedy style before writing more copy</li>
+        <li>The product profile's "Non-Obvious Angle #3" (the anti-corporate corporate gift) could help anchor this - the more official and photorealistic the format looks, the funnier the subversive content hits</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5 - Build the Listing Around the Reveal Sequence</h4>
+      <ul>
+        <li>Amazon's image carousel is the perfect format for a 15-step reveal</li>
+        <li>Each image should reveal the next layer, mirroring the actual unboxing experience</li>
+        <li>This serves both the "entertainment experience" positioning and the "what's inside" buyer question</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6 - Plan for UGC Early</h4>
+      <ul>
+        <li>The 15-step reveal is designed for filming</li>
+        <li>Consider including a small card or insert that encourages filming and sharing</li>
+        <li>Build a hashtag or social handle into the packaging copy (can live in Brad's voice)</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7 - Price at $27.99 If COGS Allow</h4>
+      <ul>
+        <li>$24.99 feels like discount territory for this much product</li>
+        <li>$29.99 triggers "is a joke gift really worth $30?" hesitation</li>
+        <li>$27.99 sits in a comfortable middle where the value proposition is strongest</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+// Extract clean plain text from an artifact body for clipboard
+// Extract markdown-formatted plain text (bold preserved as **bold**)
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

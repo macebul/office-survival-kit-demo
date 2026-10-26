@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 310" width="660mm" height="310mm">
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+    <marker id="fold-arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1,1 L 7,4 L 1,7 Z" fill="#0055CC"/>
+    </marker>
+  </defs>
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .bleed-zone { fill: none; stroke: #00AA44; stroke-width: 0.4; stroke-dasharray: 1.5,1; }
+    .safety-zone { fill: none; stroke: #CC0066; stroke-width: 0.3; stroke-dasharray: 1,1; }
+
+    .fill-glue { fill: #E0D8D0; stroke: none; opacity: 0.4; }
+    .fill-front { fill: #B8E6B8; stroke: none; opacity: 0.6; }
+    .fill-back { fill: #B3D4F0; stroke: none; opacity: 0.6; }
+    .fill-side { fill: #F5D0A0; stroke: none; opacity: 0.6; }
+    .fill-top { fill: #D0E8D0; stroke: none; opacity: 0.5; }
+    .fill-bottom { fill: #E0D0E0; stroke: none; opacity: 0.5; }
+    .fill-flap { fill: #F0E8E0; stroke: none; opacity: 0.3; }
+    .fill-base { fill: #E8E8E8; stroke: none; }
+    .fill-wall { fill: #F5D0A0; stroke: none; opacity: 0.5; }
+    .fill-tab { fill: #F0E0E0; stroke: none; opacity: 0.4; }
+    .fill-tray-base { fill: #F5F5F5; stroke: none; }
+    .fill-tray-wall { fill: #E2ECF4; stroke: none; opacity: 0.4; }
+    .fill-sleeve { fill: #FEF3E2; stroke: none; opacity: 0.3; }
+    .recess { fill: none; stroke: #00AA00; stroke-width: 0.4; stroke-dasharray: 2,1.5; }
+    .recess-fill { fill: #e8f4e8; stroke: none; opacity: 0.4; }
+    .fill-top-surface { fill: #B3D4F0; stroke: none; opacity: 0.5; }
+    .fill-vert-wall { fill: #B8E6B8; stroke: none; opacity: 0.5; }
+    .fill-floor-flap { fill: #F5D0A0; stroke: none; opacity: 0.5; }
+    .fill-lid { fill: #B3D4F0; stroke: none; opacity: 0.4; }
+    .fill-panel { fill: #FEF3E2; stroke: none; opacity: 0.4; }
+
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 8px; fill: #555; text-anchor: middle; }
+    .panel-id { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .panel-detail { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #666; text-anchor: middle; dominant-baseline: central; }
+    .fold-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #0055CC; font-weight: bold; }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; text-anchor: middle; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #888; text-anchor: middle; }
+    .spec-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; }
+    .spec-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #444; }
+    .assembly-num { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; fill: white; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .assembly-circle { fill: #0055CC; stroke: none; }
+    .ref-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .ref-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #444; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+</style>
+
+  <text x="200" y="14" class="title">TURF TAGS — TUCK END PRODUCTION TEMPLATE</text>
+  <text x="200" y="24" class="subtitle">127.0 x 88.9 x 12.7 mm (5.0" x 3.5" x 0.5") | Stickers | Tray 1</text>
+
+  <line x1="30" y1="36" x2="45" y2="36" stroke="#E60000" stroke-width="0.5" fill="none"/>
+  <text x="48" y="37" class="legend-text" text-anchor="start">Cut / Die</text>
+  <line x1="100" y1="36" x2="115" y2="36" stroke="#0055CC" stroke-width="0.35" stroke-dasharray="3,1.5" fill="none"/>
+  <text x="118" y="37" class="legend-text" text-anchor="start">Fold / Score</text>
+  <line x1="185" y1="36" x2="200" y2="36" stroke="#00AA44" stroke-width="0.4" stroke-dasharray="1.5,1" fill="none"/>
+  <text x="203" y="37" class="legend-text" text-anchor="start">Bleed (3mm)</text>
+  <line x1="280" y1="36" x2="295" y2="36" stroke="#CC0066" stroke-width="0.3" stroke-dasharray="1,1" fill="none"/>
+  <text x="298" y="37" class="legend-text" text-anchor="start">Safety (5mm)</text>
+
+  <!-- BLEED ZONE -->
+  <rect x="47" y="47" width="297.4" height="114.9" class="bleed-zone"/>
+
+  <!-- PANEL FILLS -->
+  <rect x="50" y="60" width="12" height="88.9" class="fill-glue"/>
+  <rect x="62" y="60" width="12.7" height="88.9" class="fill-side"/>
+  <rect x="74.7" y="60" width="127.0" height="88.9" class="fill-front"/>
+  <rect x="201.7" y="60" width="12.7" height="88.9" class="fill-side"/>
+  <rect x="214.4" y="60" width="127.0" height="88.9" class="fill-back"/>
+  <!-- Tuck/dust flaps -->
+  <rect x="74.7" y="50" width="127.0" height="10" class="fill-flap"/>
+  <rect x="214.4" y="50" width="127.0" height="10" class="fill-flap"/>
+  <rect x="74.7" y="148.9" width="127.0" height="10" class="fill-flap"/>
+  <rect x="214.4" y="148.9" width="127.0" height="10" class="fill-flap"/>
+
+  <!-- CUT LINE -->
+  <path class="cut" d="
+    M 62,60 L 50,63 L 50,145.9 L 62,148.9
+    L 63.5,154.9 L 73.2,154.9 L 74.7,148.9
+    L 76.2,158.9 L 200.2,158.9 L 201.7,148.9
+    L 203.2,154.9 L 212.9,154.9 L 214.4,148.9
+    L 215.9,158.9 L 339.9,158.9 L 341.4,148.9
+    L 341.4,60
+    L 339.9,50 L 215.9,50 L 214.4,60
+    L 212.9,54 L 203.2,54 L 201.7,60
+    L 200.2,50 L 76.2,50 L 74.7,60
+    L 73.2,54 L 63.5,54 L 62,60 Z
+  "/>
+
+  <!-- FOLD LINES -->
+  <line x1="62" y1="60" x2="62" y2="148.9" class="fold"/>
+  <line x1="74.7" y1="60" x2="74.7" y2="148.9" class="fold"/>
+  <line x1="201.7" y1="60" x2="201.7" y2="148.9" class="fold"/>
+  <line x1="214.4" y1="60" x2="214.4" y2="148.9" class="fold"/>
+  <line x1="62" y1="60" x2="341.4" y2="60" class="fold"/>
+  <line x1="62" y1="148.9" x2="341.4" y2="148.9" class="fold"/>
+
+  <!-- SAFETY ZONE -->
+  <rect x="55" y="55" width="281.4" height="98.9" class="safety-zone"/>
+
+  <!-- PANEL LABELS -->
+  <text x="56" y="104" class="panel-id" transform="rotate(-90, 56, 104)" style="font-size: 7px;">GLUE</text>
+  <text x="68.3" y="101" class="panel-id" transform="rotate(-90, 68.3, 101)" style="font-size: 7px;">B: SIDE</text>
+  <text x="138.2" y="98" class="panel-id">C: FRONT PANEL</text>
+  <text x="138.2" y="108" class="panel-detail">127.0 x 88.9 — primary artwork face</text>
+  <text x="208" y="101" class="panel-id" transform="rotate(-90, 208, 101)" style="font-size: 7px;">D: SIDE</text>
+  <text x="277.9" y="98" class="panel-id">E: BACK PANEL</text>
+  <text x="277.9" y="108" class="panel-detail">127.0 x 88.9</text>
+
+  <!-- DIMENSIONS -->
+  <line x1="74.7" y1="162" x2="74.7" y2="175" class="dim-line"/>
+  <line x1="201.7" y1="162" x2="201.7" y2="175" class="dim-line"/>
+  <line x1="74.7" y1="172" x2="201.7" y2="172" class="dim-arrow"/>
+  <text x="138.2" y="170" class="dim-text">L = 127.0</text>
+
+  <line x1="341.4" y1="60" x2="360" y2="60" class="dim-line"/>
+  <line x1="341.4" y1="148.9" x2="360" y2="148.9" class="dim-line"/>
+  <line x1="357" y1="60" x2="357" y2="148.9" class="dim-arrow"/>
+  <text x="357" y="104" class="dim-text" transform="rotate(-90, 357, 104)">W = 88.9</text>
+
+  <!-- 3D REFERENCE -->
+  <!-- Box: 127mm L x 88.9mm W x 12.7mm D — flatter box -->
+  <!-- Scale: 0.6. L_s=76.2, W_s=53.3, D_s=7.6 -->
+  <!-- Origin (back-left top): (500, 80) -->
+  <!-- BL: (500, 80), BR: (566, 118.1), FL: (453.8, 106.7), FR: (519.8, 144.8) -->
+  <!-- Bottom: +7.6 to y -->
+
+  <text x="510" y="60" class="ref-title">3D REFERENCE — CLOSED</text>
+  <text x="510" y="70" class="subtitle">Thin box (12.7mm depth)</text>
+
+  <!-- Top -->
+  <polygon points="500,80 566,118.1 519.8,144.8 453.8,106.7" fill="#F0E8E0" stroke="#444" stroke-width="0.5"/>
+  <!-- Front (green) -->
+  <polygon points="453.8,106.7 519.8,144.8 519.8,152.4 453.8,114.3" fill="#B8E6B8" stroke="#444" stroke-width="0.5"/>
+  <!-- Right side (orange) -->
+  <polygon points="566,118.1 519.8,144.8 519.8,152.4 566,125.7" fill="#F5D0A0" stroke="#444" stroke-width="0.5"/>
+
+  <text x="490" y="130" class="ref-label">C: Front (green)</text>
+  <text x="543" y="138" class="ref-label">D: Side</text>
+  <text x="505" y="118" class="ref-label" text-anchor="middle">Top (tuck)</text>
+
+  <!-- ASSEMBLY -->
+  <text x="510" y="175" class="spec-title" text-anchor="middle">ASSEMBLY</text>
+  <circle cx="445" cy="190" r="5.5" class="assembly-circle"/>
+  <text x="445" y="190" class="assembly-num">1</text>
+  <text x="455" y="191" class="spec-text">Fold sides (B, D) inward 90deg.</text>
+  <circle cx="445" cy="205" r="5.5" class="assembly-circle"/>
+  <text x="445" y="205" class="assembly-num">2</text>
+  <text x="455" y="206" class="spec-text">Glue tab bonds to back panel interior.</text>
+  <circle cx="445" cy="220" r="5.5" class="assembly-circle"/>
+  <text x="445" y="220" class="assembly-num">3</text>
+  <text x="455" y="221" class="spec-text">Fold dust flaps, then tuck flaps to close.</text>
+
+  <!-- PRINT SPECS -->
+  <text x="445" y="245" class="spec-title">PRINT SPECIFICATIONS</text>
+  <text x="445" y="258" class="spec-text">Color mode: CMYK only</text>
+  <text x="445" y="268" class="spec-text">Resolution: 300 dpi minimum</text>
+  <text x="445" y="278" class="spec-text">Bleed: Extend artwork 3mm past cut line (green)</text>
+  <text x="445" y="288" class="spec-text">Safety: Keep critical content 5mm inside cut (magenta)</text>
+  <text x="445" y="298" class="spec-text">File format: PDF/X-4 preferred</text>
+
+  <!-- NOTES -->
+  <text x="200" y="270" class="note">PRODUCTION TEMPLATE — Thinner box (12.7mm). Same tuck-end construction as card deck boxes but wider panels.</text>
+  <text x="200" y="278" class="note">All dimensions in millimeters. Scale: 1:1 when printed at 100%.</text>
+
+</svg>

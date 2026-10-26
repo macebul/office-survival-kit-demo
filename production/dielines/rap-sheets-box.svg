@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 380 215"
+     width="380mm" height="215mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .panel-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 5px; fill: #444; text-anchor: middle; dominant-baseline: central; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; text-anchor: middle; }
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #666; text-anchor: middle; }
+    .legend-cut { stroke: #E60000; stroke-width: 0.5; }
+    .legend-fold { stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #999; text-anchor: middle; }
+  </style>
+
+  <text x="190" y="14" class="title">RAP SHEETS — TUCK END DIELINE</text>
+  <text x="190" y="22" class="subtitle">101.6 × 63.5 × 19.05 mm (4.0" × 2.5" × 0.75")</text>
+  <text x="190" y="28" class="subtitle">Complaint Cards — Tray 2</text>
+
+  <line x1="55" y1="37" x2="70" y2="37" class="legend-cut" fill="none"/>
+  <text x="73" y="38" class="legend-text" text-anchor="start">Cut / Die line</text>
+  <line x1="120" y1="37" x2="135" y2="37" class="legend-fold" fill="none"/>
+  <text x="138" y="38" class="legend-text" text-anchor="start">Fold / Crease line</text>
+
+  <path class="cut" d="
+    M 67,70
+    L 55,73 L 55,130.5 L 67,133.5
+    L 68.5,141.5 L 84.55,141.5 L 86.05,133.5
+    L 87.55,148.5 L 186.15,148.5 L 187.65,133.5
+    L 189.15,141.5 L 205.2,141.5 L 206.7,133.5
+    L 208.2,148.5 L 306.8,148.5 L 308.3,133.5
+    L 308.3,70
+    L 306.8,55 L 208.2,55 L 206.7,70
+    L 205.2,62 L 189.15,62 L 187.65,70
+    L 186.15,55 L 87.55,55 L 86.05,70
+    L 84.55,62 L 68.5,62 L 67,70 Z
+  "/>
+
+  <line x1="67" y1="70" x2="67" y2="133.5" class="fold"/>
+  <line x1="86.05" y1="70" x2="86.05" y2="133.5" class="fold"/>
+  <line x1="187.65" y1="70" x2="187.65" y2="133.5" class="fold"/>
+  <line x1="206.7" y1="70" x2="206.7" y2="133.5" class="fold"/>
+  <line x1="67" y1="70" x2="308.3" y2="70" class="fold"/>
+  <line x1="67" y1="133.5" x2="308.3" y2="133.5" class="fold"/>
+
+  <text x="61" y="101.75" class="flap-label" transform="rotate(-90, 61, 101.75)">GLUE TAB</text>
+  <text x="76.525" y="96" class="panel-label" transform="rotate(-90, 76.525, 96)">SIDE</text>
+  <text x="76.525" y="112" class="flap-label" transform="rotate(-90, 76.525, 112)">19.05</text>
+  <text x="136.85" y="98" class="panel-label">FRONT PANEL</text>
+  <text x="136.85" y="105" class="flap-label">101.6 × 63.5</text>
+  <text x="197.175" y="96" class="panel-label" transform="rotate(-90, 197.175, 96)">SIDE</text>
+  <text x="197.175" y="112" class="flap-label" transform="rotate(-90, 197.175, 112)">19.05</text>
+  <text x="257.5" y="98" class="panel-label">BACK PANEL</text>
+  <text x="257.5" y="105" class="flap-label">101.6 × 63.5</text>
+
+  <text x="136.85" y="60" class="flap-label">TUCK FLAP</text>
+  <text x="257.5" y="60" class="flap-label">TUCK FLAP</text>
+  <text x="136.85" y="145" class="flap-label">TUCK FLAP</text>
+  <text x="257.5" y="145" class="flap-label">TUCK FLAP</text>
+  <text x="76.525" y="64.5" class="flap-label">DUST</text>
+  <text x="197.175" y="64.5" class="flap-label">DUST</text>
+  <text x="76.525" y="139" class="flap-label">DUST</text>
+  <text x="197.175" y="139" class="flap-label">DUST</text>
+
+  <line x1="67" y1="148.5" x2="67" y2="164" class="dim-line"/>
+  <line x1="86.05" y1="148.5" x2="86.05" y2="164" class="dim-line"/>
+  <line x1="187.65" y1="148.5" x2="187.65" y2="164" class="dim-line"/>
+  <line x1="206.7" y1="148.5" x2="206.7" y2="164" class="dim-line"/>
+  <line x1="308.3" y1="148.5" x2="308.3" y2="164" class="dim-line"/>
+
+  <line x1="67" y1="157" x2="86.05" y2="157" class="dim-arrow"/>
+  <text x="76.525" y="155" class="dim-text">D = 19.05</text>
+  <line x1="86.05" y1="162" x2="187.65" y2="162" class="dim-arrow"/>
+  <text x="136.85" y="160" class="dim-text">L = 101.6</text>
+  <line x1="187.65" y1="157" x2="206.7" y2="157" class="dim-arrow"/>
+  <text x="197.175" y="155" class="dim-text">D = 19.05</text>
+  <line x1="206.7" y1="162" x2="308.3" y2="162" class="dim-arrow"/>
+  <text x="257.5" y="160" class="dim-text">L = 101.6</text>
+
+  <line x1="308.3" y1="70" x2="330" y2="70" class="dim-line"/>
+  <line x1="308.3" y1="133.5" x2="330" y2="133.5" class="dim-line"/>
+  <line x1="308.3" y1="55" x2="322" y2="55" class="dim-line"/>
+  <line x1="308.3" y1="148.5" x2="322" y2="148.5" class="dim-line"/>
+
+  <line x1="327" y1="70" x2="327" y2="133.5" class="dim-arrow"/>
+  <text x="327" y="101.75" class="dim-text" transform="rotate(-90, 327, 101.75)">W = 63.5</text>
+  <line x1="319" y1="55" x2="319" y2="70" class="dim-arrow"/>
+  <text x="319" y="62.5" class="dim-text" transform="rotate(-90, 319, 62.5)">15.0</text>
+  <line x1="319" y1="133.5" x2="319" y2="148.5" class="dim-arrow"/>
+  <text x="319" y="141" class="dim-text" transform="rotate(-90, 319, 141)">15.0</text>
+
+  <line x1="55" y1="170" x2="308.3" y2="170" class="dim-arrow"/>
+  <text x="181.65" y="175" class="dim-text">Total flat width: 253.3 mm</text>
+  <line x1="340" y1="55" x2="340" y2="148.5" class="dim-arrow"/>
+  <line x1="336" y1="55" x2="344" y2="55" class="dim-line"/>
+  <line x1="336" y1="148.5" x2="344" y2="148.5" class="dim-line"/>
+  <text x="340" y="101.75" class="dim-text" transform="rotate(-90, 340, 101.75)">Total flat height: 93.5 mm</text>
+
+  <text x="190" y="188" class="note">All dimensions in millimeters (mm). Material: paperboard. Scale: 1:1 when printed at 100%.</text>
+  <text x="190" y="193" class="note">Red = cut/die line | Blue dashed = fold/crease line | Glue tab folds inward and adheres to back panel interior.</text>
+
+
+  <line x1="45" y1="90" x2="45" y2="113" stroke="#999" stroke-width="0.3" marker-end="url(#arrow-end)"/>
+  <text x="45" y="118" class="flap-label">GRAIN</text>
+
+</svg>

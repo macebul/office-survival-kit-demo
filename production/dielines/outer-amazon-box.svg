@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 480 250"
+     width="480mm" height="250mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .panel-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 5px; fill: #444; text-anchor: middle; dominant-baseline: central; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; text-anchor: middle; }
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #666; text-anchor: middle; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #999; text-anchor: middle; }
+    .legend-cut { stroke: #E60000; stroke-width: 0.5; }
+    .legend-fold { stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; }
+    .panel-fill-front { fill: #fef3e2; stroke: none; }
+    .panel-fill-bottom { fill: #e8f4e8; stroke: none; }
+    .panel-fill-back { fill: #fef3e2; stroke: none; }
+    .panel-fill-lid { fill: #e2ecf4; stroke: none; }
+    .panel-fill-tuck { fill: #f4e2e2; stroke: none; }
+    .panel-fill-glue { fill: #f0f0f0; stroke: none; }
+    .panel-fill-flap { fill: #f9f9f9; stroke: none; }
+  </style>
+
+  <!-- OUTER AMAZON BOX — TUCK-TOP MAILER DIELINE -->
+  <!-- Box: 393.7 x 330.2 x 165.1 mm (15.5" x 13.0" x 6.5") -->
+  <!-- Scale: 35% for display. All labeled dimensions are actual mm. -->
+  <!-- Strip height = box length L = 393.7mm -->
+  <!-- Panels wrap around perimeter: Front(H) → Bottom(W) → Back(H) → Lid(W) → Tuck tab -->
+
+  <!-- Scale factor: 0.35 -->
+  <!-- H=165.1 → 57.8,  W=330.2 → 115.6,  L=393.7 → 137.8 -->
+  <!-- Glue tab=15→5.25,  Tuck tab=40→14 -->
+  <!-- Side flaps from front/back: ~H/2 = 82.55 → 28.9 -->
+
+  <!-- X positions -->
+  <!-- x0=40 (glue left), x1=45.25 (front left), x2=103.05 (bottom left) -->
+  <!-- x3=218.65 (back left), x4=276.45 (lid left), x5=392.05 (tuck left), x6=406.05 -->
+
+  <!-- Y positions -->
+  <!-- y_flap_top=35, y_top=63.9 (strip top), y_bot=201.7 (strip bottom), y_flap_bot=230.6 -->
+
+  <text x="240" y="12" class="title">OUTER AMAZON BOX — TUCK-TOP MAILER DIELINE</text>
+  <text x="240" y="20" class="subtitle">393.7 × 330.2 × 165.1 mm (15.5" × 13.0" × 6.5") — Corrugated (E-flute or B-flute)</text>
+  <text x="240" y="26" class="subtitle">SCALE: 35% — All labeled dimensions are actual millimeters</text>
+
+  <line x1="55" y1="33" x2="70" y2="33" class="legend-cut" fill="none"/>
+  <text x="73" y="34" class="legend-text" text-anchor="start">Cut / Die line</text>
+  <line x1="120" y1="33" x2="135" y2="33" class="legend-fold" fill="none"/>
+  <text x="138" y="34" class="legend-text" text-anchor="start">Fold / Crease line</text>
+
+  <!-- Panel fills for clarity -->
+  <rect x="40" y="63.9" width="5.25" height="137.8" class="panel-fill-glue"/>
+  <rect x="45.25" y="63.9" width="57.8" height="137.8" class="panel-fill-front"/>
+  <rect x="103.05" y="63.9" width="115.6" height="137.8" class="panel-fill-bottom"/>
+  <rect x="218.65" y="63.9" width="57.8" height="137.8" class="panel-fill-back"/>
+  <rect x="276.45" y="63.9" width="115.6" height="137.8" class="panel-fill-lid"/>
+  <rect x="392.05" y="63.9" width="14" height="137.8" class="panel-fill-tuck"/>
+
+  <!-- Side flaps (top) -->
+  <rect x="45.25" y="35" width="57.8" height="28.9" class="panel-fill-flap"/>
+  <rect x="103.05" y="35" width="115.6" height="28.9" class="panel-fill-flap"/>
+  <rect x="218.65" y="35" width="57.8" height="28.9" class="panel-fill-flap"/>
+  <rect x="276.45" y="35" width="115.6" height="28.9" class="panel-fill-flap"/>
+
+  <!-- Side flaps (bottom) -->
+  <rect x="45.25" y="201.7" width="57.8" height="28.9" class="panel-fill-flap"/>
+  <rect x="103.05" y="201.7" width="115.6" height="28.9" class="panel-fill-flap"/>
+  <rect x="218.65" y="201.7" width="57.8" height="28.9" class="panel-fill-flap"/>
+  <rect x="276.45" y="201.7" width="115.6" height="28.9" class="panel-fill-flap"/>
+
+  <!-- CUT LINE — Main outline -->
+  <path class="cut" d="
+    M 45.25,63.9
+    L 40,66.9 L 40,198.7 L 45.25,201.7
+    L 45.25,230.6 L 103.05,230.6 L 103.05,201.7
+    L 103.05,230.6 L 218.65,230.6 L 218.65,201.7
+    L 218.65,230.6 L 276.45,230.6 L 276.45,201.7
+    L 276.45,230.6 L 392.05,230.6 L 392.05,201.7
+    L 406.05,204.7 L 406.05,60.9 L 392.05,63.9
+    L 392.05,35 L 276.45,35 L 276.45,63.9
+    L 276.45,35 L 218.65,35 L 218.65,63.9
+    L 218.65,35 L 103.05,35 L 103.05,63.9
+    L 103.05,35 L 45.25,35 L 45.25,63.9
+    Z
+  "/>
+
+  <!-- FOLD LINES -->
+  <!-- Vertical folds between panels -->
+  <line x1="45.25" y1="35" x2="45.25" y2="230.6" class="fold"/>
+  <line x1="103.05" y1="35" x2="103.05" y2="230.6" class="fold"/>
+  <line x1="218.65" y1="35" x2="218.65" y2="230.6" class="fold"/>
+  <line x1="276.45" y1="35" x2="276.45" y2="230.6" class="fold"/>
+  <line x1="392.05" y1="63.9" x2="392.05" y2="201.7" class="fold"/>
+
+  <!-- Horizontal folds (strip top/bottom = side flap folds) -->
+  <line x1="45.25" y1="63.9" x2="392.05" y2="63.9" class="fold"/>
+  <line x1="45.25" y1="201.7" x2="392.05" y2="201.7" class="fold"/>
+
+  <!-- PANEL LABELS -->
+  <text x="42.625" y="132.8" class="flap-label" transform="rotate(-90, 42.625, 132.8)">GLUE</text>
+
+  <text x="74.15" y="115" class="panel-label" transform="rotate(-90, 74.15, 115)">FRONT WALL</text>
+  <text x="74.15" y="150" class="flap-label" transform="rotate(-90, 74.15, 150)">165.1 × 393.7</text>
+
+  <text x="160.85" y="128" class="panel-label">BOTTOM PANEL</text>
+  <text x="160.85" y="138" class="flap-label">330.2 × 393.7</text>
+
+  <text x="247.55" y="115" class="panel-label" transform="rotate(-90, 247.55, 115)">BACK WALL</text>
+  <text x="247.55" y="150" class="flap-label" transform="rotate(-90, 247.55, 150)">165.1 × 393.7</text>
+
+  <text x="334.25" y="125" class="panel-label">LID / TOP PANEL</text>
+  <text x="334.25" y="135" class="flap-label">330.2 × 393.7</text>
+  <text x="334.25" y="142" class="flap-label">(interior printed: welcome letter + photo)</text>
+
+  <text x="399.05" y="132.8" class="flap-label" transform="rotate(-90, 399.05, 132.8)">TUCK TAB</text>
+
+  <!-- Side flap labels -->
+  <text x="74.15" y="49.45" class="flap-label">SIDE FLAP (inner)</text>
+  <text x="160.85" y="49.45" class="flap-label">SIDE FLAP (outer)</text>
+  <text x="247.55" y="49.45" class="flap-label">SIDE FLAP (inner)</text>
+  <text x="334.25" y="49.45" class="flap-label">SIDE FLAP (outer)</text>
+
+  <text x="74.15" y="216.15" class="flap-label">SIDE FLAP (inner)</text>
+  <text x="160.85" y="216.15" class="flap-label">SIDE FLAP (outer)</text>
+  <text x="247.55" y="216.15" class="flap-label">SIDE FLAP (inner)</text>
+  <text x="334.25" y="216.15" class="flap-label">SIDE FLAP (outer)</text>
+
+  <!-- DIMENSION ANNOTATIONS -->
+
+  <!-- Bottom panel dimensions -->
+  <line x1="45.25" y1="237" x2="45.25" y2="244" class="dim-line"/>
+  <line x1="103.05" y1="237" x2="103.05" y2="248" class="dim-line"/>
+  <line x1="218.65" y1="237" x2="218.65" y2="248" class="dim-line"/>
+  <line x1="276.45" y1="237" x2="276.45" y2="248" class="dim-line"/>
+  <line x1="392.05" y1="237" x2="392.05" y2="248" class="dim-line"/>
+
+  <line x1="45.25" y1="241" x2="103.05" y2="241" class="dim-arrow"/>
+  <text x="74.15" y="240" class="dim-text">H = 165.1</text>
+
+  <line x1="103.05" y1="246" x2="218.65" y2="246" class="dim-arrow"/>
+  <text x="160.85" y="244.5" class="dim-text">W = 330.2</text>
+
+  <line x1="218.65" y1="241" x2="276.45" y2="241" class="dim-arrow"/>
+  <text x="247.55" y="240" class="dim-text">H = 165.1</text>
+
+  <line x1="276.45" y1="246" x2="392.05" y2="246" class="dim-arrow"/>
+  <text x="334.25" y="244.5" class="dim-text">W = 330.2</text>
+
+  <!-- Right-side dimension (strip height = L) -->
+  <line x1="410" y1="63.9" x2="430" y2="63.9" class="dim-line"/>
+  <line x1="410" y1="201.7" x2="430" y2="201.7" class="dim-line"/>
+  <line x1="427" y1="63.9" x2="427" y2="201.7" class="dim-arrow"/>
+  <text x="427" y="132.8" class="dim-text" transform="rotate(-90, 427, 132.8)">L = 393.7</text>
+
+  <!-- Side flap height -->
+  <line x1="410" y1="35" x2="420" y2="35" class="dim-line"/>
+  <line x1="417" y1="35" x2="417" y2="63.9" class="dim-arrow"/>
+  <text x="417" y="49.45" class="dim-text" transform="rotate(-90, 417, 49.45)">~82.6</text>
+
+  <!-- NOTES -->
+  <text x="240" y="255" class="note">Tuck-top mailer box (single lid panel, NOT 4-flap). Corrugated cardboard (E-flute or B-flute). Scale: 35%.</text>
+  <text x="240" y="260" class="note">Lid interior is printed (welcome letter + founder photo). FBA Large Standard tier (~15.5" × 13.0" × 6.5").</text>
+
+
+</svg>

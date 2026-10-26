@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doc Set 1: From the Desk of Brad Sterling - Product Profile Copy Helper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .page-header h1 span {
+    color: #555;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .copy-all-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .copy-all-btn:hover { background: #333; }
+  .copy-all-btn.copied { background: #16a34a; }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Table of Contents */
+  .toc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h2 {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+  }
+
+  .toc a {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    display: block;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: #111; }
+
+  .toc a .num {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Artifact Cards */
+  .artifact {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .artifact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .artifact-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .artifact-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .copy-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: #eee; color: #333; border-color: #ccc; }
+  .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* Artifact Body - Structured Content */
+  .artifact-body {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .artifact-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .artifact-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .artifact-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .artifact-body p {
+    margin-bottom: 0.75rem;
+    color: #111;
+    font-size: 0.925rem;
+  }
+
+  .artifact-body ul, .artifact-body ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artifact-body li {
+    margin-bottom: 0.3rem;
+    color: #111;
+    font-size: 0.9rem;
+  }
+
+  .artifact-body li strong {
+    color: #000;
+  }
+
+  .artifact-body hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+  }
+
+  .artifact-body .lead {
+    font-size: 1rem;
+    color: #111;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .artifact-body .big-idea {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Persona Cards */
+  .persona {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .persona h4 {
+    margin-top: 0 !important;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .persona .trigger {
+    background: #f0f7ff;
+    border-left: 3px solid #3b82f6;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .persona .fear {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #991b1b;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* JTBD Statement */
+  .jtbd-statement {
+    background: #f8f8f8;
+    border-left: 4px solid #111;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .jtbd-statement p {
+    margin-bottom: 0.25rem;
+    font-size: 0.925rem;
+  }
+
+  .jtbd-statement strong {
+    color: #111;
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .compare-table th {
+    background: #f5f5f5;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .compare-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #111;
+  }
+
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .compare-table td:last-child {
+    color: #111;
+    font-weight: 500;
+  }
+
+  /* Objection blocks */
+  .objection {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .objection h4 {
+    margin-top: 0 !important;
+    color: #111;
+  }
+
+  /* Recommendation blocks */
+  .rec {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec h4 {
+    margin-top: 0 !important;
+  }
+
+  /* Tier labels */
+  .tier {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-1 { background: #dcfce7; color: #166534; }
+  .tier-2 { background: #fef9c3; color: #854d0e; }
+  .tier-3 { background: #f1f5f9; color: #475569; }
+
+  /* Numbered items in assumptions */
+  .numbered-item {
+    margin-bottom: 1rem;
+  }
+
+  .numbered-item strong {
+    color: #111;
+  }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+    border-left: 3px solid #e5e5e5;
+  }
+
+  .angle h4 {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    .artifact-body { padding: 1.25rem; }
+    .artifact-header { padding: 1rem 1.25rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .page-header-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Doc Set 1 <span>From the Desk of Brad Sterling</span></h1>
+    <button class="copy-all-btn" onclick="copyAll(this)">Copy All Artifacts</button>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>Artifacts</h2>
+  <div class="toc-grid">
+    <a href="#a01"><span class="num">01</span> Basic Product Profile</a>
+    <a href="#a08"><span class="num">08</span> Objections &amp; Purchase Barriers</a>
+    <a href="#a02"><span class="num">02</span> Strategic Overview</a>
+    <a href="#a09"><span class="num">09</span> Buyer Questions Map</a>
+    <a href="#a03"><span class="num">03</span> Feature/Benefit Analysis</a>
+    <a href="#a10"><span class="num">10</span> Competitive Differentiation</a>
+    <a href="#a04"><span class="num">04</span> Buyer Psychology</a>
+    <a href="#a11"><span class="num">11</span> Non-Obvious Angles</a>
+    <a href="#a05"><span class="num">05</span> Buyer Personas</a>
+    <a href="#a12"><span class="num">12</span> The Big Idea</a>
+    <a href="#a06"><span class="num">06</span> Jobs To Be Done</a>
+    <a href="#a13"><span class="num">13</span> Assumptions &amp; Gaps</a>
+    <a href="#a07"><span class="num">07</span> Prioritized Benefits</a>
+    <a href="#a14"><span class="num">14</span> Final Recommendations</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 1 -->
+<!-- ============================================ -->
+<div class="artifact" id="a01">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">01</span> Basic Product Profile</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h4>Product Name</h4>
+    <ul>
+      <li>From the Desk of Brad Sterling</li>
+    </ul>
+
+    <h4>In-Universe Framing</h4>
+    <ul>
+      <li>An Elevate Co. publication, "A Brad Sterling Publication", Volume I First Edition</li>
+    </ul>
+
+    <h4>Parent Product</h4>
+    <ul>
+      <li>Office Survival Kit (Doc Set 1 of 2)</li>
+    </ul>
+
+    <h4>Brand</h4>
+    <ul>
+      <li>Witty Yeti (Amazon brand), Elevate Co. (in-universe)</li>
+    </ul>
+
+    <h4>Product Type</h4>
+    <ul>
+      <li>Saddle-stitched narrative booklet with full-color editorial illustrations</li>
+    </ul>
+
+    <h4>Role in Kit</h4>
+    <ul>
+      <li>Discovery item, first thing recipient sees when briefcase lid opens</li>
+      <li>Rests on top of Tray 1</li>
+      <li>Sets the world, establishes Brad, primes unboxing with narrative tension</li>
+    </ul>
+
+    <h4>Physical Specs</h4>
+    <ul>
+      <li>16-page saddle-stitched (4 sheets, 2 staples)</li>
+      <li>~5.5" x 7" portrait</li>
+      <li>Heavier weight matte coated cover stock</li>
+      <li>Matte black with gold foil and white serif type</li>
+      <li>Matte coated off-white/cream interior</li>
+      <li>Full color CMYK + gold foil on cover</li>
+    </ul>
+
+    <h4>Design System</h4>
+    <ul>
+      <li><strong>Color palette:</strong> Matte Black #1A1A1A, Gold #C5A55A, Off-White #F5F0E8, White, Purple #5B2C6F sparingly, Charcoal #333333</li>
+      <li><strong>Typography:</strong> Sans-serif Montserrat/Gotham for headers, Serif Playfair/Freight for copy, Monospace Space Mono/IBM Plex for data</li>
+      <li><strong>Image style:</strong> Editorial illustration, warm muted tones, Brad in full visual DNA throughout</li>
+      <li><strong>Interior texture:</strong> Subtle paper texture on cream, no distressed/aged textures</li>
+    </ul>
+
+    <h4>Narrative Structure</h4>
+    <ul>
+      <li>Three-act in Brad's voice</li>
+      <li>Phase 1 Assessment (Pages 2-5)</li>
+      <li>Phase 2 Diagnosis (Pages 6-13)</li>
+      <li>Phase 3 Intervention (Pages 14-15)</li>
+      <li>Phase labels as small gold elements, not standalone dividers</li>
+    </ul>
+
+    <h4>Discovery Context</h4>
+    <ul>
+      <li>Rests face-up on Tray 1, first thing visible when lid opens</li>
+      <li>Recipient picks it up and reads</li>
+      <li>Narrative ends on "Nobody's trying to win" with Brad holding open kit</li>
+      <li>Direct handoff from booklet to physical unboxing</li>
+    </ul>
+
+    <h4>Content Overview (Page-by-Page)</h4>
+    <ul>
+      <li><strong>Cover:</strong> Matte black, gold foil, typography only</li>
+      <li><strong>Page 2 Arrival:</strong> Day 1 as prison intake, Brad doing market research</li>
+      <li><strong>Page 3 Your Cell:</strong> Cubicle 6x8, death row 6x9, enjoy the upgrade</li>
+      <li><strong>Page 4 The Block:</strong> Office-as-prison vocabulary, carpet's union</li>
+      <li><strong>Page 5 The Instincts:</strong> Not the people, the survival behaviors</li>
+      <li><strong>Pages 6-7 Conference Room B:</strong> Brad plants pen, office creates Cubicle Shank</li>
+      <li><strong>Pages 8-9 The Loadout:</strong> Tactical loadout diagram, morning routine as equipment</li>
+      <li><strong>Pages 10-11 The Ink:</strong> Status symbols dismissed, earned your ink</li>
+      <li><strong>Pages 12-13 The Code:</strong> Office speak decoded, "put it in writing"</li>
+      <li><strong>Pages 14-15 The Reveal:</strong> Brad's portrait, "Nobody's trying to win"</li>
+      <li><strong>Page 16 Back Cover:</strong> Legal comedy fine print</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 2 -->
+<!-- ============================================ -->
+<div class="artifact" id="a02">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">02</span> Strategic Overview</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Core Value Proposition</h3>
+    <p>A narrative brand book that makes the reader want to open the kit by building anticipation through story. Three layers simultaneously: world-building, character establishment, product integration. Not an instruction manual or product catalog. A comedic experience that ends with the reader staring at what Brad is selling.</p>
+
+    <h3>Strategic Position</h3>
+    <p>The booklet is the gateway. First thing touched, last thing read before items. Every item benefits from the narrative priming. Cubicle Shank has origin story (pages 6-7), Lifer Ink has emotional setup (pages 10-11), card decks have conceptual frame (pages 12-13). Without booklet = items funny individually. With booklet = items echo a story.</p>
+
+    <h3>Why This Item Matters</h3>
+    <p>Converts a collection of funny items into a cohesive experience. A briefcase of joke products is a gag gift. A briefcase with narrative is a world. Controls unboxing pace - recipient reads first, creating emotional runway.</p>
+
+    <h3>Key Strategic Tension</h3>
+    <p>Must feel like a real brand publication AND read like comedy simultaneously. If cheap or self-aware, illusion breaks. If too serious, comedy suffocates. Design system resolves this: premium production is the straight face, Brad's voice is the punchlines. FORMAT is the straight man, CONTENT is the comedian.</p>
+
+    <h3>Narrative as Product Integration</h3>
+    <p>References items without naming them directly. Naming = product catalog. Describing situations = story. Connection fires on its own during unboxing.</p>
+    <ul>
+      <li><strong>Conference Room B</strong> (pen = Cubicle Shank)</li>
+      <li><strong>The Ink</strong> ("earned your ink" = Lifer Ink tattoos)</li>
+      <li><strong>The Code</strong> ("put it in writing" = card decks)</li>
+      <li><strong>The Loadout</strong> (morning items = tactical gear vocabulary on every item box)</li>
+    </ul>
+
+    <h3>Revenue Contribution</h3>
+    <p>Not standalone dollar value like pen or mug. Value is structural - elevates every other item's perceived worth. Most photographable and shareable element. Individual pages = standalone social content. Full narrative = unprompted word-of-mouth.</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 3 -->
+<!-- ============================================ -->
+<div class="artifact" id="a03">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">03</span> Feature/Benefit Analysis</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Booklet-Level Analysis</h3>
+
+    <h4>16-Page Saddle-Stitched Format</h4>
+    <ul>
+      <li><strong>Feature:</strong> 4 sheets, stapled, 5.5" x 7" portrait</li>
+      <li><strong>Functional:</strong> Feels like real publication, compact for Tray 1</li>
+      <li><strong>Emotional:</strong> Picking up booklet = opening a chapter</li>
+      <li><strong>Strategic:</strong> Large enough for three-act structure, small enough every page earns place</li>
+    </ul>
+
+    <h4>Matte Black Cover with Gold Foil</h4>
+    <ul>
+      <li><strong>Feature:</strong> Premium cover matching brand books</li>
+      <li><strong>Functional:</strong> Visually distinct in briefcase</li>
+      <li><strong>Emotional:</strong> Signals "expensive" before reading</li>
+      <li><strong>Strategic:</strong> Establishes Brad's brand as self-serious, makes jokes land harder</li>
+    </ul>
+
+    <h4>100% Brad Sterling Voice</h4>
+    <ul>
+      <li><strong>Feature:</strong> Every word as Brad, cover to fine print</li>
+      <li><strong>Functional:</strong> Unified tone, no tonal drift</li>
+      <li><strong>Emotional:</strong> Reader enters Brad's world completely</li>
+      <li><strong>Strategic:</strong> Commitment to character separates from greeting cards</li>
+    </ul>
+
+    <h4>Three-Act Narrative Structure</h4>
+    <ul>
+      <li><strong>Feature:</strong> Assessment, Diagnosis, Intervention with phase labels</li>
+      <li><strong>Functional:</strong> Reason to keep flipping</li>
+      <li><strong>Emotional:</strong> Escalation from "that's my life" to "THIS guy can help me?"</li>
+      <li><strong>Strategic:</strong> Arc ends at "open the kit"</li>
+    </ul>
+
+    <h4>Editorial Illustration Style</h4>
+    <ul>
+      <li><strong>Feature:</strong> Warm muted tones, consistent visual DNA</li>
+      <li><strong>Functional:</strong> Every page visually distinct but cohesive</li>
+      <li><strong>Emotional:</strong> Illustrations carry half the comedy</li>
+      <li><strong>Strategic:</strong> Individual pages photographable/shareable</li>
+    </ul>
+
+    <h4>Brad's Visual DNA</h4>
+    <ul>
+      <li><strong>Feature:</strong> Purple satin, gold chain, aviators throughout</li>
+      <li><strong>Functional:</strong> Instant identification</li>
+      <li><strong>Emotional:</strong> Brad looks exactly how reader imagines - and somehow worse</li>
+      <li><strong>Strategic:</strong> Visual character reinforces comedy without copy</li>
+    </ul>
+
+    <h4>Off-White/Cream Interior</h4>
+    <ul>
+      <li><strong>Feature:</strong> Warm paper #F5F0E8 with texture</li>
+      <li><strong>Functional:</strong> Premium feel, distinct from office paper</li>
+      <li><strong>Emotional:</strong> Feels printed and intentional</li>
+      <li><strong>Strategic:</strong> Signals "real brand book," differentiates from OG Manual</li>
+    </ul>
+
+    <h4>Legal Comedy Back Cover</h4>
+    <ul>
+      <li><strong>Feature:</strong> Dense fine print as real legal disclaimers with escalating absurdity</li>
+      <li><strong>Functional:</strong> Rewards close readers</li>
+      <li><strong>Emotional:</strong> Discovery feeling in unexpected places</li>
+      <li><strong>Strategic:</strong> Highest-density comedy, most likely read aloud</li>
+    </ul>
+
+    <hr>
+
+    <h3>Discovery-Level Analysis</h3>
+
+    <h4>Placement on Top of Tray 1</h4>
+    <ul>
+      <li><strong>Feature:</strong> Rests face-up, covers items</li>
+      <li><strong>Functional:</strong> Forces reading-first sequence</li>
+      <li><strong>Emotional:</strong> Briefcase has layers to discover</li>
+      <li><strong>Strategic:</strong> Controls pacing, creates emotional runway</li>
+    </ul>
+
+    <h4>First-Thing-Seen Position</h4>
+    <ul>
+      <li><strong>Feature:</strong> Only thing visible when lid opens</li>
+      <li><strong>Functional:</strong> Single focal point, no decision paralysis</li>
+      <li><strong>Emotional:</strong> Gold foil on matte black creates premium impression</li>
+      <li><strong>Strategic:</strong> Cover answers "is this cheap?" before reading</li>
+    </ul>
+
+    <h4>Sets-the-World Function</h4>
+    <ul>
+      <li><strong>Feature:</strong> Establishes office-as-prison vocab, Brad's character, Elevate Co. universe</li>
+      <li><strong>Functional:</strong> Every item box shares vocabulary</li>
+      <li><strong>Emotional:</strong> Reader enters a world, not consumes a product</li>
+      <li><strong>Strategic:</strong> Without = standalone jokes, with = callbacks to a story</li>
+    </ul>
+
+    <h4>Primes-the-Unboxing Role</h4>
+    <ul>
+      <li><strong>Feature:</strong> Builds from "your life is terrible" to "I have the solution" to Brad holding kit</li>
+      <li><strong>Functional:</strong> Reader already motivated to explore</li>
+      <li><strong>Emotional:</strong> Tonal flip creates genuine "let's see" energy</li>
+      <li><strong>Strategic:</strong> Targets 90%+ unboxing completion</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 4 -->
+<!-- ============================================ -->
+<div class="artifact" id="a04">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">04</span> Buyer Psychology</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary Purchase Psychology</h3>
+    <p>Booklet not visible in most listing images the way item boxes are.</p>
+
+    <h4>For the buyer</h4>
+    <ul>
+      <li>Answers "is there depth?"</li>
+      <li>16-page booklet signals effort</li>
+      <li>Moves kit from "gag items" to "designed experience"</li>
+    </ul>
+
+    <h4>For the recipient</h4>
+    <ul>
+      <li>Emotional on-ramp</li>
+      <li>Reading first = more engagement with every item</li>
+      <li>Skipping = still funny but misses narrative layer</li>
+    </ul>
+
+    <h3>Emotional Triggers</h3>
+
+    <h4>Trigger 1: Recognition ("that's my life")</h4>
+    <ul>
+      <li>First four pages describe universal office experiences</li>
+      <li>Cubicle dimensions, Day 1, break room, survival instincts</li>
+      <li>Reader feels seen before sold to</li>
+    </ul>
+
+    <h4>Trigger 2: Escalation ("this is getting worse")</h4>
+    <ul>
+      <li>Act 2 names specific pain points</li>
+      <li>Pen experiment, loadout, identity markers, office speak</li>
+      <li>Each page builds</li>
+    </ul>
+
+    <h4>Trigger 3: The turn ("THIS guy thinks he can help me?")</h4>
+    <ul>
+      <li>Brad reveals as solution provider</li>
+      <li>Gap between real problems and delusional confidence is funniest beat</li>
+      <li>Profiteer positioning is the joke</li>
+    </ul>
+
+    <h4>Trigger 4: Surprise motivation ("wait, I'm actually hyped")</h4>
+    <ul>
+      <li>Tonal flip catches reader off guard</li>
+      <li>After 12 pages dark comedy Brad's closer lands differently</li>
+      <li>Reader laughs because it's so Brad but genuinely wants to see the kit</li>
+    </ul>
+
+    <h3>Cognitive Biases</h3>
+
+    <h4>Narrative transportation</h4>
+    <ul>
+      <li>Absorbed in story = less critical more emotionally available</li>
+      <li>Three-act creates pull</li>
+      <li>By the time Brad pitches they're inside his world</li>
+    </ul>
+
+    <h4>IKEA effect (adapted)</h4>
+    <ul>
+      <li>Reader invests time/attention, creates ownership</li>
+      <li>More likely to explore full kit because "already started"</li>
+    </ul>
+
+    <h4>Anchoring through production quality</h4>
+    <ul>
+      <li>Gold foil, matte stock, illustrations anchor "premium" before items touched</li>
+      <li>Expectations rise</li>
+    </ul>
+
+    <h4>Curiosity gap</h4>
+    <ul>
+      <li>References items without naming (Conference Room B, earned your ink, put it in writing)</li>
+      <li>Each reference = open loop only closed by finding item</li>
+      <li>Primary mechanism for unboxing completion</li>
+    </ul>
+
+    <h4>Peak-end rule</h4>
+    <ul>
+      <li>Booklet is first experience (potential peak)</li>
+      <li>If it lands the whole unboxing starts high</li>
+      <li>Combined with mug as final reveal = strong peak-end framing</li>
+    </ul>
+
+    <h4>Commitment and consistency</h4>
+    <ul>
+      <li>Reading booklet = committed to experience</li>
+      <li>Stopping feels inconsistent</li>
+      <li>Narrative encourages "see how this ends" behavior</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 5 -->
+<!-- ============================================ -->
+<div class="artifact" id="a05">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">05</span> Buyer Personas</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Doc Set 1 is not sold individually. These personas describe how each buyer type interacts with this specific item as part of the kit evaluation, gift-giving moment, and unboxing experience.</p>
+
+    <div class="persona">
+      <h4>Persona 1 - The Experience Builder</h4>
+      <ul>
+        <li>28-45, any gender</li>
+        <li>Gives gifts as events, curates wrapping/timing/presentation</li>
+        <li>Has given experience gifts</li>
+      </ul>
+      <div class="trigger">"This isn't just a box of stuff - there's a whole narrative arc in here."</div>
+      <div class="fear">Recipient rips through in 30 seconds</div>
+      <p><strong>How Doc Set 1 wins:</strong> Forces paced unboxing, creates slow-build experience, "read the booklet first" works, three-act gives beginning/middle/end.</p>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 2 - The Comedy Connoisseur</h4>
+      <ul>
+        <li>25-50, any gender</li>
+        <li>Strong humor opinions, appreciates writing craft</li>
+        <li>Can tell one-liner from sustained voice</li>
+      </ul>
+      <div class="trigger">"The writing is actually good - this isn't just puns on a box."</div>
+      <div class="fear">Humor is surface-level</div>
+      <p><strong>How Doc Set 1 wins:</strong> Sustained voice across 16 pages, comedy on multiple levels (vocabulary, outsider perspective, format subversions), jokes reward rereading, page 16 fine print rewards close readers.</p>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 3 - The Flip-Through Tester</h4>
+      <ul>
+        <li>30-55, any gender</li>
+        <li>Evaluates by handling, picks up/flips/puts back</li>
+        <li>Zooms into listing images</li>
+      </ul>
+      <div class="trigger">"Every page I flipped to had something on it - not just filler."</div>
+      <div class="fear">First two pages great, rest is padding</div>
+      <p><strong>How Doc Set 1 wins:</strong> No filler pages, every spread unique content/layout/beat, format changes keep it interesting, would buy on page 3 ("cubicle is 6x8, death row 6x9, enjoy the upgrade").</p>
+    </div>
+
+    <div class="persona">
+      <h4>Persona 4 - The Detail Hoarder</h4>
+      <ul>
+        <li>25-45, any gender</li>
+        <li>Finds easter eggs, reads liner notes, loves discovery products</li>
+      </ul>
+      <div class="trigger">"Wait, even the legal fine print on the back is funny."</div>
+      <div class="fear">Only works at surface level</div>
+      <p><strong>How Doc Set 1 wins:</strong> Discovery layers at every depth (surface copy, visual details, fine print), plants references that pay off later during unboxing, connecting Conference Room B to Cubicle Shank box feels like cracking a code.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 6 -->
+<!-- ============================================ -->
+<div class="artifact" id="a06">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">06</span> Jobs To Be Done</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Primary JTBD</h3>
+    <div class="jtbd-statement">
+      <p><strong>When</strong> I open the briefcase and find a booklet resting on top of everything,</p>
+      <p><strong>I want to</strong> read something entertaining enough to hold my attention before I dig into the items below,</p>
+      <p><strong>So that</strong> the unboxing feels like an experience with a beginning, not just a box I ripped open.</p>
+    </div>
+
+    <h3>Supporting Jobs</h3>
+
+    <h4>Job 2: Set the World Before I Enter It</h4>
+    <ul>
+      <li>Read booklet, understand tone/vocabulary/character</li>
+      <li>Every item afterward feels connected to something larger</li>
+    </ul>
+
+    <h4>Job 3: Make Me Feel Seen</h4>
+    <ul>
+      <li>Day 1 intake, cubicle, break room, survival instincts</li>
+      <li>Recognize own life, comedy feels personal</li>
+    </ul>
+
+    <h4>Job 4: Build Anticipation for What's Below</h4>
+    <ul>
+      <li>References pen in Conference Room B, earned ink, decoded office speak</li>
+      <li>Wonder what items look like, motivated to explore</li>
+    </ul>
+
+    <h4>Job 5: Give the Gift-Giver a Win</h4>
+    <ul>
+      <li>Recipient laughing before opening items validates buyer's choice</li>
+    </ul>
+
+    <h4>Job 6: Reward the Close Reader</h4>
+    <ul>
+      <li>Back cover fine print, escalating jokes in format</li>
+      <li>Attention rewarded at every depth</li>
+    </ul>
+
+    <h4>Job 7: Make Me Want to Show Someone</h4>
+    <ul>
+      <li>Finish a page laughing, hold up/photograph/read aloud</li>
+      <li>Comedy becomes social</li>
+    </ul>
+
+    <h3>Underserved Jobs</h3>
+
+    <h4>"The real publication job"</h4>
+    <ul>
+      <li>Most inserts look/feel like inserts, cheap paper, signal "afterthought"</li>
+      <li>Doc Set 1 feels like publication you'd pick up alone</li>
+    </ul>
+
+    <h4>"The sustained narrative job"</h4>
+    <ul>
+      <li>Most booklets are joke lists with no arc, individual pages interchangeable</li>
+      <li>Doc Set 1 has three-act where skipping = missing setup</li>
+    </ul>
+
+    <h4>"The unboxing pacing job"</h4>
+    <ul>
+      <li>Most kits have no discovery order control</li>
+      <li>Doc Set 1 physically sits on top AND narratively builds to "now open the kit" - both gate and invitation</li>
+    </ul>
+
+    <h4>"The multi-depth comedy job"</h4>
+    <ul>
+      <li>Most operate at surface, don't reward rereading</li>
+      <li>Doc Set 1 has surface/visual/structural/hidden comedy layers</li>
+    </ul>
+
+    <h4>"The character commitment job"</h4>
+    <ul>
+      <li>Most break character on first page (winks, "just kidding," normal legal voice)</li>
+      <li>Doc Set 1 never breaks character, even fine print is Brad</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 7 -->
+<!-- ============================================ -->
+<div class="artifact" id="a07">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">07</span> Prioritized Benefits</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Ranked by impact on unboxing experience, kit perception, and purchase confidence.</p>
+
+    <span class="tier tier-1">Tier 1 - Must Communicate</span>
+    <ol>
+      <li>The booklet is a narrative experience that makes the reader want to explore the kit, not an instruction manual or product catalog</li>
+      <li>First thing seen when briefcase opens, controls pacing and emotional trajectory of entire unboxing</li>
+      <li>Three-act structure builds from "ha, that's my life" through escalating comedy to "now open the kit," targeting 90%+ unboxing completion</li>
+      <li>Premium production (gold foil cover, editorial illustrations, matte stock, three-family typography) signals entire kit is high quality before a single item box is touched</li>
+    </ol>
+
+    <span class="tier tier-2">Tier 2 - Should Communicate</span>
+    <ol start="5">
+      <li>References specific kit items through story rather than naming them, creating curiosity gaps that only close when items are discovered</li>
+      <li>Brad's voice sustained across all 16 pages including legal fine print, no character breaks or fourth-wall winks</li>
+      <li>Individual pages work as standalone shareable images while full narrative makes people describe entire booklet to others</li>
+      <li>Comedy operates at multiple depths: surface copy, visual details, format subversions, hidden fine print jokes</li>
+    </ol>
+
+    <span class="tier tier-3">Tier 3 - Nice to Communicate</span>
+    <ol start="9">
+      <li>Office-as-prison vocabulary established in booklet echoes across every item box, creating unified world</li>
+      <li>Format subversions (tactical loadout, decoder card, legal disclaimer comedy) keep reading unpredictable page to page</li>
+      <li>Tonal flip on final spread from dark comedy to aspirational hype is genuine surprise that converts entertainment into unboxing motivation</li>
+      <li>Back cover fine print is densest comedy in booklet and content most likely read aloud to someone else</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 8 -->
+<!-- ============================================ -->
+<div class="artifact" id="a08">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">08</span> Objections &amp; Purchase Barriers</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">Most purchase objections apply to the kit as a whole. These objections are specific to how the booklet influences or creates hesitation.</p>
+
+    <div class="objection">
+      <h4>Objection 1: "Nobody reads booklets in gift products"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Learned behavior from throwaway inserts</li>
+        <li>Buyers assume printed materials are waste</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>Demonstration it looks like something you'd choose to read</li>
+        <li>Visible editorial production</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Listing photography as standalone object</li>
+        <li>Unboxing video showing recipient pausing</li>
+        <li>Cover gold foil signals "this is a thing"</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 2: "16 pages seems like a lot - will they actually read it?"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Page count triggers association with instruction manuals</li>
+        <li>Worry about obligation vs entertainment</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>No page needs more than 30 seconds</li>
+        <li>Format variety prevents monotony</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Listing copy references structure</li>
+        <li>Lifestyle photography of mid-laugh reading</li>
+        <li>No two consecutive spreads same format visible in images</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 3: "The comedy voice might not land for everyone"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Humor subjective, buyers fear confusion/annoyance</li>
+        <li>Corporate satire requires recognition</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>Comedy works on two levels (surface absurdity for casual, structural satire for office veterans)</li>
+        <li>Character commitment reads as parody</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Format-as-straight-man means visual contrast still lands</li>
+        <li>Listing images let buyers self-select</li>
+        <li>Fine print comedy as low-risk voice preview</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 4: "Is this just filler to pad the kit?"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Experience with cheap printed inserts</li>
+        <li>Suspicion booklet justifies price not value</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>Production quality exceeds filler (foil, stock, illustrations)</li>
+        <li>Structural role in unboxing not just space-filling</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Placement on Tray 1 signals intentionality</li>
+        <li>Gold foil cover = irrational investment for throwaway</li>
+        <li>Position as narrative wrapper not bonus item</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 5: "What if the recipient skips it and goes straight to the items?"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Excitement overrides instructions</li>
+        <li>Concern investment wasted</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>Physical placement forces at least a moment of engagement</li>
+        <li>Return value after items seen</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Physically rests on Tray 1 so must be moved</li>
+        <li>Narrative references gain meaning after unboxing driving second read</li>
+        <li>Someone always says "wait, read the fine print"</li>
+      </ul>
+    </div>
+
+    <div class="objection">
+      <h4>Objection 6: "Gold foil and matte stock sound expensive for an insert"</h4>
+      <h4>Root cause</h4>
+      <ul>
+        <li>Not buyer-facing but surfaces in margin analysis</li>
+        <li>Premium finishes compete with physical items in COGS</li>
+      </ul>
+      <h4>Evidence needed</h4>
+      <ul>
+        <li>Cost-per-entertainment-minute lower than any physical item</li>
+        <li>Saddle-stitch at 16 pages keeps costs within insert budgets even with finishes</li>
+      </ul>
+      <h4>Mitigation</h4>
+      <ul>
+        <li>Foil on cover only (single hit, small surface)</li>
+        <li>Matte black and cream are standard premium options</li>
+        <li>Minimum viable quality to signal "this is real"</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 9 -->
+<!-- ============================================ -->
+<div class="artifact" id="a09">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">09</span> Buyer Questions Map</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="lead">These questions are specific to the booklet as it appears within the kit listing and unboxing experience.</p>
+
+    <h3>Questions Buyer Asks Evaluating Listing</h3>
+    <ul>
+      <li>"What is that booklet thing sitting on top of everything?" (triggered by hero images, answered by visible cover and interior spread)</li>
+      <li>"Is there actual content or just a card?" (page count and interior photography needed)</li>
+      <li>"Will they actually read it or just toss it aside?" (answered by lifestyle images showing engagement)</li>
+      <li>"Is the humor going to make sense?" (interior page images let buyer preview voice)</li>
+      <li>"Does this add real value or is it padding?" (gold foil cover visible in photography answers faster than copy)</li>
+    </ul>
+
+    <h3>Questions Recipient Asks During Unboxing</h3>
+    <ul>
+      <li>"Wait, what is this on top?" (inevitable, desirable, cover must reward the pause)</li>
+      <li>"Should I read this now or open stuff first?" (intentional tension, pages 2-3 must hook fast)</li>
+      <li>"Who is Brad Sterling?" (answered within first two pages, question itself is entertainment)</li>
+      <li>"Is this a real company?" (production quality makes the question land as comedy not confusion)</li>
+    </ul>
+
+    <h3>Questions Group Asks While Watching</h3>
+    <ul>
+      <li>"What does it say? Read it out loud!" (creates second audience, pages must be written for read-aloud)</li>
+      <li>"Wait, go back - what was that part about the loadout?" (format subversions create rewind moments)</li>
+      <li>"Is there more? Keep reading!" (three-act creates momentum group reinforces)</li>
+      <li>"Let me see that fine print" (back cover becomes group activity, highest-shareability moment)</li>
+    </ul>
+
+    <h3>Questions Asked After Unboxing</h3>
+    <ul>
+      <li>"Wait, does the booklet actually reference the kit stuff?" (indirect references gain meaning retroactively, drives second read)</li>
+      <li>"Can I keep the booklet?" (signals success as standalone entertainment)</li>
+      <li>"Where can I get more Brad Sterling stuff?" (character commitment creates curiosity)</li>
+      <li>"Did you read the part about [specific page]?" (individual pages become reference points)</li>
+    </ul>
+
+    <h3>Questions Buyer Asks Post-Purchase</h3>
+    <ul>
+      <li>"Did they read the booklet or skip it?" (buyers want confirmation of entertainment delivery)</li>
+      <li>"Was it funny or too weird?" (resolves when recipient quotes Brad)</li>
+      <li>"Would this work for a different person too?" (positive experience drives repeat purchases)</li>
+      <li>"Did they notice the fine print?" (most frequently mentioned detail in word-of-mouth)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 10 -->
+<!-- ============================================ -->
+<div class="artifact" id="a10">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">10</span> Competitive Differentiation</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Competitive Landscape</h3>
+
+    <h4>Category A: Standard gag gift inserts</h4>
+    <ul>
+      <li>Single sheet or card, one joke, disposable</li>
+      <li>No character/narrative</li>
+      <li>Production signals "included free"</li>
+    </ul>
+
+    <h4>Category B: Generic product catalogs and brand cards</h4>
+    <ul>
+      <li>Lists features in marketing language</li>
+      <li>Exists to inform not entertain</li>
+      <li>Nobody reads voluntarily</li>
+      <li>Design functional at best</li>
+    </ul>
+
+    <h4>Category C: High-quality printed supplements in premium gift boxes</h4>
+    <ul>
+      <li>Found in luxury goods</li>
+      <li>Beautiful production but informational</li>
+      <li>Designed to justify premium through craft</li>
+      <li>Rarely entertaining</li>
+    </ul>
+
+    <h3>Differentiation Map</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Standard Gag Insert</th>
+          <th>Generic Brand Card</th>
+          <th>Premium Print Supplement</th>
+          <th>Doc Set 1 Booklet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Production quality</td><td>Low</td><td>Medium</td><td>High</td><td>High (gold foil, matte black, cream interior, saddle-stitched)</td></tr>
+        <tr><td>Comedy depth</td><td>Surface one joke</td><td>None marketing</td><td>None prestige</td><td>Layered (character, format subversion, escalating absurdity, fine print)</td></tr>
+        <tr><td>Narrative structure</td><td>None</td><td>None</td><td>Occasionally linear</td><td>Three-act (Assessment, Diagnosis, Intervention)</td></tr>
+        <tr><td>Character commitment</td><td>Minimal</td><td>Brand voice</td><td>Curator voice</td><td>Total (Brad Sterling fully realized with visual DNA, speech, worldview)</td></tr>
+        <tr><td>Format variety</td><td>Single throughout</td><td>Single throughout</td><td>Consistent editorial</td><td>Six distinct formats across 16 pages</td></tr>
+        <tr><td>Page-by-page engagement</td><td>Declines after front</td><td>N/A</td><td>Steady but low</td><td>Resets with each format change</td></tr>
+        <tr><td>Shareability</td><td>Low spent on first read</td><td>None</td><td>Low private appreciation</td><td>High (read-aloud, group reactions, fine print discovery, photo-worthy)</td></tr>
+        <tr><td>Reread value</td><td>None</td><td>None</td><td>Occasionally</td><td>High (item references gain meaning, fine print rewards)</td></tr>
+        <tr><td>Relationship to products</td><td>None</td><td>Describes directly</td><td>Sometimes contextualizes</td><td>References every item indirectly without naming any</td></tr>
+        <tr><td>Unboxing role</td><td>Obstacle</td><td>Ignored</td><td>Acknowledged, set aside</td><td>Controls pacing, physically gates, narratively primes</td></tr>
+        <tr><td>Cost-per-entertainment-minute</td><td>Very low cost very low entertainment</td><td>N/A</td><td>High cost low entertainment</td><td>Low cost high entertainment</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensible Advantages</h3>
+
+    <h4>Character depth is expensive to replicate</h4>
+    <ul>
+      <li>Brad is fully written character with three-act narrative and visual identity</li>
+      <li>Competitors can print funny card but building character world takes writing investment</li>
+    </ul>
+
+    <h4>Format subversion requires editorial design skill</h4>
+    <ul>
+      <li>Alternating loadout/decoder/portrait/review requires layout capability beyond standard insert production</li>
+    </ul>
+
+    <h4>Indirect item references create a closed system</h4>
+    <ul>
+      <li>Booklet enhances every item without naming any</li>
+      <li>Copying one without the other loses the effect</li>
+    </ul>
+
+    <h4>The fine print is zero-COGS comedy</h4>
+    <ul>
+      <li>Back cover legal text exists on every product</li>
+      <li>Filling with escalating absurdity costs nothing extra</li>
+    </ul>
+
+    <h4>Three-act structure borrows from screenwriting</h4>
+    <ul>
+      <li>Momentum that flat inserts can't generate</li>
+      <li>Tonal flip is structural surprise</li>
+    </ul>
+
+    <h4>Two-audience design is inherent</h4>
+    <ul>
+      <li>Automatically creates reader and watching audience</li>
+      <li>Doubles engagement without doubling content</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 11 -->
+<!-- ============================================ -->
+<div class="artifact" id="a11">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">11</span> Non-Obvious Angles</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="angle">
+      <h4>Angle 1: The lowest COGS-per-entertainment-minute item in the kit</h4>
+      <p>16-page saddle-stitch even with foil is fraction of any physical item cost, but entertainment duration (reading, rereading, read-aloud, group discussion) likely exceeds every other item. Cheapest component delivers most minutes of active engagement.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 2: The only item that benefits every other item without being opened itself</h4>
+      <p>Primes every item through indirect narrative references before recipient touches a product. Conference Room B = Cubicle Shank, "earned your ink" = Lifer Ink, "put it in writing" = card decks. Value delivery invisible at moment of reading, only apparent minutes later.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 3: Brad's silence about specific items is harder to write than naming them</h4>
+      <p>Narrative never names a single kit item, talks around/through/past but never at them. Restraint significantly more difficult because indirect mentions must be specific enough for retroactive recognition but vague enough for character voice during reading.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 4: The three-act structure is borrowed from screenwriting, not product design</h4>
+      <p>Assessment/Diagnosis/Intervention is compressed screenplay structure. Product design would organize by feature or item. Screenwriting organizes by emotional arc. Difference: feature-organized = catalog with jokes, arc-organized = story in a product. Tonal flip exists because screenwriting demands third-act turn.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 5: The fine print is the highest-density comedy at zero additional COGS</h4>
+      <p>Every product has back cover space that costs nothing to fill. Booklet fills it with escalating absurdity (patents claimed not filed, interns compensated in exposure). Likely most quoted section. Also functions as social interaction trigger ("wait, read the small print").</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 6: The booklet creates two audiences from a single unboxer</h4>
+      <p>In group settings, splits room into reader and audience. Reader performs, audience reacts to performance AND reader's reactions. Same 16 pages generate two distinct entertainment experiences. Format subversions create lean-in moments. No other kit item creates this dual-audience dynamic.</p>
+    </div>
+
+    <div class="angle">
+      <h4>Angle 7: No two consecutive pages use the same format</h4>
+      <p>Cycles through performance review, editorial narrative, tactical loadout, decoder card, portrait, legal fine print. Each change forces visual/cognitive reset that re-earns attention. Structural answer to "16 pages is too many" - it's 6-7 distinct formats bound together. Different recipients have different favorites, diversifying word-of-mouth.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 12 -->
+<!-- ============================================ -->
+<div class="artifact" id="a12">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">12</span> The Big Idea</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <p class="big-idea">The booklet is not a printed insert. It is the on-ramp that converts a box of funny stuff into a world the recipient enters.</p>
+
+    <p>Without the booklet, the kit is a collection of well-made comedy items in a briefcase. Funny, giftable, satisfying. But items exist independently. Each lands its own joke, gets set down. Briefcase is container. Items are content. Experience is additive: item plus item.</p>
+
+    <p>With the booklet, the relationship changes. Briefcase becomes entrance to Elevate Co. Items become artifacts from a world the reader was introduced to. Experience becomes multiplicative because each item connects to something in the booklet. Conference Room B meant nothing during reading; means everything when Cubicle Shank appears. Booklet doesn't describe items - it loads context that makes them land harder.</p>
+
+    <p>This is the difference between a gift opened and a gift experienced. The booklet converts passive unboxing (take out, react, move on) into active narrative participation (enter world, meet character, discover world is real in your lap). Every component benefits, none can create this conversion alone.</p>
+
+    <h3>Implication for All Content Creation</h3>
+    <ul>
+      <li><strong>Listing photography must show booklet as narrative threshold not accessory:</strong> first thing buyer sees inside, interior spreads convey editorial not insert quality</li>
+      <li><strong>Unboxing content should pace booklet before items:</strong> reversing order loses retroactive payoff, skipping demonstrates product not experience</li>
+      <li><strong>The booklet's voice is the brand's voice:</strong> Brad's tone/vocabulary/worldview informs all listing copy and social content, consistency reinforces world</li>
+      <li><strong>Every content format should treat booklet as extractable moments:</strong> individual pages, loadout, decoder, fine print all standalone shareable, booklet is content library bound together</li>
+      <li><strong>Booklet justifies kit's price premium:</strong> competitors sell items, this kit sells a world, booklet is proof the world exists</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 13 -->
+<!-- ============================================ -->
+<div class="artifact" id="a13">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">13</span> Assumptions &amp; Gaps</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <h3>Assumptions Made in This Profile</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Three-act narrative structure will survive page count changes:</strong> Current allocation assumes exactly 16 pages. If count shifts for production the acts need rebalancing. Saddle-stitch requires multiples of 4 (constrained to 12 or 20).</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Gold foil COGS on cover acceptable within unit economics:</strong> Foil is specified, assumes cost at volume within budget. If cut must still signal premium (debossing/spot UV not evaluated).</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. Editorial illustrations will match style direction:</strong> Design system specifies style but no illustrations generated. Quality directly affects premium vs amateur reading.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Recipients will engage with booklet before unboxing items:</strong> Placed on Tray 1 to physically gate. Assumes most at least open and read pages 2-3. If consistently set aside priming effect lost.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Three-act structure enhances pacing rather than delays:</strong> Designed to build anticipation not frustrate. Assumes entertainment not obstacle. If testing reveals impatience hook may need sharpening.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Indirect item references will trigger retroactive recognition:</strong> Conference Room B, "earned your ink," "put it in writing" calibrated to be vague during reading and specific during unboxing. If too oblique booklet and items feel disconnected.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Brad Sterling's comedy voice works across target demographic:</strong> Corporate satire assumes office familiarity. Assumes 25-55 range with office experience. Recipients without it may find satire less relatable.</p>
+    </div>
+
+    <hr>
+
+    <h3>Known Gaps</h3>
+
+    <div class="numbered-item">
+      <p><strong>1. Illustration generation has not started:</strong> Design system defines direction but no pages created. Quality is major variable. Image prompts incomplete.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>2. Page-by-page image prompts not finalized:</strong> Copy doc defines narrative but visual direction per page not fully specified. Each format subversion needs distinct illustration approach.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>3. No physical mockup produced or tested:</strong> All evaluation digital. Paper stock feel/foil reflectivity/ink density/spine behavior untested. Fine print readability at small sizes unconfirmed.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>4. Print partner not selected:</strong> COGS based on general market rates. Gold foil capability/MOQs/stock availability unconfirmed. May require design adjustments.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>5. Tonal flip on pages 14-15 not user-tested:</strong> Shift from dark comedy to aspirational hype is highest-risk creative decision. Could feel jarring rather than earned. No test data.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>6. Booklet interaction data does not exist:</strong> No data on time spent, page attention, second reads. All engagement assumptions based on structural analysis.</p>
+    </div>
+
+    <div class="numbered-item">
+      <p><strong>7. Social shareability of individual pages is theoretical:</strong> Loadout/decoder/fine print positioned as shareable but no content created or tested. Readability at phone resolution unverified.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ARTIFACT 14 -->
+<!-- ============================================ -->
+<div class="artifact" id="a14">
+  <div class="artifact-header">
+    <h2><span class="artifact-num">14</span> Final Recommendations</h2>
+    <button class="copy-btn" onclick="copyArtifact(this)">Copy</button>
+  </div>
+  <div class="artifact-body">
+
+    <div class="rec">
+      <h4>Recommendation 1: Lock the narrative copy before starting illustration generation</h4>
+      <ul>
+        <li>Copy defines what happens on every page, illustrations must serve narrative not reverse</li>
+        <li>Changing copy after illustrations = expensive rework</li>
+        <li>Three-act structure/format subversions/indirect references should all be final</li>
+        <li>Copy lock should include fine print</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 2: Test a physical mockup at actual print size before committing to production</h4>
+      <ul>
+        <li>Digital layouts can't replicate stock feel/foil reflectivity/ink density</li>
+        <li>Saddle-stitch at 16 pages has specific spine behavior</li>
+        <li>Matte black shows fingerprints depending on coating</li>
+        <li>Mockup tests whether booklet feels "content" or "insert"</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 3: Prioritize pages 2-3 as the hook that earns the remaining 14 pages</h4>
+      <ul>
+        <li>If they don't land no one flips further</li>
+        <li>Must establish Brad's voice/Elevate Co./satirical tone in under 30 seconds</li>
+        <li>Should reward the decision to pause and read</li>
+        <li>Test in isolation with unfamiliar people</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 4: Design the loadout spread (pages 8-9) as a standalone shareable image</h4>
+      <ul>
+        <li>Most visually distinctive format subversion</li>
+        <li>Most likely to be photographed/shared</li>
+        <li>Should work at two scales (full-spread and cropped-to-phone)</li>
+        <li>Labels/callouts legible in arm's-length photo</li>
+        <li>Potential standalone social content asset</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 5: Test fine print readability at 7pt on actual paper stock</h4>
+      <ul>
+        <li>Highest-density comedy but only if readable</li>
+        <li>7pt may fail on textured matte stock or warm lighting</li>
+        <li>Print test sheet at final size on intended stock</li>
+        <li>If readability fails increase point size before cutting content</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 6: Treat individual booklet pages as a social content library</h4>
+      <ul>
+        <li>Format variety means each spread = distinct content piece</li>
+        <li>Listing galleries should include 2-3 interior spreads showing different formats</li>
+        <li>Social planning should map pages to content moments</li>
+        <li>Each format subversion = potential standalone post</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <h4>Recommendation 7: Confirm gold foil COGS before committing to cover specification</h4>
+      <ul>
+        <li>Gold foil on matte black signals premium</li>
+        <li>Get quoted price from 2+ print partners at expected volume</li>
+        <li>If foil exceeds budget evaluate alternatives against same "not filler" signal</li>
+        <li>Do not downgrade without understanding filler-perception downstream effect</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+function getPlainText(body) {
+  const clone = body.cloneNode(true);
+  let text = '';
+  function walkInline(node) {
+    let s = '';
+    for (const child of node.childNodes) {
+      if (child.nodeType === 3) {
+        s += child.textContent;
+      } else if (child.tagName === 'STRONG' || child.tagName === 'B') {
+        s += '**' + child.textContent.trim() + '**';
+      } else if (child.tagName === 'EM' || child.tagName === 'I') {
+        s += '_' + child.textContent.trim() + '_';
+      } else {
+        s += walkInline(child);
+      }
+    }
+    return s;
+  }
+  function walk(node) {
+    if (node.nodeType === 3) return;
+    const tag = node.tagName;
+    if (tag === 'H3') {
+      text += '\n### ' + node.textContent.trim() + '\n\n';
+    } else if (tag === 'H4') {
+      text += '\n**' + node.textContent.trim() + '**\n\n';
+    } else if (tag === 'LI') {
+      const parent = node.parentElement;
+      if (parent && parent.tagName === 'OL') {
+        const idx = Array.from(parent.children).indexOf(node) + 1;
+        const start = parseInt(parent.getAttribute('start')) || 1;
+        text += (start + idx - 1) + '. ' + walkInline(node).trim() + '\n';
+      } else {
+        text += '- ' + walkInline(node).trim() + '\n';
+      }
+    } else if (tag === 'P') {
+      text += walkInline(node).trim() + '\n\n';
+    } else if (tag === 'HR') {
+      text += '\n---\n\n';
+    } else if (tag === 'TR') {
+      const cells = node.querySelectorAll('th, td');
+      const vals = Array.from(cells).map(c => c.textContent.trim());
+      text += '| ' + vals.join(' | ') + ' |\n';
+    } else if (tag === 'THEAD') {
+      for (const child of node.children) walk(child);
+      const cells = node.querySelectorAll('th');
+      text += '| ' + Array.from(cells).map(() => '---').join(' | ') + ' |\n';
+    } else if (['UL', 'OL', 'TBODY', 'TABLE', 'DIV', 'SPAN', 'STRONG', 'EM', 'SECTION'].includes(tag)) {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  for (const child of clone.childNodes) walk(child);
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function getCleanHtml(body) {
+  const clone = body.cloneNode(true);
+  clone.querySelectorAll('.copy-btn').forEach(el => el.remove());
+  return clone.innerHTML;
+}
+
+function flashButton(btn, label, resetLabel) {
+  btn.textContent = label;
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = resetLabel;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+function copyArtifact(btn) {
+  const body = btn.closest('.artifact').querySelector('.artifact-body');
+  const html = getCleanHtml(body);
+  const plain = getPlainText(body);
+  const item = new ClipboardItem({
+    'text/html': new Blob([html], { type: 'text/html' }),
+    'text/plain': new Blob([plain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy'));
+}
+
+function copyAll(btn) {
+  const artifacts = document.querySelectorAll('.artifact');
+  let fullHtml = '';
+  let fullPlain = '';
+  artifacts.forEach(a => {
+    const title = a.querySelector('.artifact-header h2').textContent.trim();
+    const body = a.querySelector('.artifact-body');
+    fullHtml += '<h2>' + title + '</h2>' + getCleanHtml(body) + '<hr>';
+    fullPlain += '## ' + title + '\n\n' + getPlainText(body) + '\n\n---\n\n';
+  });
+  const item = new ClipboardItem({
+    'text/html': new Blob([fullHtml], { type: 'text/html' }),
+    'text/plain': new Blob([fullPlain], { type: 'text/plain' })
+  });
+  navigator.clipboard.write([item]).then(() => flashButton(btn, 'Copied!', 'Copy All Artifacts'));
+}
+</script>
+
+</body>
+</html>

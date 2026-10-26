@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 310 480"
+     width="310mm" height="480mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .panel-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 5px; fill: #444; text-anchor: middle; dominant-baseline: central; }
+    .flap-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #888; text-anchor: middle; dominant-baseline: central; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; text-anchor: middle; }
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 4px; fill: #666; text-anchor: middle; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3px; fill: #999; text-anchor: middle; }
+    .legend-cut { stroke: #E60000; stroke-width: 0.5; }
+    .legend-fold { stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 3.5px; fill: #333; }
+    .recess { fill: none; stroke: #00AA00; stroke-width: 0.4; stroke-dasharray: 2,1.5; }
+    .recess-fill { fill: #e8f4e8; stroke: none; opacity: 0.4; }
+    .component-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 5px; fill: #222; font-weight: bold; text-anchor: start; }
+    .sleeve-fill { fill: #fef3e2; stroke: none; opacity: 0.3; }
+    .tray-base-fill { fill: #f5f5f5; stroke: none; }
+    .tray-wall-fill { fill: #e2ecf4; stroke: none; opacity: 0.4; }
+    .tab-fill { fill: #f0f0f0; stroke: none; opacity: 0.5; }
+  </style>
+
+  <!-- CUBICLE SHANK PEN BOX — TRAY & SLEEVE (MATCHBOX STYLE) -->
+  <!-- Outer dimensions: 165.1 x 44.45 x 25.4 mm (6.5" x 1.75" x 1.0") -->
+  <!-- Two components: sliding sleeve (outer) + tray with die-cut recess (inner) -->
+
+  <text x="155" y="14" class="title">CUBICLE SHANK — TRAY &amp; SLEEVE DIELINE</text>
+  <text x="155" y="22" class="subtitle">165.1 × 44.45 × 25.4 mm (6.5" × 1.75" × 1.0") — Pen — Tray 1</text>
+  <text x="155" y="28" class="subtitle">Matchbox-style: outer sleeve slides on/off, inner tray holds pen in die-cut recess</text>
+
+  <line x1="30" y1="37" x2="45" y2="37" class="legend-cut" fill="none"/>
+  <text x="48" y="38" class="legend-text" text-anchor="start">Cut / Die line</text>
+  <line x1="95" y1="37" x2="110" y2="37" class="legend-fold" fill="none"/>
+  <text x="113" y="38" class="legend-text" text-anchor="start">Fold / Crease line</text>
+  <line x1="160" y1="37" x2="175" y2="37" class="recess" fill="none"/>
+  <text x="178" y="38" class="legend-text" text-anchor="start">Die-cut recess</text>
+
+  <!-- ============================================ -->
+  <!-- COMPONENT 1: SLEEVE (Outer Cover)            -->
+  <!-- Wraps around tray, open on both short ends   -->
+  <!-- Strip height = box length = 165.1mm          -->
+  <!-- Panels: Glue | Side(25.4) | Top(44.45) |     -->
+  <!--          Side(25.4) | Bottom(44.45)           -->
+  <!-- ============================================ -->
+
+  <text x="40" y="52" class="component-title">COMPONENT 1: SLEEVE (outer cover)</text>
+
+  <!-- Sleeve geometry -->
+  <!-- x: glue_left=40, x1=52(glue|side1), x2=77.4(side1|top), x3=121.85(top|side2), x4=147.25(side2|bottom), x5=191.7 -->
+  <!-- y: y_top=60, y_bottom=225.1 (60+165.1) -->
+
+  <!-- Panel fills -->
+  <rect x="40" y="60" width="12" height="165.1" class="tab-fill"/>
+  <rect x="52" y="60" width="25.4" height="165.1" class="sleeve-fill"/>
+  <rect x="77.4" y="60" width="44.45" height="165.1" class="sleeve-fill"/>
+  <rect x="121.85" y="60" width="25.4" height="165.1" class="sleeve-fill"/>
+  <rect x="147.25" y="60" width="44.45" height="165.1" class="sleeve-fill"/>
+
+  <!-- Cut outline -->
+  <path class="cut" d="
+    M 52,60
+    L 40,63 L 40,222.1 L 52,225.1
+    L 191.7,225.1
+    L 191.7,60
+    Z
+  "/>
+
+  <!-- Fold lines (vertical, between panels) -->
+  <line x1="52" y1="60" x2="52" y2="225.1" class="fold"/>
+  <line x1="77.4" y1="60" x2="77.4" y2="225.1" class="fold"/>
+  <line x1="121.85" y1="60" x2="121.85" y2="225.1" class="fold"/>
+  <line x1="147.25" y1="60" x2="147.25" y2="225.1" class="fold"/>
+
+  <!-- Panel labels -->
+  <text x="46" y="142.55" class="flap-label" transform="rotate(-90, 46, 142.55)">GLUE TAB</text>
+  <text x="64.7" y="137" class="panel-label" transform="rotate(-90, 64.7, 137)">SIDE</text>
+  <text x="64.7" y="152" class="flap-label" transform="rotate(-90, 64.7, 152)">25.4</text>
+  <text x="99.625" y="125" class="panel-label" transform="rotate(-90, 99.625, 125)">TOP FACE</text>
+  <text x="99.625" y="160" class="flap-label" transform="rotate(-90, 99.625, 160)">44.45 × 165.1</text>
+  <text x="134.55" y="137" class="panel-label" transform="rotate(-90, 134.55, 137)">SIDE</text>
+  <text x="134.55" y="152" class="flap-label" transform="rotate(-90, 134.55, 152)">25.4</text>
+  <text x="169.475" y="125" class="panel-label" transform="rotate(-90, 169.475, 125)">BOTTOM FACE</text>
+  <text x="169.475" y="160" class="flap-label" transform="rotate(-90, 169.475, 160)">44.45 × 165.1</text>
+
+  <!-- Sleeve dimensions -->
+  <line x1="52" y1="225.1" x2="52" y2="240" class="dim-line"/>
+  <line x1="77.4" y1="225.1" x2="77.4" y2="240" class="dim-line"/>
+  <line x1="121.85" y1="225.1" x2="121.85" y2="240" class="dim-line"/>
+  <line x1="147.25" y1="225.1" x2="147.25" y2="240" class="dim-line"/>
+  <line x1="191.7" y1="225.1" x2="191.7" y2="240" class="dim-line"/>
+
+  <line x1="52" y1="233" x2="77.4" y2="233" class="dim-arrow"/>
+  <text x="64.7" y="231" class="dim-text">25.4</text>
+  <line x1="77.4" y1="238" x2="121.85" y2="238" class="dim-arrow"/>
+  <text x="99.625" y="236" class="dim-text">44.45</text>
+  <line x1="121.85" y1="233" x2="147.25" y2="233" class="dim-arrow"/>
+  <text x="134.55" y="231" class="dim-text">25.4</text>
+  <line x1="147.25" y1="238" x2="191.7" y2="238" class="dim-arrow"/>
+  <text x="169.475" y="236" class="dim-text">44.45</text>
+
+  <!-- Right-side dimension (sleeve length) -->
+  <line x1="191.7" y1="60" x2="210" y2="60" class="dim-line"/>
+  <line x1="191.7" y1="225.1" x2="210" y2="225.1" class="dim-line"/>
+  <line x1="207" y1="60" x2="207" y2="225.1" class="dim-arrow"/>
+  <text x="207" y="142.55" class="dim-text" transform="rotate(-90, 207, 142.55)">Length: 165.1 mm</text>
+
+  <!-- Open ends notation -->
+  <text x="121.85" y="57" class="flap-label">← OPEN END (tray slides in/out) →</text>
+  <text x="121.85" y="248" class="flap-label">← OPEN END (tray slides in/out) →</text>
+
+  <!-- ============================================ -->
+  <!-- COMPONENT 2: TRAY (Inner, with pen recess)   -->
+  <!-- Slides inside sleeve                          -->
+  <!-- Slightly smaller than sleeve interior         -->
+  <!-- Base: ~163 x ~43 mm, walls: ~24 mm tall      -->
+  <!-- ============================================ -->
+
+  <text x="40" y="260" class="component-title">COMPONENT 2: TRAY (inner, with pen recess)</text>
+
+  <!-- Tray geometry (slightly smaller for sliding fit) -->
+  <!-- Base: 163 x 43mm, Wall height: 24mm -->
+  <!-- Flat: 24+163+24 = 211mm wide, 24+43+24 = 91mm tall -->
+  <!-- x: left_wall=40, base_left=64, base_right=227, right_wall=251 -->
+  <!-- y: top_wall=270, base_top=294, base_bottom=337, bottom_wall=361 -->
+
+  <!-- Panel fills -->
+  <rect x="64" y="294" width="163" height="43" class="tray-base-fill"/>
+  <rect x="64" y="270" width="163" height="24" class="tray-wall-fill"/>
+  <rect x="64" y="337" width="163" height="24" class="tray-wall-fill"/>
+  <rect x="40" y="294" width="24" height="43" class="tray-wall-fill"/>
+  <rect x="227" y="294" width="24" height="43" class="tray-wall-fill"/>
+  <rect x="40" y="270" width="24" height="24" class="tab-fill"/>
+  <rect x="227" y="270" width="24" height="24" class="tab-fill"/>
+  <rect x="40" y="337" width="24" height="24" class="tab-fill"/>
+  <rect x="227" y="337" width="24" height="24" class="tab-fill"/>
+
+  <!-- Cut outline -->
+  <rect x="40" y="270" width="211" height="91" class="cut"/>
+
+  <!-- Corner cuts -->
+  <line x1="40" y1="270" x2="64" y2="294" class="cut"/>
+  <line x1="227" y1="294" x2="251" y2="270" class="cut"/>
+  <line x1="40" y1="361" x2="64" y2="337" class="cut"/>
+  <line x1="227" y1="337" x2="251" y2="361" class="cut"/>
+
+  <!-- Fold lines -->
+  <line x1="64" y1="270" x2="64" y2="361" class="fold"/>
+  <line x1="227" y1="270" x2="227" y2="361" class="fold"/>
+  <line x1="40" y1="294" x2="251" y2="294" class="fold"/>
+  <line x1="40" y1="337" x2="251" y2="337" class="fold"/>
+
+  <!-- Pen die-cut recess in base -->
+  <!-- Pen dimensions: ~150mm long x ~12mm diameter — centered in base -->
+  <!-- Recess: ~155 x ~14mm, centered -->
+  <rect x="68" y="310" width="155" height="14" rx="7" ry="7" class="recess-fill"/>
+  <rect x="68" y="310" width="155" height="14" rx="7" ry="7" class="recess"/>
+  <text x="145.5" y="305" class="flap-label" fill="#00AA00">PEN RECESS (~155 × ~14mm)</text>
+  <text x="145.5" y="332" class="flap-label" fill="#00AA00">Rounded ends, shaped to pen profile</text>
+
+  <!-- Panel labels -->
+  <text x="145.5" y="282" class="panel-label">BACK WALL (24mm)</text>
+  <text x="145.5" y="349" class="panel-label">FRONT WALL (24mm)</text>
+  <text x="52" y="315.5" class="panel-label" transform="rotate(-90, 52, 315.5)">SIDE</text>
+  <text x="239" y="315.5" class="panel-label" transform="rotate(-90, 239, 315.5)">SIDE</text>
+  <text x="145.5" y="300" class="flap-label">BASE: 163 × 43 mm</text>
+
+  <text x="47" y="276" class="flap-label">TAB</text>
+  <text x="244" y="276" class="flap-label">TAB</text>
+  <text x="47" y="356" class="flap-label">TAB</text>
+  <text x="244" y="356" class="flap-label">TAB</text>
+
+  <!-- Tray dimensions -->
+  <line x1="64" y1="361" x2="64" y2="378" class="dim-line"/>
+  <line x1="227" y1="361" x2="227" y2="378" class="dim-line"/>
+  <line x1="64" y1="375" x2="227" y2="375" class="dim-arrow"/>
+  <text x="145.5" y="373" class="dim-text">Base: 163 mm</text>
+
+  <line x1="40" y1="361" x2="40" y2="384" class="dim-line"/>
+  <line x1="251" y1="361" x2="251" y2="384" class="dim-line"/>
+  <line x1="40" y1="382" x2="251" y2="382" class="dim-arrow"/>
+  <text x="145.5" y="380" class="dim-text">Total flat: 211 mm</text>
+
+  <line x1="251" y1="294" x2="268" y2="294" class="dim-line"/>
+  <line x1="251" y1="337" x2="268" y2="337" class="dim-line"/>
+  <line x1="265" y1="294" x2="265" y2="337" class="dim-arrow"/>
+  <text x="265" y="315.5" class="dim-text" transform="rotate(-90, 265, 315.5)">Base: 43</text>
+
+  <line x1="251" y1="270" x2="275" y2="270" class="dim-line"/>
+  <line x1="251" y1="361" x2="275" y2="361" class="dim-line"/>
+  <line x1="272" y1="270" x2="272" y2="361" class="dim-arrow"/>
+  <text x="272" y="315.5" class="dim-text" transform="rotate(-90, 272, 315.5)">Total flat: 91</text>
+
+  <!-- NOTES -->
+  <text x="155" y="400" class="note">Tray &amp; sleeve (matchbox style): inner tray slides into outer sleeve. Both open on short ends.</text>
+  <text x="155" y="405" class="note">Tray dimensions are approximate — slightly smaller than sleeve interior for sliding fit. Confirm clearance with manufacturer.</text>
+  <text x="155" y="410" class="note">Pen recess: rounded die-cut shaped to pen profile. Depth TBD with sourcing.</text>
+
+
+</svg>

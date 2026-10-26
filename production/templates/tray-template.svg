@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 760 470"
+     width="760mm" height="470mm">
+
+  <defs>
+    <marker id="arrow-start" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 6,0 L 0,3 L 6,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-end" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M 0,0 L 6,3 L 0,6 Z" fill="#333"/>
+    </marker>
+    <marker id="fold-arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1,1 L 7,4 L 1,7 Z" fill="#0055CC"/>
+    </marker>
+  </defs>
+
+  <style>
+    /* Cut / Fold / Structural */
+    .cut { fill: none; stroke: #E60000; stroke-width: 0.5; stroke-linejoin: round; }
+    .fold { fill: none; stroke: #0055CC; stroke-width: 0.35; stroke-dasharray: 3,1.5; }
+    .bleed-zone { fill: none; stroke: #00AA44; stroke-width: 0.4; stroke-dasharray: 1.5,1; }
+    .safety-zone { fill: none; stroke: #CC0066; stroke-width: 0.3; stroke-dasharray: 1,1; }
+
+    /* Panel color fills — match 3D reference */
+    .fill-base { fill: #E8E8E8; stroke: none; }
+    .fill-back-wall { fill: #B3D4F0; stroke: none; opacity: 0.6; }
+    .fill-front-wall { fill: #B8E6B8; stroke: none; opacity: 0.6; }
+    .fill-left-wall { fill: #F5D0A0; stroke: none; opacity: 0.6; }
+    .fill-right-wall { fill: #F5D0A0; stroke: none; opacity: 0.6; }
+    .fill-tab { fill: #F0E0E0; stroke: none; opacity: 0.4; }
+    .recess-fill { fill: #D0D0D0; stroke: none; opacity: 0.5; }
+    .recess { fill: none; stroke: #888; stroke-width: 0.4; stroke-dasharray: 2,1.5; }
+
+    /* Typography — readable sizes */
+    .title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 8px; fill: #555; text-anchor: middle; }
+    .panel-id { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .panel-detail { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #666; text-anchor: middle; dominant-baseline: central; }
+    .fold-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #0055CC; font-weight: bold; }
+    .dim-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; text-anchor: middle; }
+    .dim-line { stroke: #333; stroke-width: 0.25; }
+    .dim-arrow { stroke: #333; stroke-width: 0.25; marker-start: url(#arrow-start); marker-end: url(#arrow-end); }
+    .legend-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #333; }
+    .note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #888; text-anchor: middle; }
+    .spec-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; }
+    .spec-text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7px; fill: #444; }
+    .assembly-num { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; fill: white; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+    .assembly-circle { fill: #0055CC; stroke: none; }
+
+    /* 3D Reference */
+    .ref-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9px; fill: #222; font-weight: bold; text-anchor: middle; }
+    .ref-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 6px; fill: #444; text-anchor: start; }
+    .ref-base { fill: #E8E8E8; stroke: #444; stroke-width: 0.5; }
+    .ref-back { fill: #B3D4F0; stroke: #444; stroke-width: 0.5; }
+    .ref-front { fill: #B8E6B8; stroke: #444; stroke-width: 0.5; }
+    .ref-left { fill: #F5D0A0; stroke: #444; stroke-width: 0.5; }
+    .ref-right { fill: #F5D0A0; stroke: #444; stroke-width: 0.5; }
+    .ref-recess { fill: #D0D0D0; stroke: #888; stroke-width: 0.3; }
+  </style>
+
+  <!-- ============================================ -->
+  <!-- HEADER                                       -->
+  <!-- ============================================ -->
+  <!-- Base: 342.9 x 165.1mm. Wall height: 50mm. -->
+  <!-- Flat coords: base at (100,100), walls extend 50mm out each side -->
+
+  <text x="280" y="14" class="title">TRAY — PRODUCTION TEMPLATE (x2 IDENTICAL)</text>
+  <text x="280" y="26" class="subtitle">342.9 x 165.1 x 50 mm (13.5" x 6.5" x ~2.0") | 18pt paperboard | Dark carbon fiber | Orange trim</text>
+  <text x="280" y="36" class="subtitle">Wall height updated to 50mm — two trays stack to match back compartment height.</text>
+
+  <!-- LEGEND -->
+  <line x1="30" y1="48" x2="45" y2="48" stroke="#E60000" stroke-width="0.5" fill="none"/>
+  <text x="48" y="49" class="legend-text" text-anchor="start">Cut / Die</text>
+  <line x1="100" y1="48" x2="115" y2="48" stroke="#0055CC" stroke-width="0.35" stroke-dasharray="3,1.5" fill="none"/>
+  <text x="118" y="49" class="legend-text" text-anchor="start">Fold / Score</text>
+  <line x1="185" y1="48" x2="200" y2="48" stroke="#00AA44" stroke-width="0.4" stroke-dasharray="1.5,1" fill="none"/>
+  <text x="203" y="49" class="legend-text" text-anchor="start">Bleed (3mm)</text>
+  <line x1="280" y1="48" x2="295" y2="48" stroke="#CC0066" stroke-width="0.3" stroke-dasharray="1,1" fill="none"/>
+  <text x="298" y="49" class="legend-text" text-anchor="start">Safety (5mm)</text>
+
+  <!-- ============================================ -->
+  <!-- FLAT DIELINE                                 -->
+  <!-- ============================================ -->
+
+  <!-- BLEED ZONE (3mm outside cut) -->
+  <rect x="47" y="57" width="448.9" height="271.1" class="bleed-zone"/>
+
+  <!-- PANEL FILLS — color coded to match 3D reference -->
+  <rect x="100" y="100" width="342.9" height="165.1" class="fill-base"/>
+  <rect x="100" y="60" width="342.9" height="40" class="fill-back-wall"/>
+  <rect x="100" y="265.1" width="342.9" height="40" class="fill-front-wall"/>
+  <rect x="60" y="100" width="40" height="165.1" class="fill-left-wall"/>
+  <rect x="442.9" y="100" width="40" height="165.1" class="fill-right-wall"/>
+  <rect x="60" y="60" width="40" height="40" class="fill-tab"/>
+  <rect x="442.9" y="60" width="40" height="40" class="fill-tab"/>
+  <rect x="60" y="265.1" width="40" height="40" class="fill-tab"/>
+  <rect x="442.9" y="265.1" width="40" height="40" class="fill-tab"/>
+
+  <!-- RECESSES -->
+  <rect x="111.45" y="105" width="320" height="92" class="recess-fill"/>
+  <rect x="111.45" y="105" width="320" height="92" class="recess"/>
+  <rect x="187.45" y="212" width="168" height="48" class="recess-fill"/>
+  <rect x="187.45" y="212" width="168" height="48" class="recess"/>
+
+  <!-- CUT LINE -->
+  <rect x="50" y="60" width="442.9" height="245.1" class="cut"/>
+  <line x1="50" y1="60" x2="100" y2="100" class="cut"/>
+  <line x1="442.9" y1="100" x2="492.9" y2="60" class="cut"/>
+  <line x1="50" y1="305.1" x2="100" y2="265.1" class="cut"/>
+  <line x1="442.9" y1="265.1" x2="492.9" y2="305.1" class="cut"/>
+
+  <!-- FOLD LINES -->
+  <line x1="100" y1="60" x2="100" y2="305.1" class="fold"/>
+  <line x1="442.9" y1="60" x2="442.9" y2="305.1" class="fold"/>
+  <line x1="50" y1="100" x2="492.9" y2="100" class="fold"/>
+  <line x1="50" y1="265.1" x2="492.9" y2="265.1" class="fold"/>
+
+  <!-- SAFETY ZONE (5mm inside cut) -->
+  <rect x="55" y="65" width="432.9" height="235.1" class="safety-zone"/>
+
+  <!-- ============================================ -->
+  <!-- PANEL LABELS                                 -->
+  <!-- ============================================ -->
+
+  <text x="271.45" y="220" class="panel-id">A: BASE</text>
+  <text x="271.45" y="230" class="panel-detail">342.9 x 165.1 mm — artwork faces UP when assembled</text>
+  <text x="271.45" y="240" class="panel-detail">Recess A: ~320 x 92 mm (back) | Recess B: ~168 x 48 mm (front)</text>
+
+  <text x="200" y="80" class="panel-id">B: BACK WALL</text>
+  <text x="200" y="90" class="panel-detail">342.9 x 50 mm</text>
+
+  <text x="200" y="280" class="panel-id">C: FRONT WALL</text>
+  <text x="200" y="290" class="panel-detail">342.9 x 50 mm</text>
+
+  <text x="75" y="182" class="panel-id" transform="rotate(-90, 75, 182)">D: LEFT</text>
+  <text x="460" y="182" class="panel-id" transform="rotate(-90, 460, 182)">E: RIGHT</text>
+
+  <text x="68" y="68" class="panel-detail">TAB</text>
+  <text x="475" y="68" class="panel-detail">TAB</text>
+  <text x="68" y="300" class="panel-detail">TAB</text>
+  <text x="475" y="300" class="panel-detail">TAB</text>
+
+  <!-- ============================================ -->
+  <!-- FOLD DIRECTION ARROWS                        -->
+  <!-- ============================================ -->
+
+  <path d="M 380,98 C 380,90 380,84 380,76" stroke="#0055CC" stroke-width="0.6" fill="none" marker-end="url(#fold-arrow)"/>
+  <text x="392" y="86" class="fold-label">FOLD UP ↑</text>
+
+  <path d="M 380,267 C 380,275 380,281 380,289" stroke="#0055CC" stroke-width="0.6" fill="none" marker-end="url(#fold-arrow)"/>
+  <text x="392" y="282" class="fold-label">FOLD UP ↑</text>
+
+  <path d="M 98,160 C 90,160 84,160 76,160" stroke="#0055CC" stroke-width="0.6" fill="none" marker-end="url(#fold-arrow)"/>
+  <text x="55" y="160" class="fold-label" text-anchor="end">FOLD UP</text>
+
+  <path d="M 445,160 C 453,160 459,160 467,160" stroke="#0055CC" stroke-width="0.6" fill="none" marker-end="url(#fold-arrow)"/>
+  <text x="470" y="160" class="fold-label">FOLD UP</text>
+
+  <!-- ASSEMBLY NUMBERS -->
+  <circle cx="140" cy="80" r="6" class="assembly-circle"/>
+  <text x="140" y="80" class="assembly-num">1</text>
+
+  <circle cx="140" cy="285" r="6" class="assembly-circle"/>
+  <text x="140" y="285" class="assembly-num">2</text>
+
+  <circle cx="64" cy="230" r="6" class="assembly-circle"/>
+  <text x="64" y="230" class="assembly-num">3</text>
+
+  <circle cx="478" cy="230" r="6" class="assembly-circle"/>
+  <text x="478" y="230" class="assembly-num">4</text>
+
+  <!-- ============================================ -->
+  <!-- DIMENSIONS                                   -->
+  <!-- ============================================ -->
+
+  <line x1="100" y1="308" x2="100" y2="325" class="dim-line"/>
+  <line x1="442.9" y1="308" x2="442.9" y2="325" class="dim-line"/>
+  <line x1="100" y1="322" x2="442.9" y2="322" class="dim-arrow"/>
+  <text x="271.45" y="319" class="dim-text">342.9 mm (13.5")</text>
+
+  <line x1="50" y1="308" x2="50" y2="332" class="dim-line"/>
+  <line x1="492.9" y1="308" x2="492.9" y2="332" class="dim-line"/>
+  <line x1="50" y1="330" x2="492.9" y2="330" class="dim-arrow"/>
+  <text x="271.45" y="327" class="dim-text">Total flat: 442.9 mm</text>
+
+  <line x1="495" y1="100" x2="510" y2="100" class="dim-line"/>
+  <line x1="495" y1="265.1" x2="510" y2="265.1" class="dim-line"/>
+  <line x1="507" y1="100" x2="507" y2="265.1" class="dim-arrow"/>
+  <text x="507" y="182" class="dim-text" transform="rotate(-90, 507, 182)">165.1 mm (6.5")</text>
+
+  <line x1="495" y1="60" x2="502" y2="60" class="dim-line"/>
+  <line x1="499" y1="60" x2="499" y2="100" class="dim-arrow"/>
+  <text x="499" y="80" class="dim-text" transform="rotate(-90, 499, 80)">50.0</text>
+
+  <!-- ============================================ -->
+  <!-- 3D REFERENCE                                 -->
+  <!-- ============================================ -->
+  <!-- Tray: 342.9mm wide x 165.1mm deep x 50mm walls -->
+  <!-- Iso scale: 0.35. W=120, D=57.8, H=17.5 -->
+  <!-- Origin BL_top: (580, 130) -->
+  <!-- BR: (580+103.9, 130+60) = (683.9, 190) -->
+  <!-- FL: (580-50, 130+28.9) = (530, 158.9) -->
+  <!-- FR: (530+103.9, 158.9+60) = (633.9, 218.9) -->
+  <!-- Bottom: +17.5 -->
+
+  <text x="610" y="80" class="ref-title">3D REFERENCE — ASSEMBLED TRAY</text>
+  <text x="610" y="92" class="subtitle">Colors match flat dieline panels</text>
+
+  <!-- Back wall (blue) -->
+  <polygon points="580,130 683.9,190 683.9,207.5 580,147.5" class="ref-back" opacity="0.7"/>
+  <!-- Left wall (orange, hidden) -->
+  <polygon points="580,130 530,158.9 530,176.4 580,147.5" class="ref-left" opacity="0.35"/>
+  <!-- Base (gray) -->
+  <polygon points="580,147.5 683.9,207.5 633.9,236.4 530,176.4" class="ref-base"/>
+  <!-- Front wall (green) -->
+  <polygon points="530,158.9 633.9,218.9 633.9,236.4 530,176.4" class="ref-front"/>
+  <!-- Right wall (orange) -->
+  <polygon points="683.9,190 633.9,218.9 633.9,236.4 683.9,207.5" class="ref-right"/>
+
+  <!-- Recesses -->
+  <polygon points="585,151 678,206 660,216 567,161" class="ref-recess" opacity="0.5"/>
+  <polygon points="558,169 620,205 614,208 552,172" class="ref-recess" opacity="0.5"/>
+
+  <!-- Orange trim on all 4 top edges -->
+  <polyline points="530,158.9 580,130 683.9,190 633.9,218.9 530,158.9" fill="none" stroke="#FF6600" stroke-width="1.2"/>
+
+  <!-- Labels -->
+  <text x="610" y="250" class="ref-label" text-anchor="middle">A: Base (gray)</text>
+  <text x="555" y="225" class="ref-label">C: Front wall (green)</text>
+  <text x="670" y="225" class="ref-label">E: Right wall (orange)</text>
+  <text x="625" y="120" class="ref-label" text-anchor="middle">B: Back wall (blue)</text>
+  <text x="610" y="112" class="ref-label" fill="#FF6600" text-anchor="middle">Orange trim all 4 top edges</text>
+  <text x="630" y="195" class="ref-label" text-anchor="middle" fill="#666">Recess A</text>
+  <text x="590" y="200" class="ref-label" text-anchor="middle" fill="#666">Recess B</text>
+
+  <!-- ============================================ -->
+  <!-- ASSEMBLY + SPECS                             -->
+  <!-- ============================================ -->
+
+  <text x="610" y="275" class="spec-title">ASSEMBLY SEQUENCE</text>
+
+  <circle cx="540" cy="292" r="5.5" class="assembly-circle"/>
+  <text x="540" y="292" class="assembly-num" style="font-size: 9px;">1</text>
+  <text x="550" y="293" class="spec-text">Score all fold lines. Fold BACK WALL up 90°.</text>
+
+  <circle cx="540" cy="308" r="5.5" class="assembly-circle"/>
+  <text x="540" y="308" class="assembly-num" style="font-size: 9px;">2</text>
+  <text x="550" y="309" class="spec-text">Fold FRONT WALL up 90°.</text>
+
+  <circle cx="540" cy="324" r="5.5" class="assembly-circle"/>
+  <text x="540" y="324" class="assembly-num" style="font-size: 9px;">3</text>
+  <text x="550" y="325" class="spec-text">Fold LEFT WALL up 90°. Tuck corner tabs.</text>
+
+  <circle cx="540" cy="340" r="5.5" class="assembly-circle"/>
+  <text x="540" y="340" class="assembly-num" style="font-size: 9px;">4</text>
+  <text x="550" y="341" class="spec-text">Fold RIGHT WALL up 90°. Tuck corner tabs.</text>
+
+  <text x="550" y="360" class="spec-text">Result: Open-top tray, 50mm walls, recesses face up.</text>
+
+  <text x="610" y="385" class="spec-title">PRINT SPECIFICATIONS</text>
+  <text x="550" y="400" class="spec-text">Color mode: CMYK only</text>
+  <text x="550" y="410" class="spec-text">Resolution: 300 dpi minimum</text>
+  <text x="550" y="420" class="spec-text">Bleed: Extend artwork 3mm past cut (green)</text>
+  <text x="550" y="430" class="spec-text">Safety: Keep content 5mm inside cut (magenta)</text>
+  <text x="550" y="440" class="spec-text">Finish: Dark carbon fiber, both sides. PDF/X-4.</text>
+
+  <!-- ============================================ -->
+  <!-- NOTES                                        -->
+  <!-- ============================================ -->
+
+  <text x="280" y="345" class="note">PRODUCTION TEMPLATE — Panel colors match 3D reference. All four walls fold UP from the base.</text>
+  <text x="280" y="355" class="note">Wall height: 50mm (updated from 28.575mm). Two trays stack from base floor to back compartment height.</text>
+  <text x="280" y="365" class="note">Recesses are die-cut into the base — shallow Pelican-style depressions, not through-cuts.</text>
+  <text x="280" y="375" class="note">All dimensions in millimeters. Scale: 1:1 when printed at 100%.</text>
+
+</svg>
