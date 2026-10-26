@@ -1,6 +1,12 @@
 # Cubicle Shank — Surface Map (Complete Copy Specification)
 
-**Last Updated:** June 19, 2026
+> **STATUS — October 26, 2026:** This is still the one card file, but it is **under review, not final**.
+> - Only 2 lines here are approved by Johnny: the leak-proof bullet (Back E6) and "Eventually." (Front E11). Everything else is untested.
+> - The brand changed to **WITTY YETI**, and Brad Sterling and Elevate Co. are off this card (owner decision, 2026-10-26). E1 is updated; the rest of the copy is unchanged until Johnny answers.
+> - July 6 design changes are not merged in yet: the fold-over flap with 2 new copy spots, and B13/B14 moved to the front. See [cubicle-shank-copy-reference.md](../../vibe-design/wireframes/cubicle-shank-copy-reference.md).
+> - Element-by-element grades: [cubicle-shank-copy-review-2026-10-26.md](cubicle-shank-copy-review-2026-10-26.md). Lines waiting on Johnny: [batch 01](../../../boss-review/outbox/2026-10-26-cubicle-shank-batch-01.md).
+
+**Last Updated:** June 19, 2026 (status note and brand added October 26, 2026)
 **Purpose:** Every word of copy that goes on the Cubicle Shank carded blister pack, with exact surface placement. This document is self-contained — no other document is needed to execute the design.
 **Card dimensions:** 13.25" wide × 10.75" tall, L-shaped (4.75" × 3.75" notch cut from upper-left corner to accommodate the Mug Shot box)
 **Card material:** 18pt matte black paperboard, printed both sides
@@ -13,8 +19,10 @@
 ### Element 1: Brand Logo (top of card, near hang hole)
 
 ```
-ELEVATE CO.
+WITTY YETI
 ```
+
+*(Was "ELEVATE CO." until 2026-10-26.)*
 
 ### Element 2: Division Name + Tagline (upper area, below or beside brand logo)
 
@@ -401,7 +409,7 @@ Show me a photorealistic product photograph of the back side of a premium carded
 
 ---
 
-*Master working doc: `product/copy/box-copy/cubicle-shank-working-doc.md`*
+*Master working doc: `product/items/cubicle-shank/cubicle-shank-working-doc.md`*
 *Interior layout spec: `product/interior-layout-spec.md`*
 *Design brief: `product/vibe-design/DESIGN-BRIEF-MASTER.md`*
-*Brand context: `product/vibe-design/shared/brand-context.md`*
+*Brand context: `product/vibe-design/brand-context.md`*

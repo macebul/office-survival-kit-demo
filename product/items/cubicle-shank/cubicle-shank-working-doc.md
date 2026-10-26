@@ -1,6 +1,12 @@
 # Cubicle Shank — Master Working Document
 
-**Last Updated:** June 24, 2026
+> **STATUS — October 26, 2026:** This is the full line archive (every line ever written). It is **not** the card; the card is [cubicle-shank-surface-map.md](cubicle-shank-surface-map.md).
+> - "LOCKED" below means session-locked by us, **not** approved by Johnny. Only the 2 lines in Section 2 have his approval.
+> - Section 3.3's claim that Johnny called SUB-1 the "perfect version" is **unverified**; nobody can confirm it.
+> - The brand is now Witty Yeti, and Brad Sterling and Elevate Co. are off this card (2026-10-26).
+> - New lines are graded against [johnny-taste-profile.md](../../../boss-review/johnny-taste-profile.md), and his replies go in [johnny-feedback-log.md](../../../boss-review/johnny-feedback-log.md).
+
+**Last Updated:** June 24, 2026 (status note added October 26, 2026)
 **Purpose:** Definitive master reference for ALL Cubicle Shank copy material developed across every session. Nothing from any session should exist outside this file.
 **Previous versions:** `cubicle-shank-working-doc-ARCHIVED-2026-06-12.md` (pre-rewrite material), `cubicle-shank-working-doc-ORIGINAL.md`
 
